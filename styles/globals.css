@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    @apply h-full;
+}
+html{
+  @apply bg-gray-100;
+}
+/*body{
+  @apply overflow-hidden
+}*/
+#__next {
+  @apply h-full;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.select-feed:hover{
+  background-color:aliceblue;
+  color: #0070f3;
+  border-color: #0070f3;
+  cursor: pointer;
+}
+
+.selected-feed{
+  background-color:aliceblue;
+  color: #0070f3;
+  border-color: #0070f3;
+  cursor: pointer;
+}
+
+.chatBoxMain{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.chatBox{
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.loadingDiv{
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.wMid{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  align-self: center;
+}
+
+.chatDivDe{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.chatDivCargando{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.chatDivPara{
+  display: flex;
+  flex-direction: column;
+  justify-content:left;
+  align-self: flex-start;
+  
+}
+
+.mainFlow{
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0px;
+}
+
+.chatFlow{
+  overflow: auto;
+}
+
+.msjDe{
+  padding-left: 15px;
+  background-color: #0070f3;
+  border-radius: 20px;
+  margin-bottom: 3px;
+  max-width: 100%;
+}
+
+.msjCargando{
+  padding-left: 15px;
+  background-color: transparent;
+  border-radius: 20px;
+  margin-bottom: 3px;
+  max-width: 100%;
+}
+
+.msjPara{
+  align-self:flex-end;
+  padding-right: 15px;
+  background-color:aquamarine;
+  border-radius: 20px;
+  margin-bottom: 3px;
+}
+
+.whiteTxt{
+  color: rgb(255, 255, 255);
+}
+
+.titlePara{
+  width: auto;
+  color:darkgray;
+}
+
+.wrapText {
+  overflow-x: hidden;
+  overflow-y: auto; 
+  word-wrap: break-word;
+  max-width: 750px; 
+  max-height: 400px
+}
+
+.padSett{
+  position: relative;
+  padding-bottom: 30px;
+}
+
+.inputTop{
+  position: relative;
+  top: -10px
+}
+
+.tabSettings{
+  cursor: pointer;
+}
+
+.logoUAG {
+  width: 100%;
+  text-align: center;
+}
+
+.rightH2{
+  text-align: center;
+  margin-top: 15px
+}
+
+.config{
+  text-align: center;
+}
+
+#nombrePerfil,#correoPerfil,#contraPerfil,#matriculaPerfil,#apePerfil,#contraNPerfil,#contraCPerfil{
+  @apply focus:ring-0;
+}
+
+#vincularB{
+  background-color: #4ADE7B;
+}
+
+.guardarPerfil{
+  width: 120px;
+  text-align: center;
+}
+
+.z-999{
+  z-index: 9999;
+}
+
+.tramiteDiv{
+  min-width: 600px;
+}
+
+.headerLogo {
+  background-size: 100% 100%;
+  background-image: url("https://ovirtual.uagro.mx/frontend/school/img/DAE-01.jpg");
+}

@@ -1,0 +1,15 @@
+{
+  "extends": ["next/core-web-vitals","plugin:react-hooks/recommended"],
+  "rules": {
+    "@next/next/no-html-link-for-pages": ["error", "packages/client-nextts/pages/"],
+    "import/no-anonymous-default-export": ["error", {
+      "allowArray": true,
+      "allowArrowFunction": true,
+      "allowAnonymousClass": true,
+      "allowAnonymousFunction": true,
+      "allowCallExpression": true, // The true value here is for backward compatibility
+      "allowLiteral": true,
+      "allowObject": true
+    }]
+  }
+}
