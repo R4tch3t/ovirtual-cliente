@@ -12,12 +12,29 @@ const people = [
     { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
     // More people...
   ]
-  
+const paraNivel = (n:number|null) => {
+  switch(n){
+    case 3:
+      return 'Bachillerato'
+    case 4:
+      return 'Técnico Enfermeria'
+    case 5:
+      return 'Licenciatura'
+    case 6:
+      return 'Especialidad'
+    case 7:
+      return 'Maestría'
+    case 8:
+      return 'Doctorado'
+    default:
+      return ''
+  }
+}
   const TablaInicial = () => {
     const {tramitesState, dispatch} = useTramitesContext();
     const {tramites} = tramitesState
     
-    if(!tramites){
+    /*if(!tramites){
       useEffect(()=>{
         //const resp = await fetchConToken(`tramites/todos`);
         fetchConToken(`tramites/modTitulacion`).then((resp)=>{
@@ -27,7 +44,7 @@ const people = [
           });
         })
       },[dispatch])
-    }
+    }*/
 
     return (
       <div className="px-4 sm:px-6 lg:px-8">
@@ -74,6 +91,12 @@ const people = [
                   scope="col"
                   className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                 >
+                  Nivel
+                </th>
+                <th
+                  scope="col"
+                  className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                >
                   Descripcion
                 </th>
                 <th
@@ -92,18 +115,21 @@ const people = [
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
               {tramites?.map((tramite,i) => (
-                <Link href={'/'} >
-                  <tr key={tramite.id} className='select-feed' >
+                <Link key={tramite.id} href={`/tramite/${tramite.id}`} >
+                  <tr  className='select-feed' >
                   <td className="px-3 py-4 text-sm text-gray-500">{i+1}</td>
                     <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
                       {tramite.nombre}
                       <dl className="font-normal lg:hidden">
+                        <dt className="sr-only">Nivel</dt>
+                        <dd className="mt-1 truncate text-gray-700">{paraNivel(tramite.nivelAplica)}</dd>
                         <dt className="sr-only">Descripcion</dt>
                         <dd className="mt-1 truncate text-gray-700">{tramite.descripcion}</dd>
                         <dt className="sr-only sm:hidden">Clave</dt>
                         <dd className="mt-1 truncate text-gray-500 sm:hidden">{tramite.clave}</dd>
                       </dl>
                     </td>
+                    <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{paraNivel(tramite.nivelAplica)}</td>
                     <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{tramite.descripcion}</td>
                     <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{tramite.clave}</td>
                     <td className="px-3 py-4 text-sm text-gray-500">{tramite.fechaInicialValidacion}</td>

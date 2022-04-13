@@ -1,5 +1,5 @@
 import { urlApi } from "../variables/url"
-export const fetchSinToken = async (endpoint:any,data:any, method="GET") => {
+export const fetchSinToken = async (endpoint:any,data:any="", method="GET") => {
     const baseUrl = `${urlApi}/${endpoint}`
     
     if(method==="GET"){

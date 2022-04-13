@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { ReactElement, useState } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import { useAppContext } from '../../auth/authContext'; 
 import { TablaInicial, TramitesPrincipales } from '../tramites';
  
-const Home = () => {
+const Home:FC = ({children}) => {
     const {auth,logout}:any = useAppContext();
     const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '/perfil'}]});
     const user = {
@@ -14,7 +14,7 @@ const Home = () => {
         "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
     }
     
- 
+    
       const stats = [
         { label: 'Vacation days left', value: 12 },
         { label: 'Sick days left', value: 4 },
@@ -115,8 +115,7 @@ const Home = () => {
                       <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
                         <div className='relative bg-white p-6' >
                              
-                            <TramitesPrincipales />
-                            <TablaInicial />
+                            {children}
                           
                         
                         </div>

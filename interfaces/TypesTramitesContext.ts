@@ -6,6 +6,7 @@ export type TypeTramite = {
     clave: string,
     beneficio: string,
     descripcion: string,
+    nivelAplica: number|null,
     necesitaValidacion: number|null,
     fechaInicialValidacion: Date|null,
     fechaFinalValidacion: Date|null

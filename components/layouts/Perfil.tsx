@@ -41,7 +41,7 @@ const WarningPass = () => {
   </>
 }
 
-const home = () => {
+const PerfilLayout = () => {
   /*const [availableToHire, setAvailableToHire] = useState(true)
   const [privateAccount, setPrivateAccount] = useState(false)
   const [allowCommenting, setAllowCommenting] = useState(true)
@@ -592,4 +592,4 @@ const home = () => {
     )
 }
 
-export default home
+export default PerfilLayout

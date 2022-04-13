@@ -5,7 +5,6 @@ import PerfilLayout from '../../components/layouts/Perfil'
 import { RedirecApp } from '../../router/RedirecApp';
 import Head from 'next/head';
 import { Loading } from '@nextui-org/react';
-import Cookies from 'js-cookie';
 //import Login from "../login"
 //import Registro from "../sigin"
 const PerfilHome = () =>{
@@ -36,7 +35,7 @@ const PerfilHome = () =>{
 return (
       <>
         <Head>
-          <title>Ovirtual - Chat</title>
+          <title>Ovirtual - Perfil</title>
         </Head>
         <Home link='Perfil' >
           <PerfilLayout />
