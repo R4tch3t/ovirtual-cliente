@@ -7,11 +7,11 @@ import { RedirecApp } from '../../router/RedirecApp';
 import Head from 'next/head';
 import { Loading } from '@nextui-org/react';
 import { fetchSinToken } from '../../helpers/fetch';
-import { TypeTramitesState } from '../../interfaces';
+import { TypeTramitesState, TypeTramite } from '../../interfaces';
 
 interface Props {
   id: number,
-  tramite: string
+  tramite: TypeTramite
 }
 
 const TramiteHome:NextPage<Props> = (props) =>{
@@ -39,7 +39,7 @@ return (
         </Head>
         <Home link='Tramites' >
           <TramiteLayout > 
-            Tramite seleccionado? {props.id} {props.tramite}
+            Tramite seleccionado? {props.id} {props.tramite.nombre}
           </TramiteLayout>
         </Home>
       </>
@@ -56,18 +56,27 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     paths: tramites!.map(({id})=>({
       params: { id:id+"" }
     })),
-    fallback: false
+    fallback: 'blocking'
   }
 }
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   //const resp = await fetchSinToken(`tramites/todos`);
   const {id} = params as {id: string} 
-  
+  const resp = await fetchSinToken(`tramites/${id}`);
+  const {ok,tramite} = resp
+  if(!ok){
+    return {
+      redirect: {
+        destination: '/tramites',
+        permanent: false
+      }
+    }
+  }
   return {
     props: {
       id,
-      tramite: 'tramite 1'
+      tramite
     },
     revalidate: 86400
   }

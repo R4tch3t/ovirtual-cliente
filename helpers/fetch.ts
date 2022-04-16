@@ -43,5 +43,3 @@ export const fetchConToken = async (endpoint:any,data:any='', method="GET",heade
         return await resp.json()
     } 
 }
-
-export default ()=>null

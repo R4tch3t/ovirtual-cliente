@@ -6,6 +6,7 @@ import { useTramitesContext } from '../../context/tramites/TramitesContext'
 import { fetchConToken } from '../../helpers/fetch'
 import { types } from '../../types/tramites'
 import { TypeTramite, TypeCatTramite } from '../../interfaces'
+import filtroTramites from '../../helpers/filtroTramites'
 
 /*type TypeServicio = {
   id: number,
@@ -71,6 +72,27 @@ const ComboTramites = () => {
    }*/
 
    const cambiarValorCombo = (value:any) => {
+     console.log('value ,', value)
+     switch(value.id){
+      case 1:
+        dispatch({
+          type: types.cargarTramites,
+          payload: {tramites: null, tta: 0, ttb: 4}
+        });
+         break
+      case 2:
+        dispatch({
+          type: types.cargarTramites,
+          payload: {tramites: null, tta: 3, ttb: 5}
+        });
+          break
+      case 3:
+        dispatch({
+          type: types.cargarTramites,
+          payload: {tramites: null, tta: 4, ttb: 6}
+        });
+          break
+     }
     dispatch({
       type: types.catSeleccionado,
       payload: value

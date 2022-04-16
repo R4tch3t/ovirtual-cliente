@@ -2,14 +2,22 @@ import { Dispatch } from "react"
 
 export type TypeTramite = {
     id: number,
-    nombre: string,
-    clave: string,
-    beneficio: string,
-    descripcion: string,
-    nivelAplica: number|null,
+    nombre: string|null,
+    clave: string|null,
+    beneficio: string|null,
+    descripcion: string|null,
     necesitaValidacion: number|null,
-    fechaInicialValidacion: Date|null,
-    fechaFinalValidacion: Date|null
+    fechaInicialValidacion: Date|string|null,
+    fechaFinalValidacion: Date|string|null
+    nivelAplica: number|null,
+    TipoTramites: [TipoTramites]|[]|null
+}
+
+export type TipoTramites = {
+    id: number,
+    tramiteId: number,
+    tipoTramite: number,
+    nivelEstudios: number
 }
 
 export type TypeCatTramite = {
@@ -27,7 +35,9 @@ export type TypeTramitesAction = {
 export interface TypeTramitesState {
     tramites: TypeTramite[]|null,
     catTramites: TypeCatTramite[]|null,
-    catSeleccionado: TypeCatTramite
+    catSeleccionado: TypeCatTramite,
+    tta:number,
+    ttb:number
 }
 
 export interface TypeTramitesContext {

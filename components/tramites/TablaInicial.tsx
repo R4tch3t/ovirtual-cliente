@@ -122,14 +122,31 @@ const paraNivel = (n:number|null) => {
                       {tramite.nombre}
                       <dl className="font-normal lg:hidden">
                         <dt className="sr-only">Nivel</dt>
-                        <dd className="mt-1 truncate text-gray-700">{paraNivel(tramite.nivelAplica)}</dd>
+                        <dd className="mt-1 truncate text-gray-700">
+                        {
+                          tramite.TipoTramites?.sort((a,b)=>a.nivelEstudios-b.nivelEstudios)
+                          .map((v,i)=>{
+                            const slash = i > 0 ? " / " : ""
+                            return slash + paraNivel(v.nivelEstudios)
+                          })    
+                        }
+                        </dd>
                         <dt className="sr-only">Descripcion</dt>
                         <dd className="mt-1 truncate text-gray-700">{tramite.descripcion}</dd>
                         <dt className="sr-only sm:hidden">Clave</dt>
                         <dd className="mt-1 truncate text-gray-500 sm:hidden">{tramite.clave}</dd>
                       </dl>
                     </td>
-                    <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{paraNivel(tramite.nivelAplica)}</td>
+                    <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                    {
+                      tramite.TipoTramites?.sort((a,b)=>a.nivelEstudios-b.nivelEstudios)
+                      .map((v,i)=>{
+                        const slash = i > 0 ? " / " : ""
+                        return slash + paraNivel(v.nivelEstudios)
+                      })
+                      //paraNivel(tramite.nivelAplica)
+                    }
+                    </td>
                     <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{tramite.descripcion}</td>
                     <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{tramite.clave}</td>
                     <td className="px-3 py-4 text-sm text-gray-500">{tramite.fechaInicialValidacion}</td>

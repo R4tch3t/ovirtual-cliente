@@ -15,7 +15,9 @@ const catTramites =
 const initialState:TypeTramitesState = {
     tramites: null,
     catTramites,
-    catSeleccionado: catTramites[0]
+    catSeleccionado: catTramites[0],
+    tta: 0,
+    ttb: 4
 }
 
 const TramitesProvider:FC = ({children})=>{

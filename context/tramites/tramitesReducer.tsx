@@ -6,7 +6,9 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
         case types.cargarTramites:
             return {
                 ...state,
-                tramites: action.payload
+                tramites: action.payload.tramites,
+                tta: action.payload.tta,
+                ttb: action.payload.ttb
             }
         case types.catSeleccionado:
             return {

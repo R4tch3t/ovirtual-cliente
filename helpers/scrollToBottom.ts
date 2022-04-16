@@ -21,4 +21,3 @@ export const scrollToBottomAnimated = (id:any) => {
     }
 }*/
 
-export default ()=>null
