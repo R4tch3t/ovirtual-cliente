@@ -5,6 +5,7 @@ import { useTramitesContext } from "../../context/tramites/TramitesContext";
 import { types } from "../../types/tramites";
 import { ComboTramites } from "./ComboTramites"
 import { fetchConToken } from '../../helpers/fetch';
+import { TabsTramites } from './TabsTramites';
 //import { ComboTramites } from "./ComboTramites"
 
 
@@ -70,11 +71,13 @@ const paraNivel = (n:number|null) => {
           </div>*/}
         </div>
         <Spacer y={2} />
+
+        <TabsTramites />
         
-        <div className='sm:grid sm:grid-cols-3' >
+        {/*<div className='sm:grid sm:grid-cols-3' >
                 <div className='sm:grid sm:grid-cols-2' />
                 <ComboTramites />
-        </div>
+        </div>*/}
 
         <Spacer y={2} />
         <div className="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
