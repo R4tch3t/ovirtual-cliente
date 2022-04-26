@@ -164,6 +164,7 @@ const paraNivel = (n:number|null) => {
             </tbody>
           </table>
         </div>
+        
       </div>
     )
   }

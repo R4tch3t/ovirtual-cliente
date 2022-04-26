@@ -8,6 +8,7 @@ import Head from 'next/head';
 import { Loading } from '@nextui-org/react';
 import { fetchSinToken } from '../../helpers/fetch';
 import { TypeTramitesState, TypeTramite } from '../../interfaces';
+import { TramiteHead, TramiteTabs } from '../../components/tramite';
 
 interface Props {
   id: number,
@@ -39,7 +40,11 @@ return (
         </Head>
         <Home link='Tramites' >
           <TramiteLayout > 
-            Tramite seleccionado? {props.id} {props.tramite.nombre}
+            <TramiteHead 
+              nombre={props.tramite.nombre} 
+              descripcion={props.tramite.descripcion}
+              nivel={props.tramite.nivelAplica+""} />
+              <TramiteTabs />
           </TramiteLayout>
         </Home>
       </>

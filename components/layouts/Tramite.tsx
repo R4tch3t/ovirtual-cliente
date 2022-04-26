@@ -112,15 +112,17 @@ const Home:FC = ({children}) => {
                     }
                     <section aria-labelledby="quick-links-title">
                         
-                      <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
-                        <div className='relative bg-white p-6' >
+                      {/*<div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
+                        <div className='relative bg-white p-6' >*/}
                              
                             {children}
                           
                         
-                        </div>
-                      </div>
+                        {/*</div>
+                      </div>*/}
+
                     </section>
+                    
                   </div>
     
                   
