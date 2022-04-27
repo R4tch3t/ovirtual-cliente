@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import Router from 'next/router';
 import {Home} from '../../subPages/Home';
@@ -19,12 +19,16 @@ const TramitesHome:NextPage<TypeTramitesState> = (props) =>{
   const auth = RedirecApp();
   const {tramitesState} = useTramitesContext();
   const {tramites, tta,ttb} = tramitesState
-
-  if(!tramites){
+  
+  //if(!tramites){
     //useCallback(()=>{
       //const resp = await fetchConToken(`tramites/todos`);
       //fetchConToken(`tramites/modTitulacion`).then((resp)=>{
-        const tramites = filtroTramites(props.tramites!,tta,ttb)/*props.tramites!.filter((tramite) => {
+        let fTramites = filtroTramites(props.tramites!,tta,ttb)
+        
+         // fTramites = filtroTramites(tramitesState.tramites,tta,ttb)
+       // }
+        /*props.tramites!.filter((tramite) => {
          // console.log(tramite.nivelAplica)
           const tipoTramites = tramite.TipoTramites?.filter((tt)=>{
             return tt.tipoTramite > 0 && tt.tipoTramite < 4
@@ -41,7 +45,9 @@ const TramitesHome:NextPage<TypeTramitesState> = (props) =>{
         console.log(tramites)
         console.log(props.tramites)
         //try{
-          tramitesState.tramites=tramites
+          if(!tramites || tramites === props.tramites){
+            tramitesState.tramites=fTramites
+          }
         /*dispatch({
             type: types.cargarTramites,
             payload: tramites
@@ -51,7 +57,7 @@ const TramitesHome:NextPage<TypeTramitesState> = (props) =>{
       }*/
       //})
     //},[dispatch])()
-  }
+  //}
 
 //const {auth, verificaToken}:any = useAppContext();
   
@@ -97,7 +103,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     props: {
       tramites: resp.tramites
-    }
+    },
+    revalidate:   10
   }
 }
 

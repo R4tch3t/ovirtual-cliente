@@ -6,6 +6,8 @@ import { types } from "../../types/tramites";
 import { ComboTramites } from "./ComboTramites"
 import { fetchConToken } from '../../helpers/fetch';
 import { TabsTramites } from './TabsTramites';
+import { useSocketContext } from '../../context/SocketContext';
+
 //import { ComboTramites } from "./ComboTramites"
 
 
@@ -34,7 +36,19 @@ const paraNivel = (n:number|null) => {
   const TablaInicial = () => {
     const {tramitesState, dispatch} = useTramitesContext();
     const {tramites} = tramitesState
-    
+    const {socket}:any = useSocketContext();
+
+    //Escuchar los cambios en tramites 
+    useEffect(()=>{
+      socket?.on("getTramites",(tramites:any)=>{
+          
+          dispatch({
+              type: types.cargarTramites,
+              payload: {tramites,tta: 0, ttb: 0}
+          })
+      })
+    },[socket,dispatch]);
+
     /*if(!tramites){
       useEffect(()=>{
         //const resp = await fetchConToken(`tramites/todos`);
@@ -117,7 +131,7 @@ const paraNivel = (n:number|null) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {tramites?.map((tramite,i) => (
+              {tramites && tramites.map((tramite,i) => (
                 <Link key={tramite.id} href={`/tramite/${tramite.id}`} >
                   <tr  className='select-feed' >
                   <td className="px-3 py-4 text-sm text-gray-500">{i+1}</td>
@@ -164,7 +178,7 @@ const paraNivel = (n:number|null) => {
             </tbody>
           </table>
         </div>
-        
+
       </div>
     )
   }
