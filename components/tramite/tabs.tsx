@@ -1,5 +1,10 @@
-import { useState } from "react"
+import { FC, useState } from "react"
+import { TypeTramite } from "../../interfaces"
 import { TableTramite } from "./table"
+
+interface Props {
+    tramite: TypeTramite
+}
 
 type TipoTabs = 
 {
@@ -23,15 +28,14 @@ const Tabs: TipoTabs[] = [
     return classes.filter(Boolean).join(' ')
   }
 
-const TramiteTabs = () => {
-    const [state, setState] = useState(
-        {
+const TramiteTabs: FC<Props> = ({tramite}) => {
+    const [state, setState] = useState({
             tabs: Tabs,
             table: {
                 head: ['Documento', 'Descripción' ],
-                body: [{'Documento': 'Documento1', 'Descripción': 'Descripcion1'}]
+                body: [{'Documento': tramite.documentoObtiene, 'Descripción': 'Descripcion1'}]
             } 
-        })
+    });
     const {tabs}  = state
     const {head, body}  = state.table
     return (
@@ -42,14 +46,14 @@ const TramiteTabs = () => {
                 <div>
                     <div className="sm:hidden">
                         <label htmlFor="tabs" className="sr-only">
-                        Select a tab
+                            Select a tab
                         </label>
                         {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
                         <select
-                        id="tabs"
-                        name="tabs"
-                        className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-                        defaultValue={tabs.find((tab) => tab.current)?.name}
+                            id="tabs"
+                            name="tabs"
+                            className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                            defaultValue={tabs.find((tab) => tab.current)?.name}
                         >
                         {tabs.map((tab) => (
                             <option key={tab.name}>{tab.name}</option>
@@ -59,26 +63,28 @@ const TramiteTabs = () => {
 
                     <div className="hidden sm:block">
                         <div className="border-b border-gray-200">
-                        <nav className="-mb-px flex" aria-label="Tabs">
-                            {tabs.map((tab) => (
-                            <a
-                                key={tab.name}
-                                href={tab.href}
-                                className={classNames(
-                                tab.current
-                                    ? 'border-indigo-500 text-indigo-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                                'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm'
-                                )}
-                                aria-current={tab.current ? 'page' : undefined}
-                            >
-                                {tab.name}
-                            </a>
-                            ))}
-                        </nav>
+                            <nav className="-mb-px flex" aria-label="Tabs">
+                                {tabs.map((tab) => (
+                                <a
+                                    key={tab.name}
+                                    href={tab.href}
+                                    className={classNames(
+                                    tab.current
+                                        ? 'border-indigo-500 text-indigo-600'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                                    'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm'
+                                    )}
+                                    aria-current={tab.current ? 'page' : undefined}
+                                >
+                                    {tab.name}
+                                </a>
+                                ))}
+                            </nav>
                         </div>
                     </div>
+
                 </div>
+                
                 <TableTramite head={head} body={body} />
             </div>
         </div>

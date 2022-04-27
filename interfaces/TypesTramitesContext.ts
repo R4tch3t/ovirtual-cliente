@@ -10,6 +10,7 @@ export type TypeTramite = {
     fechaInicialValidacion: Date|string|null,
     fechaFinalValidacion: Date|string|null
     nivelAplica: number|null,
+    documentoObtiene: string|null,
     TipoTramites: [TipoTramites]|[]|null
 }
 

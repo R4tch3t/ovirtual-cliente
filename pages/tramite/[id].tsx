@@ -41,10 +41,11 @@ return (
         <Home link='Tramites' >
           <TramiteLayout > 
             <TramiteHead 
-              nombre={props.tramite.nombre} 
-              descripcion={props.tramite.descripcion}
-              nivel={props.tramite.nivelAplica+""} />
-              <TramiteTabs />
+                nombre={props.tramite.nombre} 
+                descripcion={props.tramite.descripcion}
+                nivel={props.tramite.nivelAplica+""}
+            />
+              <TramiteTabs tramite={props.tramite} />
           </TramiteLayout>
         </Home>
       </>
