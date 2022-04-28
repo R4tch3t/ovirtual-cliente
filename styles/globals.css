@@ -197,3 +197,11 @@ a {
   background-size: 100% 100%;
   background-image: url("https://ovirtual.uagro.mx/frontend/school/img/DAE-01.jpg");
 }
+
+.homoSteps{
+  margin-top: 15px;
+}
+
+.mg-b-0{
+  margin-bottom: 0px;
+}

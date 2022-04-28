@@ -1,22 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { GetStaticProps,GetStaticPaths, NextPage } from 'next';
 import Router from 'next/router';
-import {Home} from '../../subPages/Home';
-import TramiteLayout from '../../components/layouts/Tramite'
-import { RedirecApp } from '../../router/RedirecApp';
-import Head from 'next/head';
+import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
-import { fetchSinToken } from '../../helpers/fetch';
-import { TypeTramitesState, TypeTramite } from '../../interfaces';
-import { TramiteHead, TramiteTabs } from '../../components/tramite';
+import { fetchSinToken } from '../../../helpers/fetch';
+import { TypeTramitesState, TypeTramite } from '../../../interfaces';
+import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
 
 interface Props {
   id: number,
   tramite: TypeTramite
 }
 
+
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
+  const [state, setState]:any = useState(
+    {
+        //tabs: Tabs,
+        table: {
+            head: [ 'Nombre', 'Responsable', 'Telefono' ],
+            body: [] 
+            //body: [{'Nombre': props.tramite.tramitesModuloAtencions, 'Descripción': 'Descripcion1'}]
+        } 
+    }
+  );
 
   if(auth.checking){
     return( 
@@ -33,23 +41,32 @@ const TramiteHome:NextPage<Props> = (props) =>{
     Router.replace("/");
   }
 
-return (
-      <>
-        <Head>
-          <title>Ovirtual - Tramite</title>
-        </Head>
-        <Home link='Tramites' >
-          <TramiteLayout > 
-            <TramiteHead 
-                nombre={props.tramite.nombre} 
-                descripcion={props.tramite.descripcion}
-                nivel={props.tramite.nivelAplica+""}
-            />
-              <TramiteTabs tramite={props.tramite} />
-          </TramiteLayout>
-        </Home>
-      </>
-);
+  //state.table.body = []
+  props.tramite.tramitesModuloAtencions?.map((modulo)=>{
+    
+    state.table.body.push({
+      'Nombre': modulo.nombre,
+      'Responsable': modulo.responsable,
+      'Telefono': modulo.telefono
+    })
+  })
+// const {tabs}  = state
+const {head, body}  = state.table
+
+
+  return (
+    <PaginaTramite tramite={props.tramite} >
+      <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
+            <div className='relative bg-white p-6' >
+              <TramiteTabs tramite={props.tramite} tabID={1} />
+              <TableTramite head={head} body={body} />
+
+            </div>
+        </div>
+    </PaginaTramite>
+  )
+
+
 }
 
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes

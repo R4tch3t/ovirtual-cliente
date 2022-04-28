@@ -11,7 +11,15 @@ export type TypeTramite = {
     fechaFinalValidacion: Date|string|null
     nivelAplica: number|null,
     documentoObtiene: string|null,
-    TipoTramites: [TipoTramites]|[]|null
+    TipoTramites: [TipoTramites]|[]|null,
+    tramitesModuloAtencions: TypeModuloAtencion[]|[]|null
+}
+
+export type TypeModuloAtencion = {
+    id: number,
+    nombre: string,
+    responsable: string,
+    telefono: string,
 }
 
 export type TipoTramites = {

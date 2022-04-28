@@ -1,47 +1,55 @@
+import Link from "next/link"
 import { FC, useState } from "react"
 import { TypeTramite } from "../../interfaces"
 import { TableTramite } from "./table"
 
 interface Props {
-    tramite: TypeTramite
+    tramite: TypeTramite,
+    tabID: number
+    //Tabs: TipoTabs[]
 }
 
 type TipoTabs = 
 {
     name: string, 
-    href: string | undefined, 
+    href: string , 
     current: boolean
 }
 
-const Tabs: TipoTabs[] = [
-    { name: 'Requisitos', href: undefined, current: true },
-    { name: 'Modulos de atención', href: undefined, current: false },
-    { name: 'Formatos para descargar', href: undefined, current: false },
-    { name: 'Requisitos adicionales', href: undefined, current: false },
-    { name: 'Preguntas y respuestas', href: undefined, current: false },
-    { name: 'Costos', href: undefined, current: false },
-    { name: 'Procedimiento presencial', href: undefined, current: false },
-    { name: 'Procedimiento en línea', href: undefined, current: false },
-]
-  
-  function classNames(...classes:any) {
-    return classes.filter(Boolean).join(' ')
-  }
 
-const TramiteTabs: FC<Props> = ({tramite}) => {
-    const [state, setState] = useState({
-            tabs: Tabs,
+  
+function classNames(...classes:any) {
+    return classes.filter(Boolean).join(' ')
+}
+
+const TramiteTabs: FC<Props> = ({tramite, tabID}) => {
+    const tabs: TipoTabs[] = 
+    [
+      { name: 'Requisitos', href: `/tramite/${tramite.id}`, current: tabID===0 },
+      { name: 'Modulos de atención', href: `/tramite/${tramite.id}/moduloAtencion`, current: tabID===1 },
+      { name: 'Formatos para descargar', href: `/tramite/${tramite.id}/formatoDescargar`, current: tabID===2 },
+      { name: 'Requisitos adicionales', href: `/tramite/${tramite.id}/reqAdicional`, current: tabID===3 },
+      { name: 'Preguntas y respuestas', href: `/tramite/${tramite.id}/pregResp`, current: tabID===4 },
+      { name: 'Costos', href: `/tramite/${tramite.id}/costos`, current: tabID===5 },
+      { name: 'Procedimiento presencial', href: `/tramite/${tramite.id}/procedimientoPrecencial`, current: tabID===6 },
+      { name: 'Procedimiento en línea', href: `/tramite/${tramite.id}/procedimientoLinea`, current: tabID===7 },
+    ]
+    /*
+    const [state, setState] = useState(
+        {
+            //tabs: Tabs,
             table: {
                 head: ['Documento', 'Descripción' ],
                 body: [{'Documento': tramite.documentoObtiene, 'Descripción': 'Descripcion1'}]
             } 
-    });
-    const {tabs}  = state
-    const {head, body}  = state.table
+        }
+    );
+   // const {tabs}  = state
+    const {head, body}  = state.table*/
+
     return (
         
-        <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
-            <div className='relative bg-white p-6' >
+        
 
                 <div>
                     <div className="sm:hidden">
@@ -65,29 +73,28 @@ const TramiteTabs: FC<Props> = ({tramite}) => {
                         <div className="border-b border-gray-200">
                             <nav className="-mb-px flex" aria-label="Tabs">
                                 {tabs.map((tab) => (
-                                <a
-                                    key={tab.name}
-                                    href={tab.href}
-                                    className={classNames(
-                                    tab.current
-                                        ? 'border-indigo-500 text-indigo-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                                    'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm'
-                                    )}
-                                    aria-current={tab.current ? 'page' : undefined}
-                                >
-                                    {tab.name}
-                                </a>
+                                    <Link 
+                                        key={tab.name}
+                                        href={tab.href} >
+                                        <a
+                                            
+                                            className={classNames(
+                                            tab.current
+                                                ? 'border-indigo-500 text-indigo-600'
+                                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                                            'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm'
+                                            )}
+                                            aria-current={tab.current ? 'page' : undefined}
+                                        >
+                                            {tab.name}
+                                        </a>
+                                    </Link>
                                 ))}
                             </nav>
                         </div>
                     </div>
 
                 </div>
-                
-                <TableTramite head={head} body={body} />
-            </div>
-        </div>
 
       )
 }
