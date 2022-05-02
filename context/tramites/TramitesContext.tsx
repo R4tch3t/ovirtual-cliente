@@ -17,7 +17,10 @@ const initialState:TypeTramitesState = {
     catTramites,
     catSeleccionado: catTramites[0],
     tta: 0,
-    ttb: 4
+    ttb: 4,
+    procedimientos: {
+        homologacion: null
+    }
 }
 
 const TramitesProvider:FC = ({children})=>{
@@ -25,7 +28,7 @@ const TramitesProvider:FC = ({children})=>{
     return (
         <TramitesContext.Provider value={{
             tramitesState,
-           dispatch
+            dispatch
         }} >
             {children}
         </TramitesContext.Provider>

@@ -4,18 +4,24 @@ import Router from 'next/router';
 import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
 import { fetchSinToken } from '../../../helpers/fetch';
-import { TypeTramitesState, TypeTramite } from '../../../interfaces';
+import { TypeTramitesState, TypeTramite, TypeUnidadesAcademicas, TypePais } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
 import { PasosHomologacion } from '../../../components/tramite/homologacion';
+import { UnidadesAcademicas } from '../../../components/tramite/unidadAcademica';
+import { useTramitesContext } from '../../../context/tramites/TramitesContext';
 
 interface Props {
   id: number,
-  tramite: TypeTramite
+  tramite: TypeTramite,
+  unidadesAcademicas: TypeUnidadesAcademicas[],
+  paises: TypePais[]
 }
 
 
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
+  const {tramitesState} = useTramitesContext()
+  const {homologacion} = tramitesState.procedimientos
   const [state, setState]:any = useState(
     {
         //tabs: Tabs,
@@ -61,7 +67,12 @@ const {head, body}  = state.table
             <div className='relative bg-white p-6' >
               <TramiteTabs tramite={props.tramite} tabID={7} />
               {/*<TableTramite head={head} body={body} />*/}
-              <PasosHomologacion />
+
+              {!homologacion && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} />}
+
+              {homologacion && <PasosHomologacion paises={props.paises} />}
+
+              
             </div>
         </div>
     </PaginaTramite>
@@ -87,8 +98,13 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async ({params}) => {
   //const resp = await fetchSinToken(`tramites/todos`);
   const {id} = params as {id: string} 
-  const resp = await fetchSinToken(`tramites/${id}`);
-  const {ok,tramite} = resp
+  const respTramite = await fetchSinToken(`tramites/${id}`);
+  const respUnidades = await fetchSinToken(`tramites/unidadesAcademicas/6`);
+  const respPaises = await fetchSinToken(`tramites/paises`,{},'POST');
+  const {ok,tramite} = respTramite
+  const {unidadesAcademicas} = respUnidades
+  const {paises} = respPaises
+
   if(!ok){
     return {
       redirect: {
@@ -101,7 +117,9 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   return {
     props: {
       id,
-      tramite
+      tramite,
+      unidadesAcademicas,
+      paises
     },
     revalidate: 86400
   }

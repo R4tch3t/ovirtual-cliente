@@ -171,7 +171,11 @@ a {
   text-align: center;
 }
 
-#nombrePerfil,#correoPerfil,#contraPerfil,#matriculaPerfil,#apePerfil,#contraNPerfil,#contraCPerfil{
+#nombrePerfil,#correoPerfil,#contraPerfil,
+#matriculaPerfil,#apePerfil,#contraNPerfil,
+#contraCPerfil,#curp,#nombreTramite,#ape1Tramite,
+#ape2Tramite,#celular,#telefono,#email,#confirmEmail,
+#calle{
   @apply focus:ring-0;
 }
 

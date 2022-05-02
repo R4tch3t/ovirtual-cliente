@@ -1,8 +1,10 @@
 import { XCircleIcon, XIcon  } from '@heroicons/react/solid'
 
-export const Errors=({e, setELog}:any) => {
-  const title = e&&e.length<2?"Se encontro el siguiente error en la consulta:":
-    (`Se encontraron ${e.length} errores en la consulta`)
+export const Errors=({title, e, setELog}:any) => {
+   if (!title) {
+    title = e&&e.length<2?"Se encontro el siguiente error en la consulta:":
+      (`Se encontraron ${e.length} errores en la consulta`)
+   }
     /*<div className="rounded-md bg-red-50 p-4" style={{position: 'fixed', width: '100%'}} >*/
   
     return (
@@ -21,7 +23,9 @@ export const Errors=({e, setELog}:any) => {
                 </ul>
               </div>
             </div>
-            <div className="ml-auto pl-3">
+
+            {setELog &&
+              <div className="ml-auto pl-3">
               <div className="-mx-1.5 -my-1.5">
                 <button
                   type="button"
@@ -34,10 +38,9 @@ export const Errors=({e, setELog}:any) => {
                   <XIcon className="h-5 w-5" aria-hidden="true" />
                 </button>
               </div>
-            </div>
+            </div>}
+
           </div>
         </div>
       )
 }
-
-export default ()=>null

@@ -1,4 +1,5 @@
 import { Dispatch } from "react"
+import { TypePaso1, TypePaso2 } from "./pasos/homologacion"
 
 export type TypeTramite = {
     id: number,
@@ -39,6 +40,17 @@ export type TypeTramitesAction = {
     payload?: any
 }
 
+export type TypeHomologacion = {
+    planID: number,
+    planElegido: string,
+    localidad: string,
+    paso1: TypePaso1 | null,
+    paso2: TypePaso2 | null
+}
+
+export type TypeProcedimiento = {
+    homologacion: TypeHomologacion | null
+}
 
 
 export interface TypeTramitesState {
@@ -46,10 +58,28 @@ export interface TypeTramitesState {
     catTramites: TypeCatTramite[]|null,
     catSeleccionado: TypeCatTramite,
     tta:number,
-    ttb:number
+    ttb:number,
+    procedimientos: TypeProcedimiento
 }
 
 export interface TypeTramitesContext {
     tramitesState: TypeTramitesState,
     dispatch: Dispatch<TypeTramitesAction>
+}
+
+export interface TypeUnidadesAcademicas {
+    id: number,
+    claveUnidadAcademica: string,
+    nombreUnidadAcademica: string,
+    nombrePlanEstudios: string,
+    anioPlanEstudios: number,
+    nivelPlanEstudios: number,
+    localidad: string,
+    zonaEscolar: number,
+}
+
+export interface TypePais {
+    id: number;
+    abreviatura: string;
+    nombrePais: string;
 }
