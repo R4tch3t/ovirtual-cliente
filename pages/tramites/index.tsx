@@ -13,7 +13,7 @@ import { types } from '../../types/tramites';
 //import Registro from "../sigin"
 import { TypeTramitesState } from '../../interfaces/TypesTramitesContext';
 import filtroTramites from '../../helpers/filtroTramites';
-//import  from 'react';
+import { obtenerTramites } from '../../apollo-cliente/tramites/obtenerTramites';
 
 const TramitesHome:NextPage<TypeTramitesState> = (props) =>{
   const auth = RedirecApp();
@@ -98,11 +98,12 @@ return (
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   //const { data } = await  // your fetch function here 
-  const resp = await fetchSinToken(`tramites/todos`);
-  
+  //const resp = await fetchSinToken(`tramites/todos`);
+  const tramites = await obtenerTramites()
+
   return {
     props: {
-      tramites: resp.tramites
+      tramites
     },
     revalidate:   10
   }

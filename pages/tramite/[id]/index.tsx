@@ -6,6 +6,8 @@ import { Loading } from '@nextui-org/react';
 import { fetchSinToken } from '../../../helpers/fetch';
 import { TypeTramitesState, TypeTramite } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
+import { obtenerTramites, tramitePorId } from '../../../apollo-cliente';
+
 
 interface Props {
   id: number,
@@ -18,8 +20,8 @@ const TramiteHome:NextPage<Props> = (props) =>{
   const [state, setState] = useState(
     {
         table: {
-            head: ['Modulo de atención', 'Descripción' ],
-            body: [{'Modulo de atención': props.tramite.documentoObtiene, 'Descripción': 'Descripcion1'}]
+            head: ['Documento', 'Descripción' ],
+            body: [{'Documento': props.tramite.documentoObtiene, 'Descripción': 'Descripcion1'}]
         } 
     }
   );
@@ -61,7 +63,8 @@ const {head, body}  = state.table
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
   //const { data } = await  // your fetch function here 
-  const {tramites}:TypeTramitesState = await fetchSinToken(`tramites/todos`);
+  //const {tramites}:TypeTramitesState = await fetchSinToken(`tramites/todos`);
+  const tramites:TypeTramite[] = await obtenerTramites()
   
   return {
     paths: tramites!.map(({id})=>({
@@ -74,9 +77,11 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async ({params}) => {
   //const resp = await fetchSinToken(`tramites/todos`);
   const {id} = params as {id: string} 
-  const resp = await fetchSinToken(`tramites/${id}`);
-  const {ok,tramite} = resp
-  if(!ok){
+  //const resp = await fetchSinToken(`tramites/${id}`);
+  const tramite:TypeTramite = await tramitePorId(parseInt(id))
+
+  //const {ok,tramite} = resp
+  if(tramite===null){
     return {
       redirect: {
         destination: '/tramites',

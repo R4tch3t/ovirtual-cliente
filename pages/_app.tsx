@@ -9,7 +9,8 @@ import 'moment/locale/es-mx'
 import { NextUIProvider } from '@nextui-org/react';
 import { graytheme } from '../themes';
 import { SessionProvider } from "next-auth/react"
-
+import { ApolloProvider } from "@apollo/client";
+import client from "../apollo-cliente";
 moment.locale('es-mx');
 
 /*type NextPageWithLayout = NextPage & {
@@ -24,19 +25,21 @@ function MyApp({ Component, pageProps }: AppProps) {
   //const getLayout = Component.getLayout ?? ((page) => page)
 
   return(  
-    <SessionProvider>
-      <ChatProvider>
-        <AuthProvider> 
-          <TramitesProvider>
-            <SocketProvider>
-              <NextUIProvider theme={graytheme} >
-                <Component {...pageProps} />
-              </NextUIProvider>
-            </SocketProvider>
-          </TramitesProvider>
-        </AuthProvider>
-      </ChatProvider>
-    </SessionProvider>
+    <ApolloProvider client={client}>
+      <SessionProvider>
+        <ChatProvider>
+          <AuthProvider> 
+            <TramitesProvider>
+              <SocketProvider>
+                <NextUIProvider theme={graytheme} >
+                  <Component {...pageProps} />
+                </NextUIProvider>
+              </SocketProvider>
+            </TramitesProvider>
+          </AuthProvider>
+        </ChatProvider>
+      </SessionProvider>
+    </ApolloProvider>
   );
 }
 

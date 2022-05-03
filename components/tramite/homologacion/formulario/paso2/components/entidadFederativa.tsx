@@ -1,48 +1,47 @@
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { useTramitesContext } from '../../../../../../context/tramites/TramitesContext'
-import { TypePais } from '../../../../../../interfaces'
+import { TipoEntidadesFederativas, useEntidadesFederativas } from '../../../../../../hooks'
 import { types } from '../../../../../../types/tramites'
 import { cambiarEstado } from '../helper'
-
-/*type TypeNacionalidad = {
-    id: number,
-    nombre: string
-}*/
-
-type Props = {
-    paises: TypePais[]
-}
 
 function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
 
 /*const nacionalidades:TypeNacionalidad[] = [
-    {id: 1, nombre: 'MEXICANA'},
-    {id: 2, nombre: 'EXTRANJERA'},
+    {id: 0, nombre: 'MEXICANA'},
+    {id: 1, nombre: 'EXTRANJERA'},
 ]*/
 
-const Pais:FC<Props> = ({paises}) => {
+const EntidadFederativa = () => {
+    const { data, loading, error } = useEntidadesFederativas()
     const {tramitesState, dispatch} = useTramitesContext()
     const [query, setQuery] = useState('')
-    const {paso1} = tramitesState.procedimientos.homologacion!
-    const naSelec = paso1 ? paises?.find((pais) => {
-        return pais.id === paso1.paisID
+    if(!data){
+        return <></>
+    }
+    const {entidadesFederativas} = data!
+    const {paso2} = tramitesState.procedimientos.homologacion!
+    //const [naSelec, setNaSelec] = useState()
+    //const naSelec = paso2 ? entidadesFederativas[paso2?.entidadFedID!] : undefined
+    const naSelec = paso2 ? entidadesFederativas?.find((entidad) => {
+        return entidad.id === paso2.entidadFedID
     }) : undefined;
-
-    const nacionalidadFiltrado =
+    
+    console.log('useEntidades: ',data)
+    const entidadFiltrado =
     query === ''
-      ? paises
-      : paises?.filter((pais) => {
-          return pais.nombrePais.toLowerCase().includes(query.toLowerCase())
-      })
-      
-    const handleChange = (pais:TypePais) => {
-        const nombrePaso='paso1';
-        const nombreCampo='paisID';
-        const valorCampo=pais.id;
+      ? entidadesFederativas
+      : entidadesFederativas?.filter((entidad) => {
+          return entidad.nombre.toLowerCase().includes(query.toLowerCase())
+      });
+
+      const handleChange = (entidad:TipoEntidadesFederativas) => {
+        const nombrePaso='paso2';
+        const nombreCampo='entidadFedID';
+        const valorCampo=entidad.id;
 
         dispatch({
             type: types.cambiarPaso,
@@ -50,16 +49,17 @@ const Pais:FC<Props> = ({paises}) => {
         });
         cambiarEstado(dispatch)
         //setNaSelec(nacionalidad)
-    }
+      }
+    
     return (
         <>
         <Combobox as="div" value={naSelec} onChange={handleChange}  >
-        <Combobox.Label className="block text-sm font-medium text-gray-700"><span className="mt-2 text-sm text-red-500">* </span>Seleccionar un país: </Combobox.Label>
+        <Combobox.Label className="block text-sm font-medium text-gray-700"><span className="mt-2 text-sm text-red-500">* </span>Seleccionar entidad federativa:  </Combobox.Label>
         <div className="relative mt-1"  >
             <Combobox.Input
             className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
             onChange={(event) => setQuery(event.target.value)}
-            displayValue={(pais:TypePais) => pais.nombrePais}
+            displayValue={(entidad:TipoEntidadesFederativas) => entidad.nombre}
             
             />
                                             {/* ${!focused?'w-full':''} mejor edicion del input, pero perdida de la anchura del boton */}      
@@ -67,12 +67,12 @@ const Pais:FC<Props> = ({paises}) => {
             <SelectorIcon className="h-5 w-5 text-gray-400 absolute right-0" aria-hidden="true" />
             </Combobox.Button>
             
-            {(nacionalidadFiltrado&&nacionalidadFiltrado!.length > 0) && (
+            {(entidadFiltrado&&entidadFiltrado!.length > 0) && (
             <Combobox.Options  className="absolute z-999 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {nacionalidadFiltrado!.map((nacionalidad) => (
+                {entidadFiltrado!.map((entidad) => (
                 <Combobox.Option
-                    key={nacionalidad.id}
-                    value={nacionalidad}
+                    key={entidad.id}
+                    value={entidad}
                     className={({ active }) =>
                     classNames(
                         'relative cursor-default select-none py-2 pl-3 pr-9',
@@ -93,7 +93,7 @@ const Pais:FC<Props> = ({paises}) => {
                         />*/}
 
                         <span className={classNames('ml-3 truncate', selected && 'font-semibold')}>
-                            {nacionalidad.nombrePais}
+                            {entidad.nombre}
                             {/*<span className="sr-only"> is {tramite.necesitaValidacion===1 ? 'online' : 'offline'}</span>*/}
                         </span>
 
@@ -118,7 +118,7 @@ const Pais:FC<Props> = ({paises}) => {
             )}
         </div>
         </Combobox>
-        {paso1?.paisID! === undefined && paso1?.completo! === false &&  
+        {paso2?.entidadFedID! === undefined && paso2?.completo! === false &&  
             <span className="mt-2 text-xs text-red-500">
                 Error, campo requerido
             </span>
@@ -127,4 +127,4 @@ const Pais:FC<Props> = ({paises}) => {
     )
 }
 
-export {Pais}
+export {EntidadFederativa}

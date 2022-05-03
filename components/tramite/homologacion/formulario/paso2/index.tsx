@@ -9,6 +9,7 @@ import { types } from "../../../../../types/tramites";
 import { validarCURP } from "../../../../../helpers/validarCURP";
 import { cambiarEstado, confirmEmail, validarApe1, validarApe2, validarCelular, validarCurp, validarEmail, validarNombre, validarTelefono } from "../paso1/helper";
 import { ExclamationIcon } from '@heroicons/react/solid'
+import { EntidadFederativa, Municipio } from "./components";
 
 type Props = {
     paises: TypePais[]
@@ -25,13 +26,13 @@ const Paso2:FC<Props> = ({paises}) => {
     const {paso1,paso2} = tramitesState.procedimientos.homologacion!
     const [inputs, setInputs]:any = useState({
         calle: {color: 'primary'},
-        nombre: {color: 'primary'},
-        ape1: {color: 'primary'},
-        ape2: {color: 'secondary'},
-        celular: {color: 'primary'},
-        telefono: {color: 'secondary'},
-        email: {color: 'primary'},
-        confirmEmail: {color: 'primary'}
+        numeroExt: {color: 'primary'},
+        numeroInt: {color: 'primary'},
+        colonia: {color: 'primary'},
+        entidadFedID: {color: 'secondary'},
+        municipioID: {color: 'primary'},
+        localidadID: {color: 'secondary'},
+        cp: {color: 'primary'},
     });
 
     const onKeyUp:KeyboardEventHandler<FormElement> = ({currentTarget}) => {
@@ -180,7 +181,7 @@ const Paso2:FC<Props> = ({paises}) => {
         <>  
             <div>
                 <Spacer y={1} />
-                <Errors  title={'Atencion: '} e={advertencias[0]} setELog={null} />
+                <Errors title={'Atención: '} e={advertencias[0]} setELog={null} />
                 <Spacer y={1} />
                 
                 <Input id='calle' 
@@ -199,56 +200,62 @@ const Paso2:FC<Props> = ({paises}) => {
 
                 <Spacer y={3} />
                 
-                <Input id='nombreTramite' 
+                <Input id='numeroExt' 
                         width={"100%"} 
-                        name='nombreTramite'
+                        name='numeroExt'
                         onKeyUp={onKeyUp}
                         onChange={onChange}
                         labelLeft='*'
-                        clearable bordered labelPlaceholder="* Nombre" 
-                        initialValue={paso1?.nombre} 
-                        helperColor={inputs.nombre.color}
-                        helperText={inputs.nombre.helper}
-                        color={inputs.nombre.color} 
+                        clearable bordered labelPlaceholder="* Número exterior" 
+                        initialValue={paso2?.numeroExt} 
+                        helperColor={inputs.numeroExt.color}
+                        helperText={inputs.numeroExt.helper}
+                        color={inputs.numeroExt.color} 
                         
                 />
 
                 <Spacer y={3} />
                 
-                <Input id='ape1Tramite' 
+                <Input id='numeroInt' 
                     width={"100%"} 
-                    name='ape1Tramite'
+                    name='numeroInt'
+                    onKeyUp={onKeyUp}
+                    onChange={onChange}
+                    clearable bordered labelPlaceholder="Número interior" 
+                    initialValue={paso2?.numeroInt} 
+                    helperColor={inputs.numeroInt.color}
+                    helperText={inputs.numeroInt.helper}
+                    color={inputs.numeroInt.color} 
+                        
+                />
+
+                <Spacer y={3} />
+                
+                <Input id='colonia' 
+                    width={"100%"} 
+                    name='colonia'
                     onKeyUp={onKeyUp}
                     onChange={onChange}
                     labelLeft='*'
-                    clearable bordered labelPlaceholder="* Apellido paterno" 
-                    initialValue={paso1?.ape1} 
-                    helperColor={inputs.ape1.color}
-                    helperText={inputs.ape1.helper}
-                    color={inputs.ape1.color} 
+                    clearable bordered labelPlaceholder="* Colonia" 
+                    initialValue={paso2?.colonia} 
+                    helperColor={inputs.colonia.color}
+                    helperText={inputs.colonia.helper}
+                    color={inputs.colonia.color} 
                         
                 />
 
                 <Spacer y={3} />
                 
-                <Input id='ape2Tramite' 
-                    width={"100%"} 
-                    name='ape2Tramite'
-                    onKeyUp={onKeyUp}
-                    onChange={onChange}
-                    clearable bordered labelPlaceholder="Apellido materno" 
-                    initialValue={paso1?.ape2} 
-                    helperColor={inputs.ape2.color}
-                    helperText={inputs.ape2.helper}
-                    color={inputs.ape2.color} 
-                        
-                />
+                <EntidadFederativa />
 
                 <Spacer y={3} />
+
+                <Municipio />
                 
-                <Input id='celular' 
+                {/*<Input id='municipioID' 
                     width={"100%"} 
-                    name='celular'
+                    name='municipioID'
                     type={'text'}
                     onChange={onChange}
                     labelLeft='*'
@@ -258,55 +265,24 @@ const Paso2:FC<Props> = ({paises}) => {
                     helperText={inputs.celular.helper}
                     color={inputs.celular.color}
                     maxLength={10}
-                />
+                />*/}
 
                 <Spacer y={3} />
                 
-                <Input id='telefono' 
+                <Input id='cp' 
                     width={"100%"} 
-                    name='telefono'
+                    name='cp'
                     type={'text'}
                     onChange={onChange}
-                    clearable bordered labelPlaceholder="Telefono Particular" 
-                    initialValue={paso1?.telefono?.toString()} 
-                    helperColor={inputs.telefono.color}
-                    helperText={inputs.telefono.helper}
-                    color={inputs.telefono.color} 
+                    labelLeft='*'
+                    clearable bordered labelPlaceholder="* Código postal" 
+                    initialValue={paso2?.cp?.toString()} 
+                    helperColor={inputs.cp.color}
+                    helperText={inputs.cp.helper}
+                    color={inputs.cp.color} 
                     maxLength={10}
                 />
 
-                <Spacer y={3} />
-                
-                <Input id='email' 
-                    width={"100%"} 
-                    name='email'
-                    type={'text'}
-                    onKeyUp={onKeyUp}
-                    onChange={onChange}
-                    labelLeft='*'
-                    clearable bordered labelPlaceholder="* Email" 
-                    initialValue={paso1?.email} 
-                    helperColor={inputs.email.color}
-                    helperText={inputs.email.helper}
-                    color={inputs.email.color} 
-                        
-                />
-
-                <Spacer y={3} />
-                
-                <Input id='confirmEmail' 
-                    width={"100%"} 
-                    name='confirmEmail'
-                    type={'email'}
-                    onChange={onChange}
-                    labelLeft='*'
-                    clearable bordered labelPlaceholder="* Confirmar Email" 
-                    initialValue={paso1?.confirmEmail} 
-                    helperColor={inputs.confirmEmail.color}
-                    helperText={inputs.confirmEmail.helper}
-                    color={inputs.confirmEmail.color} 
-                        
-                />
                 <div className="mt-4 py-4 px-4 flex justify-end sm:px-6">
                     <button    
                         type="button"

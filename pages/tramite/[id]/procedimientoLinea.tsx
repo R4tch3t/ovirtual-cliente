@@ -9,6 +9,7 @@ import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tr
 import { PasosHomologacion } from '../../../components/tramite/homologacion';
 import { UnidadesAcademicas } from '../../../components/tramite/unidadAcademica';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
+import { obtenerTramites, planesOfertados, tramitePorId, Paises } from '../../../apollo-cliente';
 
 interface Props {
   id: number,
@@ -85,8 +86,9 @@ const {head, body}  = state.table
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
   //const { data } = await  // your fetch function here 
-  const {tramites}:TypeTramitesState = await fetchSinToken(`tramites/todos`);
-  
+  //const {tramites}:TypeTramitesState = await fetchSinToken(`tramites/todos`);
+  const tramites:TypeTramite[] = await obtenerTramites()
+   
   return {
     paths: tramites!.map(({id})=>({
       params: { id:id+"" }
@@ -98,14 +100,17 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async ({params}) => {
   //const resp = await fetchSinToken(`tramites/todos`);
   const {id} = params as {id: string} 
-  const respTramite = await fetchSinToken(`tramites/${id}`);
-  const respUnidades = await fetchSinToken(`tramites/unidadesAcademicas/6`);
-  const respPaises = await fetchSinToken(`tramites/paises`,{},'POST');
-  const {ok,tramite} = respTramite
-  const {unidadesAcademicas} = respUnidades
-  const {paises} = respPaises
+  //const respTramite = await fetchSinToken(`tramites/${id}`);
+  const tramite:TypeTramite = await tramitePorId(parseInt(id))
+  //const respUnidades = await fetchSinToken(`tramites/unidadesAcademicas/6`);
+  //const respPaises = await fetchSinToken(`tramites/paises`,{},'POST');
+  //const {ok,tramite} = respTramite
+  //const {unidadesAcademicas} = respUnidades
+  const unidadesAcademicas = await planesOfertados(6)
+  const paises = await Paises()
+  //const {paises} = respPaises
 
-  if(!ok){
+  if(!tramite){
     return {
       redirect: {
         destination: '/tramites',

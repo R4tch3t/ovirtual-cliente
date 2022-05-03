@@ -1,2 +1,2 @@
-export * from './nacionalidad'
-export * from './pais'
+export * from './entidadFederativa'
+export * from './municipio'

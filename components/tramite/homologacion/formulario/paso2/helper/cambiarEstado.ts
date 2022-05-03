@@ -1,6 +1,6 @@
 import { types } from "../../../../../../types/tramites";
 const cambiarEstado = (dispatch:any) => {
-    const nombrePaso='paso1';
+    const nombrePaso='paso2';
     const nombreCampo='completo';
     const valorCampo=undefined
     
