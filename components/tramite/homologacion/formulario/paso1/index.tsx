@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, KeyboardEventHandler, useState } from "react"
+import { ChangeEvent, FC, KeyboardEventHandler, useState, useEffect } from "react"
 import { useTramitesContext } from "../../../../../context/tramites/TramitesContext"
 import { TypePais } from "../../../../../interfaces"
 import { Nacionalidad, Pais } from "../paso1/components"
@@ -7,8 +7,14 @@ import { Errors } from "../../../../Errors";
 import { Button, FormElement, Grid, Input, Loading, Spacer } from "@nextui-org/react";
 import { types } from "../../../../../types/tramites";
 import { validarCURP } from "../../../../../helpers/validarCURP";
-import { cambiarEstado, confirmEmail, validarApe1, validarApe2, validarCelular, validarCurp, validarEmail, validarNombre, validarTelefono } from "../paso1/helper";
-import { ExclamationIcon } from '@heroicons/react/solid'
+import { cambiarEstado, confirmEmail, validarApe1, validarApe2, validarCelular, validarCurp, validarEmail, validarFormulario1, validarNombre, validarTelefono } from "../paso1/helper";
+import { ExclamationIcon,   ClipboardCopyIcon } from '@heroicons/react/solid'
+import { useGuardarAsp, useNuevoAsp } from "../../../../../hooks/useMutation";
+import { useMutation } from '@apollo/client';
+import { ModalSuccess } from "../../../../ModalSucces";
+import { obtenerFormulario } from "../obtenerFormulario";
+//import useEffect from 'react';
+import { coloresInputs1 } from './helper/coloresInputs';
 
 type Props = {
     paises: TypePais[]
@@ -24,8 +30,8 @@ const advertencias = {
 
 const Paso1:FC<Props> = ({paises}) => {
     const {tramitesState, dispatch} = useTramitesContext()
-    const {paso1} = tramitesState.procedimientos.homologacion!
-    const [inputs, setInputs]:any = useState({
+    const {aspiranteId,paso1} = tramitesState.procedimientos.homologacion!
+    /*const [inputs, setInputs]:any = useState({
         curp: {color: 'primary'},
         nombre: {color: 'primary'},
         ape1: {color: 'primary'},
@@ -34,7 +40,25 @@ const Paso1:FC<Props> = ({paises}) => {
         telefono: {color: 'secondary'},
         email: {color: 'primary'},
         confirmEmail: {color: 'primary'}
-    });
+    });*/
+    const [inputs, setInputs]:any = useState(coloresInputs1(paso1!));
+    const [modalS, setModalS] = useState(false)
+    const [modalE, setModalE] = useState(false)
+    const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
+
+    const [nuevoAsp, resultNuevoAsp] = useNuevoAsp()
+    const [guardarAsp] = useGuardarAsp()
+
+    const formularioValido = () => {
+        const valido = inputs.curp.color === 'primary' && inputs.nombre.color === 'primary' &&
+            inputs.ape1.color === 'primary' && inputs.celular.color === 'primary' && inputs.email.color === 'primary' &&
+            inputs.confirmEmail.color === 'primary' && validarFormulario1(paso1!)
+            return valido
+    }
+
+    //if(!validarFormulario1()){
+        
+    //}
 
     const onKeyUp:KeyboardEventHandler<FormElement> = ({currentTarget}) => {
         //event.currentTarget.
@@ -58,7 +82,7 @@ const Paso1:FC<Props> = ({paises}) => {
     const onChange:ChangeType = ({target}) => {
         
         //if(!target) return false;
-    
+        
         const {name, value} = target;
         switch(name){
             case 'curp':
@@ -86,7 +110,9 @@ const Paso1:FC<Props> = ({paises}) => {
             break
 
             case 'email':
-                validarEmail(value.toLowerCase(),setInputs,inputs,dispatch)
+                //confirmEmail(paso1?.confirmEmail!,value.toLowerCase(),setInputs,inputs,dispatch)
+                validarEmail(paso1?.confirmEmail!,value.toLowerCase(),setInputs,inputs,dispatch)
+                //confirmEmail(paso1?.confirmEmail!,value.toLowerCase(),setInputs,inputs,dispatch)
             break
 
             case 'confirmEmail':
@@ -103,14 +129,14 @@ const Paso1:FC<Props> = ({paises}) => {
     const onSubmit = () => {
         let valido: any = true;
         let validarCombos = paso1?.nacionalidadID !== undefined 
-        validarCombos = paso1?.nacionalidadID === 1 ? (validarCombos && paso1?.paisID !== undefined) : validarCombos
+        validarCombos = paso1?.nacionalidadID === 1 ? (validarCombos && paso1?.paisID !== undefined && paso1?.paisID !== null) : validarCombos
                     //&& paso1?.nombre !== undefined && paso1?.ape1 !== undefined && paso1?.ape2 !== undefined;
-        
+        console.log(validarCombos,' ', paso1?.paisID)
         const curpValida =  validarCurp(paso1?.curp!,setInputs,inputs,dispatch);
         const nombreValido =  validarNombre(paso1?.nombre!,setInputs,inputs,dispatch);
         const ape1Valido =  validarApe1(paso1?.ape1!,setInputs,inputs,dispatch);
         const celularValido =  validarCelular(paso1?.celular?.toString(),setInputs,inputs,dispatch);
-        const emailValido =  validarEmail(paso1?.email!,setInputs,inputs,dispatch);
+        const emailValido =  validarEmail(paso1?.confirmEmail!,paso1?.email!,setInputs,inputs,dispatch);
         const confirmEmailValido =  confirmEmail(paso1?.confirmEmail!,paso1?.email!,setInputs,inputs,dispatch);
 
         valido = validarCombos && curpValida && nombreValido && ape1Valido && celularValido && emailValido && confirmEmailValido 
@@ -169,7 +195,9 @@ const Paso1:FC<Props> = ({paises}) => {
 
         const nombrePaso='paso1';
         const nombreCampo='completo';
-
+        //guardar({variables: {asp: null, aspReg: null}})
+        //console.log(result)
+        //useMutation(NUEVOASPQUERY,{variables:{asp: null, aspReg: null}})
         //if(!valido){
             const valorCampo=!valido ? false:true//false
       
@@ -180,16 +208,29 @@ const Paso1:FC<Props> = ({paises}) => {
         //}
     }
 
+    /*if(paso1 !== null){
+        coloresInputs1(paso1,inputs)
+    }*/
+    /*useEffect(()=>{
+        if(formularioValido()){      
+            onSubmit()
+        }
+        
+    },[onSubmit])*/
+    
     return (
         <>
+        {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+        txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
           <Nacionalidad />
 
             {paso1?.nacionalidadID===1 &&
                 <Fade in={paso1?.nacionalidadID===1}>
-                <div className='homoSteps' >
-                    <Pais paises={paises} />
-                </div>
-            </Fade>}
+                    <div className='homoSteps' >
+                        <Pais paises={paises} />
+                    </div>
+                </Fade>
+            }
             <Spacer y={2} />  
             <div>
                 <Errors  title={'Atención: '} e={advertencias[0]} setELog={null} />
@@ -332,15 +373,69 @@ const Paso1:FC<Props> = ({paises}) => {
                         type="button"
                         onMouseUp={onSubmit}
                         style={{width: 120}}
-                        className={`ml-5 bg-${paso1?.completo!==false?'sky-700':'red-600'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${paso1?.completo!==false?'sky':'red'}-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                        className={`ml-5 bg-${(/*paso1?.completo!==false || */formularioValido())?'sky-700':'red-600'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${(/*paso1?.completo!==false || */formularioValido())?'sky':'red'}-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                        disabled={!formularioValido()}
                     >
-                        {paso1?.completo===false&&<ExclamationIcon  width={20} height={20} />}
+                        {(/*paso1?.completo===false &&*/ !formularioValido()) && 
+                        <ExclamationIcon  width={20} height={20} />}
                         {
                             'Siguiente'
                         }
-                        {paso1?.completo!==false && <> → </>}
+                        {(/*paso1?.completo!==false ||*/ formularioValido()) && <> → </>}
                         
                     </button>
+                </div>
+
+                <div className="mt-4 py-4 px-4 flex justify-end sm:px-6">
+                    
+                    <button
+                        type="button"
+                        onMouseUp={async()=>{
+
+                            const form = obtenerFormulario(tramitesState.procedimientos.homologacion!,1)
+                            
+                            if(aspiranteId===undefined || aspiranteId===null){
+                                const {data, errors} = await nuevoAsp({
+                                    variables:{
+                                        asp: form?.asp!, 
+                                        aspReg:form?.aspReg!, 
+                                        aspDomi: form?.aspDomi!,
+                                        aspMulti: form?.aspMulti!,
+                                        aspSocioEco: form?.aspSocioEco!
+                                    }})//.then((r)=>{console.log(r.errors)})
+                                    
+                                if(data?.nuevoAsp){
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ah almacenado.", btnTxt: "Regresar al formulario" })
+                                    setModalS(true);
+                                } 
+                            }else{
+                                
+                                const {data} = await guardarAsp({
+                                    variables:{
+                                        aspiranteId,
+                                        asp: form?.asp!, 
+                                        aspReg:form?.aspReg!, 
+                                        aspDomi: form?.aspDomi!,
+                                        aspMulti: form?.aspMulti!,
+                                        aspSocioEco: form?.aspSocioEco!
+                                    }
+                                })//.then((r)=>{console.log(r.errors)})
+                                if(data?.guardarAsp){
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ah guardado.", btnTxt: "Regresar al formulario" })
+                                    setModalS(true);
+                                }
+                            }
+                           
+                        }}
+                        style={{width: 120}}
+                        className={`ml-5 bg-${!formularioValido()?'gray-400':'sky-700'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${!formularioValido()?'gray-400':'sky-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                        disabled={!formularioValido()}
+                    >
+
+                        <ClipboardCopyIcon  width={20} height={20} /> GUARDAR
+                        
+                    </button>
+
                 </div>
             </div>
         </>       

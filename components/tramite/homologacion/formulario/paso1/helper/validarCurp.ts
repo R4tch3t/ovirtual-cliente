@@ -20,6 +20,7 @@ const validarCurp = (value:string,setInputs:any,inputs:any,dispatch:any) => {
             helper: 'C.U.R.P ¡VALIDA!',
             statusColor: 'primary'
         }})
+    }
         const nombrePaso='paso1';
         const nombreCampo='curp';
         const valorCampo=value
@@ -28,7 +29,7 @@ const validarCurp = (value:string,setInputs:any,inputs:any,dispatch:any) => {
             type: types.cambiarPaso,
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
-    }
+    
     return valida
 };
 

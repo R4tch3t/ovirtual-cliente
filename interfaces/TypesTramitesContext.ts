@@ -1,5 +1,5 @@
 import { Dispatch } from "react"
-import { TypePaso1, TypePaso2 } from "./pasos/homologacion"
+import { TypePaso1, TypePaso2, TypePaso3, TypePaso4, TypePaso5 } from "./pasos/homologacion"
 
 export type TypeTramite = {
     id: number,
@@ -41,11 +41,15 @@ export type TypeTramitesAction = {
 }
 
 export type TypeHomologacion = {
+    aspiranteId: number | null,
     planID: number,
     planElegido: string,
     localidad: string,
     paso1: TypePaso1 | null,
-    paso2: TypePaso2 | null
+    paso2: TypePaso2 | null,
+    paso3: TypePaso3 | null
+    paso4: TypePaso4 | null,
+    paso5: TypePaso5 | null
 }
 
 export type TypeProcedimiento = {

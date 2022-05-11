@@ -1,0 +1,7 @@
+export * from './esPuebloOriginario'
+export * from './puebloOriginario'
+export * from './padeceDiscapacidad'
+export * from './discapacidad'
+export * from './esAfroGuerrerense'
+export * from './esResidenteSierra'
+export * from './esHijoMigrante'

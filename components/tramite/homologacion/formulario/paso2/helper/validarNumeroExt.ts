@@ -1,12 +1,12 @@
 import { types } from "../../../../../../types/tramites";
 
-const validarTelefono = (value:string,setInputs:any,inputs:any,dispatch:any) => {
-  const valida = value.match(/^[0-9]{10,10}$/i);
-  const name='telefono'
+const validarNumeroExt = (value:string | undefined,setInputs:any,inputs:any,dispatch:any) => {
+  const valida = value !== undefined ? value.match(/^[0-9]{1,10}$/i) : value;
+  const name='numeroExt'
   if(!valida){
     setInputs({...inputs,[name]:{
       color: 'error', 
-      helper: 'Número de telefono INVALIDO',
+      helper: 'Número exterior INVALIDO',
       statusColor: 'error'
     }})
   }
@@ -16,19 +16,20 @@ const validarTelefono = (value:string,setInputs:any,inputs:any,dispatch:any) => 
   if(valida){
       setInputs({...inputs,[name]:{
           color: 'primary', 
-          helper: 'Número de telefono ¡VALIDO!',
+          helper: 'Número exterior ¡VALIDO!',
           statusColor: 'primary'
       }})
-      const nombrePaso='paso1';
-      const nombreCampo='telefono';
+  }
+      const nombrePaso='paso2';
+      const nombreCampo='numeroExt';
       const valorCampo=value
       
       dispatch({
           type: types.cambiarPaso,
           payload: {nombrePaso,nombreCampo,valorCampo}
       });
-  }
+  
   return valida
 };
 
-export {validarTelefono}
+export {validarNumeroExt}

@@ -2,70 +2,149 @@ import { FC } from 'react';
 import { CheckIcon, XIcon } from '@heroicons/react/solid'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
 import { TypePais } from '../../../interfaces';
-import { Paso1, Paso2 } from './formulario';
+import { Paso1, Paso2, Paso3, Paso4, Paso5 } from './formulario';
 import { validarFormulario1 } from './formulario/paso1/helper';
+import { validarFormulario2 } from './formulario/paso2/helper';
+import { validarFormulario3 } from './formulario/paso3/helper';
 import { types } from '../../../types/tramites';
+import { validarFormulario4 } from './formulario/paso4/helper';
+import { validarFormulario5 } from './formulario/paso5/helper';
+import Fade from '@mui/material/Fade';
 type Props = {
   paises: TypePais[]
 }
 
 const PasosHomologacion:FC<Props> = ({paises}) => {
   const {tramitesState, dispatch} = useTramitesContext()
-  const {planElegido, localidad, paso1, paso2} = tramitesState.procedimientos.homologacion!
-  const cambiarPaso = (nombrePaso:string, valorCampo: boolean) => {
-      //const nombrePaso='paso1';
+  const {planElegido, localidad, paso1, paso2, paso3, paso4, paso5} = tramitesState.procedimientos.homologacion!
+  const atras = (i: number) => {
+    //const nombrePaso='paso1';
 
-      const pasos = ['paso1', 'paso2']
+    const pasos = ['paso1', 'paso2', 'paso3', 'paso4', 'paso5']
 
-      // set undefined
-      const nombreCampo='completo';
+    // set undefined
+    const nombreCampo='completo';
+    //let i = pasos.length-1
+    //while(i<count-1){
+      //const paso = pasos[i]
+    pasos.map((paso)=>{
+      dispatch({
+        type: types.cambiarPaso,
+        payload: {nombrePaso: paso,nombreCampo,valorCampo: false}
+      });
+    })
+    navegarPaso(i)
+    /*pasos.map((paso)=>{
 
-      pasos.map((paso)=>{
-
-        //const valorCampo=undefined
-
-        dispatch({
-            type: types.cambiarPaso,
-            payload: {nombrePaso: paso,nombreCampo,valorCampo: valorCampo?false:undefined}
-        });  
-      })
-      
-      
-      //const valorCampo=false
+      //const valorCampo=undefined
 
       dispatch({
           type: types.cambiarPaso,
-          payload: {nombrePaso,nombreCampo,valorCampo}
+          payload: {nombrePaso: paso,nombreCampo,valorCampo: valorCampo?false:undefined}
+      });  
+    })*/
+    
+    
+    //const valorCampo=false
+    /*if(i>0){
+      dispatch({
+        type: types.cambiarPaso,
+        payload: {nombrePaso: pasos[i-1], nombreCampo,valorCampo: true}
       });
-  }
+    }*/
+
+    /*dispatch({
+        type: types.cambiarPaso,
+        payload: {nombrePaso,nombreCampo,valorCampo}
+    });*/
+}
+
+  const navegarPaso = (count: number) => {
+    //const nombrePaso='paso1';
+
+    const pasos = ['paso1', 'paso2', 'paso3', 'paso4', 'paso5']
+
+    // set undefined
+    const nombreCampo='completo';
+    let i = 0
+    while(i<count-1){
+      const paso = pasos[i]
+      dispatch({
+        type: types.cambiarPaso,
+        payload: {nombrePaso: paso,nombreCampo,valorCampo: true}
+      });
+      i++;
+    }
+    /*pasos.map((paso)=>{
+
+      //const valorCampo=undefined
+
+      dispatch({
+          type: types.cambiarPaso,
+          payload: {nombrePaso: paso,nombreCampo,valorCampo: valorCampo?false:undefined}
+      });  
+    })*/
+    
+    
+    //const valorCampo=false
+
+    dispatch({
+      type: types.cambiarPaso,
+      payload: {nombrePaso: pasos[i], nombreCampo,valorCampo: false}
+    });
+
+    /*dispatch({
+        type: types.cambiarPaso,
+        payload: {nombrePaso,nombreCampo,valorCampo}
+    });*/
+}
+
   const steps = [
     { id: 'PASO 1', name: 'Datos generales', href: undefined, 
-    atras:()=>{ cambiarPaso('paso1', false)  }, 
+    validarPaso: validarFormulario1(paso1!),
+    atras:()=>{ atras(1)  }, 
     status: (paso1 !== null && paso1.completo) ?  'complete' : 'current' },
     { id: 'PASO 2', name: 'Domicilio', href: undefined, 
-    siguiente:()=>{ cambiarPaso('paso1', true)  },
+    validarPaso: validarFormulario2(paso2!),
+    atras:()=>{ atras(2)  }, 
+    siguiente:()=>{ navegarPaso(2)  },
     status: (paso2 !== null && paso2.completo) && paso1?.completo ?  'complete' : (paso1?.completo?'current' : 'upcoming') },
-    { id: 'PASO 3', name: 'Multiculturalidad', href: '#', status: 'upcoming' },
-    { id: 'PASO 4', name: 'Datos escolares', href: '#', status: 'upcoming' },
-    { id: 'PASO 5', name: 'Datos socioeconómicos', href: '#', status: 'upcoming' },
+    { id: 'PASO 3', name: 'Multiculturalidad', href: undefined,
+    validarPaso: validarFormulario3(paso3!),
+    atras:()=>{ atras(3)  }, 
+    siguiente:()=>{ navegarPaso(3)  },
+    status: (paso3 !== null && paso3.completo) && paso2?.completo && paso1?.completo ?  'complete' : 
+    ((paso2?.completo&&paso1?.completo)?'current' : 'upcoming') },
+    { id: 'PASO 4', name: 'Datos escolares', href: undefined,
+    validarPaso: validarFormulario4(paso4!),
+    atras:()=>{ atras(4)  }, 
+    siguiente:()=>{ navegarPaso(4)  },
+    status: (paso4 !== null && paso4.completo) && paso3?.completo && paso2?.completo && paso1?.completo ?  'complete' : 
+    ((paso3?.completo&&paso2?.completo&&paso1?.completo)?'current' : 'upcoming') },
+    { id: 'PASO 5', name: 'Datos socioeconómicos', href: undefined,
+    validarPaso: validarFormulario5(paso5!),
+    atras:()=>{ atras(5)  }, 
+    siguiente:()=>{ navegarPaso(5)  },
+    status: (paso5 !== null && paso5.completo) && paso4?.completo && paso3?.completo && paso2?.completo && paso1?.completo ?  'complete' : 
+    ((paso4?.completo&&paso3?.completo&&paso2?.completo&&paso1?.completo)?'current' : 'upcoming') },
   ]
-  const validoPaso1 = validarFormulario1()
+  
   return (
     <div>
-      <h3  style={{textAlign: 'center'}} className="text-lg font-medium">
-        <p className="mt-2 text-gray-500">
+      <h1  style={{textAlign: 'center'}} className="text-lg font-medium">
+        <p className="mt-2 text-xl text-gray-500">
           PLAN ELEGIDO: <b> {planElegido} </b>
         </p>
 
-        <span className="mt-2 text-gray-500">
+        <span className="mt-2 text-xl text-gray-500">
           <b> ({localidad}) </b>
         </span>
 
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-gray-500">
           Complete cuidadosamente la información que le es requerida en cada paso.
         </p>
         
-      </h3>
+      </h1>
       <nav aria-label="Progress" className='homoSteps'>
         <ol role="list" className="border border-gray-300 rounded-md divide-y divide-gray-300 md:flex md:divide-y-0">
           {steps.map((step, stepIdx) => (
@@ -73,9 +152,9 @@ const PasosHomologacion:FC<Props> = ({paises}) => {
               {step.status === 'complete' ? (
                 <a href={step.href} onMouseDown={step.atras} className="group flex items-center w-full">
                   <span className="px-6 py-4 flex items-center text-sm font-medium">
-                    <span className={`flex-shrink-0 w-16 h-10 flex items-center justify-center bg-${validoPaso1?'indigo-600':'red-500'} rounded-full group-hover:bg-${validoPaso1?'indigo-800':'red-600'}`}>
-                      {validoPaso1&&<CheckIcon className="w-6 h-6 text-white" aria-hidden="true" />}
-                      {!validoPaso1&&<XIcon className="w-6 h-6 text-white" aria-hidden="true" />}
+                    <span className={`flex-shrink-0 w-16 h-10 flex items-center justify-center bg-${step.validarPaso?'indigo-600':'red-500'} rounded-full group-hover:bg-${step.validarPaso?'indigo-800':'red-600'}`}>
+                      {step.validarPaso&&<CheckIcon className="w-6 h-6 text-white" aria-hidden="true" />}
+                      {!step.validarPaso&&<XIcon className="w-6 h-6 text-white" aria-hidden="true" />}
                     </span>
                     <span className="ml-4 text-sm font-medium text-gray-900">{step.name}</span>
                   </span>
@@ -122,10 +201,44 @@ const PasosHomologacion:FC<Props> = ({paises}) => {
           ))}
         </ol>
       </nav>
+
           <div className='homoSteps' >
-                {((paso1 !== null && !paso1.completo) || paso1 === null ) && <Paso1 paises={paises} /> }
+                {((paso1 !== null && !paso1.completo) || paso1 === null ) && 
+                  <Fade in={true}>
+                    <div>
+                      <Paso1 paises={paises} /> 
+                    </div>
+                  </Fade>
+                }
                 {((paso2 !== null && !paso2.completo) || paso2 === null ) && paso1?.completo===true && 
-                  <Paso2 paises={paises} /> 
+                  <Fade in={true}>
+                    <div>
+                      <Paso2 />
+                    </div>
+                  </Fade> 
+                }
+                {((paso3 !== null && !paso3.completo) || paso3 === null ) && paso1?.completo===true && paso2?.completo===true && 
+                  <Fade in={true}>
+                    <div>
+                      <Paso3 />
+                    </div>
+                  </Fade> 
+                }
+                {((paso4 !== null && !paso4.completo) || paso4 === null ) && paso1?.completo===true && paso2?.completo===true 
+                  && paso3?.completo===true && 
+                  <Fade in={true}>
+                    <div>
+                      <Paso4 />
+                    </div>
+                  </Fade> 
+                }
+                {/*((paso5 !== null && !paso5.completo) || paso5 === null ) &&*/ paso1?.completo===true && paso2?.completo===true 
+                  && paso3?.completo===true && paso4?.completo===true && 
+                  <Fade in={true}>
+                    <div>
+                      <Paso5 />
+                    </div>
+                  </Fade>
                 }
           </div>
 

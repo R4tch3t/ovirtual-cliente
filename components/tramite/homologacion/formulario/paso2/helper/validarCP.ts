@@ -1,12 +1,12 @@
 import { types } from "../../../../../../types/tramites";
 
-const validarApe2 = (value:string,setInputs:any,inputs:any,dispatch:any) => {
-  const valida = value.match(/^[A-Z ]{0,32}$/i);
-  const name='ape2'
+const validarCP = (value:string | undefined,setInputs:any,inputs:any,dispatch:any) => {
+  const valida = value !== undefined ? value.match(/^[0-9]{1,5}$/i) : value;
+  const name='cp'
   if(!valida){
     setInputs({...inputs,[name]:{
       color: 'error', 
-      helper: 'Apellido materno INVALIDO',
+      helper: 'Código Postal INVALIDO',
       statusColor: 'error'
     }})
   }
@@ -15,20 +15,21 @@ const validarApe2 = (value:string,setInputs:any,inputs:any,dispatch:any) => {
 
   if(valida){
       setInputs({...inputs,[name]:{
-          color: 'secondary', 
-          helper: 'Apellido materno ¡VALIDO!',
+          color: 'primary', 
+          helper: 'Código Postal ¡VALIDO!',
           statusColor: 'primary'
       }})
-      const nombrePaso='paso1';
-      const nombreCampo='ape2';
+  }
+      const nombrePaso='paso2';
+      const nombreCampo='cp';
       const valorCampo=value
       
       dispatch({
           type: types.cambiarPaso,
           payload: {nombrePaso,nombreCampo,valorCampo}
       });
-  }
+  
   return valida
 };
 
-export {validarApe2}
+export {validarCP}

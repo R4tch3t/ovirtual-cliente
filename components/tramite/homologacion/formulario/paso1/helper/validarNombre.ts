@@ -19,6 +19,7 @@ const validarNombre = (value:string,setInputs:any,inputs:any,dispatch:any) => {
             helper: 'Nombre ¡VALIDO!',
             statusColor: 'primary'
         }})
+    }
         const nombrePaso='paso1';
         const nombreCampo='nombre';
         const valorCampo=value
@@ -27,7 +28,7 @@ const validarNombre = (value:string,setInputs:any,inputs:any,dispatch:any) => {
             type: types.cambiarPaso,
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
-    }
+    
     return valida
 };
 

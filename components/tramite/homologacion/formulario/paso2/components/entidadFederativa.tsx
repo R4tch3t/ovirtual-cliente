@@ -30,12 +30,12 @@ const EntidadFederativa = () => {
         return entidad.id === paso2.entidadFedID
     }) : undefined;
     
-    console.log('useEntidades: ',data)
+    
     const entidadFiltrado =
     query === ''
       ? entidadesFederativas
       : entidadesFederativas?.filter((entidad) => {
-          return entidad.nombre.toLowerCase().includes(query.toLowerCase())
+          return entidad.nombre.toLowerCase().startsWith(query.toLowerCase())
       });
 
       const handleChange = (entidad:TipoEntidadesFederativas) => {
@@ -63,7 +63,7 @@ const EntidadFederativa = () => {
             
             />
                                             {/* ${!focused?'w-full':''} mejor edicion del input, pero perdida de la anchura del boton */}      
-            <Combobox.Button className={`absolute w-full inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none`}>
+            <Combobox.Button className={`absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none`}>
             <SelectorIcon className="h-5 w-5 text-gray-400 absolute right-0" aria-hidden="true" />
             </Combobox.Button>
             
@@ -118,7 +118,7 @@ const EntidadFederativa = () => {
             )}
         </div>
         </Combobox>
-        {paso2?.entidadFedID! === undefined && paso2?.completo! === false &&  
+        {paso2?.entidadFedID! === undefined && 
             <span className="mt-2 text-xs text-red-500">
                 Error, campo requerido
             </span>

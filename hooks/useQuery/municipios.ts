@@ -1,5 +1,6 @@
 
 import { useQuery, gql } from "@apollo/client";
+import { TipoEntidadesFederativas } from "./entidadesFederativas";
 interface Query {
     municipios: TipoMunicipios[]
 }
@@ -11,6 +12,7 @@ export type TipoMunicipios = {
     nombre: string;
     claveCabecera: string;
     nombreCabecera: string;
+    entidadFederativa: TipoEntidadesFederativas
 }
 
 const QUERY = gql`

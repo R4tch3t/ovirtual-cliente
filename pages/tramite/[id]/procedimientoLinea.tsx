@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GetStaticProps,GetStaticPaths, NextPage } from 'next';
 import Router from 'next/router';
 import { RedirecApp } from '../../../router/RedirecApp';
@@ -10,6 +10,8 @@ import { PasosHomologacion } from '../../../components/tramite/homologacion';
 import { UnidadesAcademicas } from '../../../components/tramite/unidadAcademica';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
 import { obtenerTramites, planesOfertados, tramitePorId, Paises } from '../../../apollo-cliente';
+import { cargarHomologacionDB } from '../../../components/tramite/homologacion/formulario/cargarFormularioDB';
+import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 
 interface Props {
   id: number,
@@ -21,7 +23,7 @@ interface Props {
 
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
-  const {tramitesState} = useTramitesContext()
+  const {tramitesState,dispatch} = useTramitesContext()
   const {homologacion} = tramitesState.procedimientos
   const [state, setState]:any = useState(
     {
@@ -33,6 +35,12 @@ const TramiteHome:NextPage<Props> = (props) =>{
         } 
     }
   );
+  //  console.log('aspirante, ',data);
+  //  console.log('crp, ',curp, ' auth ', auth.usuario?.alumno)
+  const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu);
+  useEffect(()=>{
+    cargarHomologacionDB(data!,dispatch)
+  },[data,dispatch])
 
   if(auth.checking){
     return( 
@@ -60,6 +68,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
   })
 // const {tabs}  = state
 const {head, body}  = state.table
+
 
 
   return (

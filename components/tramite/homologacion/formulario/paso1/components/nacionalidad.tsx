@@ -113,7 +113,7 @@ const Nacionalidad = () => {
             )}
         </div>
         </Combobox>
-        {paso1?.nacionalidadID! === undefined && paso1?.completo! === false &&  
+        {paso1?.nacionalidadID! === undefined &&  
             <span className="mt-2 text-xs text-red-500">
                 Error, campo requerido
             </span>

@@ -97,7 +97,7 @@ import { types } from '../../../types/tramites'
 const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
   const {dispatch}:any = useTramitesContext();
   let c = -1
-  
+  const y = new Date().getFullYear()
   const seleccionarPlan = (planID: number, planElegido: string, localidad: string) => {
     dispatch({
       type: types.seleccionarPlan,
@@ -105,6 +105,21 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
     });
   }
     return (
+      <div>
+          <h1  style={{textAlign: 'center'}} className="text-lg font-medium">
+            <p className="mt-2 text-xl text-gray-500">
+              Proceso de Admisión de: <b> Especialidades, Maestrías y Doctorados. </b>
+            </p>
+
+            <span className="mt-2 text-xl text-gray-500">
+              <b> {y + " - " +(y+1)}. </b>
+            </span>
+
+            <p className="mt-2 text-gray-500">
+              Elija la Unidad Académica de su preferencia:
+            </p>
+            
+          </h1>
         <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-3 sm:gap-px">
           {unidadesAcademicas.map((unidad, unidadIdx) => {
             c = colores.length-1 === c ? 0 : c+1
@@ -170,7 +185,8 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
           )
         }
         </div>
-      )
+      </div>
+    )
 }
 
 export  {

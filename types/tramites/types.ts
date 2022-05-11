@@ -4,4 +4,5 @@ export const types = {
     catSeleccionado: "[Tramites] Seleccionando categoria",
     seleccionarPlan: "[Tramites] Seleccionando plan",
     cambiarPaso: "[Tramites Pasos] Cambiar paso",
+    cargarHomologacionDB: "[Tramites CargarDB] Cargar homologacion",
 }

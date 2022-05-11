@@ -1,13 +1,12 @@
-import { validarCURP } from "../../../../../../helpers/validarCURP";
 import { types } from "../../../../../../types/tramites";
 
-const validarCurp = (value:string,setInputs:any,inputs:any,dispatch:any) => {
-    const valida = value !== undefined ? validarCURP(value):value//value.match(/^[A-Z]{3,32}$/i);
-    const name='curp'
+const validarEscuelaProcedencia = (value:string,setInputs:any,inputs:any,dispatch:any) => {
+    const valida = value !== undefined ? value.match(/^[0-9A-Z ]{3,32}$/i):value;
+    const name='escuelaProcedencia'
     if(!valida){
       setInputs({...inputs,[name]:{
         color: 'error', 
-        helper: 'C.U.R.P INVALIDA',
+        helper: 'Nombre INVALIDO',
         statusColor: 'error'
       }})
     }
@@ -17,19 +16,20 @@ const validarCurp = (value:string,setInputs:any,inputs:any,dispatch:any) => {
     if(valida){
         setInputs({...inputs,[name]:{
             color: 'primary', 
-            helper: 'C.U.R.P ¡VALIDA!',
-            statusColor: 'primary'
+            helper: 'Nombre ¡VALIDA!',
+            statusColor: 'success'
         }})
-        const nombrePaso='paso1';
-        const nombreCampo='curp';
+    }
+        const nombrePaso='paso4';
+        const nombreCampo='escuelaProcedencia';
         const valorCampo=value
         
         dispatch({
             type: types.cambiarPaso,
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
-    }
+    
     return valida
 };
 
-export {validarCurp}
+export {validarEscuelaProcedencia}

@@ -175,7 +175,8 @@ a {
 #matriculaPerfil,#apePerfil,#contraNPerfil,
 #contraCPerfil,#curp,#nombreTramite,#ape1Tramite,
 #ape2Tramite,#celular,#telefono,#email,#confirmEmail,
-#calle{
+#calle,#numeroExt,#numeroInt,#colonia,#cp,
+#escuelaProcedencia,#matricula{
   @apply focus:ring-0;
 }
 

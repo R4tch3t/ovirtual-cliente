@@ -19,6 +19,7 @@ const validarApe2 = (value:string,setInputs:any,inputs:any,dispatch:any) => {
           helper: 'Apellido materno ¡VALIDO!',
           statusColor: 'primary'
       }})
+  }
       const nombrePaso='paso1';
       const nombreCampo='ape2';
       const valorCampo=value
@@ -27,7 +28,7 @@ const validarApe2 = (value:string,setInputs:any,inputs:any,dispatch:any) => {
           type: types.cambiarPaso,
           payload: {nombrePaso,nombreCampo,valorCampo}
       });
-  }
+  
   return valida
 };
 

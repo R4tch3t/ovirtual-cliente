@@ -1,2 +1,7 @@
 export * from './entidadesFederativas'
 export * from './municipios'
+export * from './localidades'
+export * from './pueblos'
+export * from './discapacidades'
+export * from './planesOfertados'
+export * from './preregistroPorCurp'

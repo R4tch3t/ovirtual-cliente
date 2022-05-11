@@ -118,7 +118,7 @@ const Pais:FC<Props> = ({paises}) => {
             )}
         </div>
         </Combobox>
-        {paso1?.paisID! === undefined && paso1?.completo! === false &&  
+        {(paso1?.paisID! === undefined || paso1?.paisID === null) /*&& paso1?.completo! === false*/ &&  
             <span className="mt-2 text-xs text-red-500">
                 Error, campo requerido
             </span>

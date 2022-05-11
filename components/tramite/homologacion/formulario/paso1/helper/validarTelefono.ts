@@ -15,10 +15,11 @@ const validarTelefono = (value:string,setInputs:any,inputs:any,dispatch:any) => 
 
   if(valida){
       setInputs({...inputs,[name]:{
-          color: 'primary', 
+          color: 'secondary', 
           helper: 'Número de telefono ¡VALIDO!',
           statusColor: 'primary'
       }})
+  }
       const nombrePaso='paso1';
       const nombreCampo='telefono';
       const valorCampo=value
@@ -27,7 +28,7 @@ const validarTelefono = (value:string,setInputs:any,inputs:any,dispatch:any) => 
           type: types.cambiarPaso,
           payload: {nombrePaso,nombreCampo,valorCampo}
       });
-  }
+  
   return valida
 };
 

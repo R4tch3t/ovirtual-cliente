@@ -1,0 +1,7 @@
+export * from './esEmpleado'
+export * from './porcentajeAporta'
+export * from './porcentajeDepende'
+export * from './ingresoMensual'
+export * from './dineroSemanal'
+export * from './empleoMadre'
+export * from './empleoPadre'

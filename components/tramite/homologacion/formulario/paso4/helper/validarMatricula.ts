@@ -1,12 +1,12 @@
 import { types } from "../../../../../../types/tramites";
 
-const validarNombre = (value:string,setInputs:any,inputs:any,dispatch:any) => {
-    const valida = value !== undefined ? value.match(/^[A-Z ]{3,32}$/i):value;
-    const name='nombre'
+const validarMatricula = (value:string,setInputs:any,inputs:any,dispatch:any) => {
+    const valida = value !== undefined ? value.match(/^[0-9]{8,8}$/i):value;
+    const name='matricula'
     if(!valida){
       setInputs({...inputs,[name]:{
         color: 'error', 
-        helper: 'Nombre INVALIDO',
+        helper: 'Matrícula INVALIDA',
         statusColor: 'error'
       }})
     }
@@ -16,19 +16,20 @@ const validarNombre = (value:string,setInputs:any,inputs:any,dispatch:any) => {
     if(valida){
         setInputs({...inputs,[name]:{
             color: 'primary', 
-            helper: 'Nombre ¡VALIDO!',
-            statusColor: 'primary'
+            helper: 'Matrícula ¡VALIDA!',
+            statusColor: 'success'
         }})
-        const nombrePaso='paso1';
-        const nombreCampo='nombre';
+    }
+        const nombrePaso='paso4';
+        const nombreCampo='matricula';
         const valorCampo=value
         
         dispatch({
             type: types.cambiarPaso,
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
-    }
+    
     return valida
 };
 
-export {validarNombre}
+export {validarMatricula}
