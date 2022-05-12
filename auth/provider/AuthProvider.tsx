@@ -6,9 +6,11 @@ import {types} from "../../types/types";
 import Cookies from 'js-cookie';
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from 'react';
-import loginRes from './login'
+import loginRes, { loginApollo } from './login'
 import signOauthRes from './signOauth'
 import vincularMatriculaRes from './vincularMatricula'
+import { useLogin } from "../../hooks";
+import { loginGraphQL } from "../../apollo-cliente";
 export const AuthContext = createContext({} as TypeContext);
 
 const initialState: TypeAuthState = {
@@ -25,8 +27,8 @@ export const AuthProvider: FC = ({ children }) => {
     const [auth, setAuth] = useState(initialState);
     const {dispatch} = useChatContext();
     const {data, status} = useSession();
+    //const LogginHook = useLogin(null,null)
     
-
     useEffect(()=>{
         if(status==="authenticated"){
             console.log({data: data});
@@ -56,7 +58,13 @@ export const AuthProvider: FC = ({ children }) => {
 
     
     const login:TypeLogin = async (email:string, password:string) => {
-        const [resp, auth] = await loginRes(email,password)
+        //const LogginHook = useLogin(null,null)
+        //const {data} = useLogin(null,null)
+        //const {data} = await LogginHook.refetch({email,password});
+        const data = await loginGraphQL(email,password);
+        //const [resp, auth] = await loginRes(email,password)
+        const [resp, auth] = loginApollo(data)
+        
         if(resp.ok){
             setAuth(auth);
         }

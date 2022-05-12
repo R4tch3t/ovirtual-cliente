@@ -6,5 +6,6 @@ const client = new ApolloClient({
 });
 
 export * from './tramites'
+export * from './login'
 
 export default client;
