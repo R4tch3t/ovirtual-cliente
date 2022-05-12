@@ -19,6 +19,15 @@ export type TipoUsuario = {
     activated: number | null;
     matactiva: number | null;
     lastConn: Date | null;
+    alumno: TipoAlumno
+}
+
+export type TipoAlumno = {
+    cveentalu: string;
+    nomentalu: string;
+    apeentalu: string;
+    crpentalu: string;
+    mailentalu: string;
 }
 
 export const loginGraphQL = async (email:string,password:string) => {
