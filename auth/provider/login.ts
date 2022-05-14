@@ -28,14 +28,14 @@ const login = async (email:string, password:string):Promise<[{ok:boolean},TypeAu
     
 }
 
-export const loginApollo = (resp:any):[{ok:boolean},TypeAuthState] => {
+export const loginApollo = (resp:any):[{respLogin:boolean},TypeAuthState] => {
           
     //const resp = await fetchSinToken("login",{email,password},"POST");
     console.log("loginAuthProv");
     console.log(resp)
     const json:TypeAuthState = {}
     //json.resp=resp
-    if(resp.ok){
+    if(resp.respLogin){
         localStorage.setItem("token",resp.token);
         Cookies.set("token",resp.token);
         const {usuario} = resp
@@ -49,8 +49,8 @@ export const loginApollo = (resp:any):[{ok:boolean},TypeAuthState] => {
         json.usuario=usuario
         //})
     }
-    console.log("ok, ",resp.ok)
-    return [{ok: resp.ok},json]
+    console.log("ok, ",resp.respLogin)
+    return [{respLogin: resp.respLogin},json]
 
 }
 

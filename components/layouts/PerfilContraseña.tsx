@@ -18,6 +18,7 @@ import { ModalSuccess } from '../ModalSucces';
 import { ModalError } from '../ModalError';
 import Link from 'next/link';
 import { ExclamationIcon } from '@heroicons/react/solid';
+import { actualizarContraGQL } from '../../apollo-cliente/perfil/actualizarContra';
 
 const subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: false },
@@ -169,7 +170,14 @@ const PerfilContraseñaLayout = () => {
   const onSubmit = async (e:any) => {
     setCargando(true)
 
-    const resp = await updateUser(usuario,"login/updatePass");
+    //const resp = await updateUser(usuario,"login/updatePass");
+    const user = {
+      id: usuario.id!,
+      password: usuario.password!,
+      passwordN: usuario.passwordN!,
+      passwordC: usuario.passwordC!
+    }
+    const resp = await actualizarContraGQL(user)
     if(!resp){
         setDataModal({title: "Error", txt: "El usuario NO fue actualizado.", btn1: {txt:"Regresar al perfil", onClose:setModalE} })
         setModalE(true);
@@ -186,7 +194,7 @@ const PerfilContraseñaLayout = () => {
     //Comprobar si es necesario actualizar la contraseña
     actualizadoContra(auth.id).then((r:any)=>{
       
-      if(r.ok){
+      if(r.respNecesarioCambiarPass){
         subNavigation[1].icon=WarningPass;
         setAdvContra(true)
       }

@@ -7,10 +7,14 @@ import Cookies from 'js-cookie';
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from 'react';
 import loginRes, { loginApollo } from './login'
-import signOauthRes from './signOauth'
-import vincularMatriculaRes from './vincularMatricula'
+import signOauthRes, { signOauthApollo } from './signOauth'
+import vincularMatriculaRes, { vincularMatriculaApollo } from './vincularMatricula'
 import { useLogin } from "../../hooks";
-import { loginGraphQL } from "../../apollo-cliente";
+import { loginGraphQL, newOuserGraphQL, newUserGraphQL, renovarTokenGraphQL } from "../../apollo-cliente";
+import { necesarioCambiarPassGQL, vincularMatriculaGQL, actualizarUsuarioGQL } from "../../apollo-cliente/perfil";
+//import { actualizarUsuarioGQL } from "../../apollo-cliente/perfil/actualizarUsuario";
+import { reenviaremailGraphQL } from "../../apollo-cliente/login/reenviaremail";
+
 export const AuthContext = createContext({} as TypeContext);
 
 const initialState: TypeAuthState = {
@@ -65,41 +69,54 @@ export const AuthProvider: FC = ({ children }) => {
         //const [resp, auth] = await loginRes(email,password)
         const [resp, auth] = loginApollo(data)
         
-        if(resp.ok){
+        if(resp.respLogin){
             setAuth(auth);
         }
-        return resp.ok
+        return resp.respLogin
     }
 
     const signup:TypeSignup = async (user):Promise<boolean> => {
         const {matricula, email, password} = user
-        const resp = await fetchSinToken("login/new",{matricula,email,password},"POST");
+        const nuevoUsuario = {
+            matricula: user.matricula!,
+            email: user.email!
+        }
+        //const resp = await fetchSinToken("login/new",{matricula,email,password},"POST");
+        const resp = await newUserGraphQL(nuevoUsuario)
         console.log("registerProv");
         console.log(resp);
-        if(resp.ok){
-            return resp.ok;
+        if(resp?.respNewUser){
+            return resp?.respNewUser;
         }
-        return resp.msg;
+        return resp?.msg as any;
     }
 
     const signOauth:TypeSignupO = async (user) => {
-        const [resp,auth] = await signOauthRes(user)
+        //const [resp,auth] = await signOauthRes(user)
+        const nU = {
+            name: user.name!,
+            email: user.email!
+        }
+
+        const data = await newOuserGraphQL(nU)
+        const [resp, auth] = signOauthApollo(data);
         console.log('auth')
         console.log(auth)
-        if(resp.ok){
+        if(resp.respNewOuser){
             setAuth(auth);
-            return resp.ok 
+            return resp.respNewOuser
         }
         return resp.msg
     }
 
     const resentemail:TypeResentemail = async (user) => {
-        const {email} = user
-        const resp = await fetchSinToken("login/resentemail",{email},"POST");
+        const {email, matricula} = user
+        const resp = await reenviaremailGraphQL({email, matricula})
+        //const resp = await fetchSinToken("login/resentemail",{email},"POST");
         console.log("registerProv");
         console.log(resp);
-        if(resp.ok){
-            return resp.ok;
+        if(resp.respReenviaremail){
+            return resp.respReenviaremail;
         }
         return resp.msg;
     }
@@ -118,19 +135,20 @@ export const AuthProvider: FC = ({ children }) => {
             return false;
         }
 
-        const resp = await fetchConToken("login/renew")
-
-        if(resp.ok){
+        //const resp = await fetchConToken("login/renew")
+        const resp = await renovarTokenGraphQL(localStorage.getItem("token")!)
+        //???wtf
+        if(resp.respRenovarToken){
             localStorage.setItem("token",resp.token);
-            const {usuario} = resp
+            const {usuario}:any = resp
             setAuth({
-                id: usuario.id,
-                uuid: usuario.uuid,
+                id: usuario?.id,
+                uuid: usuario?.uuid,
                 checking: false,
                 logged: true,
                 usuario,
-                email: usuario.email,
-                activated: usuario.activated,
+                email: usuario?.email,
+                activated: usuario?.activated,
             });
             return true;
         }else{
@@ -144,13 +162,22 @@ export const AuthProvider: FC = ({ children }) => {
             return false
         }
 
-    }, [setAuth,fetchConToken]);
+    }, [setAuth]);
 
-    const vincularMatricula:TypeVincular = async (usuario) => {
-        const [resp,auth] = await vincularMatriculaRes(usuario)
-        if(resp.ok){
+    const vincularMatricula:TypeVincular = async (usuario:any) => {
+        //const [resp,auth] = await vincularMatriculaRes(usuario)
+        const u = {
+            id: usuario.id!,
+            name: usuario.name!,
+            email: usuario.email!,
+            matricula: usuario.matricula!
+        }
+
+        const data = await vincularMatriculaGQL(u)
+        const [resp,auth] = vincularMatriculaApollo(data)
+        if(resp.respVincularMatricula){
             setAuth(auth)
-            return resp.ok
+            return resp.respVincularMatricula
         }
         return resp.msg
         
@@ -166,12 +193,24 @@ export const AuthProvider: FC = ({ children }) => {
             return false;
         }
 
-        const resp = await fetchConToken(endpoint,{user},"POST")
-
-        if(resp.ok){
-            localStorage.setItem("token",resp.token);
-            Cookies.set("token",resp.token);
-            const {usuario} = resp
+        
+        const ActualizarU = {
+            id: user.id!,
+            uuid: user.uuid!,
+            nombre: user.nombreUsuario!,
+            name: user.name!,
+            apellidos: user.apellidos!,
+            email: user.email!,
+            newEmail: user.newEmail!,
+            password: user.password!
+        }
+        console.log("updateGQL: ",user)
+        //const resp = await fetchConToken(endpoint,{user},"POST")
+        const resp = await actualizarUsuarioGQL(ActualizarU!)
+        if(resp?.respActualizarUsuario){
+            localStorage.setItem("token",resp?.token!);
+            Cookies.set("token",resp?.token!);
+            const {usuario}:any = resp
             //if(status==='authenticated'){
                 
             //}
@@ -191,7 +230,7 @@ export const AuthProvider: FC = ({ children }) => {
             return false
         }
 
-    }, [setAuth,fetchConToken]);
+    }, [setAuth]);
     
 
     const logout = () => {
@@ -208,7 +247,8 @@ export const AuthProvider: FC = ({ children }) => {
     }
     
     const actualizadoContra = async (id: number ) => {
-        const resp = await fetchConToken("login/actualizadoContra",{id},"POST")
+        //const resp = await fetchConToken("login/actualizadoContra",{id},"POST")
+        const resp = await necesarioCambiarPassGQL(id)
         return resp
     }
 

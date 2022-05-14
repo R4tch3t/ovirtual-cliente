@@ -4,8 +4,10 @@ import { useAppContext } from '../auth/authContext';
 export const RedirecApp=() => {
     const {auth, verificaToken}:any = useAppContext();
     
-    useEffect(()=>{
-        verificaToken();
+    useEffect(()=>{  
+        
+        ( typeof verificaToken === 'function' )?verificaToken():null
+
     },[verificaToken]);
 
     /*console.log(auth)*/

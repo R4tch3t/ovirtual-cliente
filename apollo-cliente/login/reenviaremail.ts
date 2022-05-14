@@ -1,43 +1,28 @@
-import client from "..";
+import client, { TipoUsuario } from "..";
 import { gql } from "@apollo/client";
+
 interface Query {
-    login: {
-        respLogin: boolean,
+    reenviaremail: {
+        respReenviaremail: boolean,
         msg: string|null,
         usuario:TipoUsuario|null,
         token: string|null
     }
 }
 
-export type TipoUsuario = {
-    id: number;
-    uuid: string | null;
-    matricula: string | null;
-    nombre: string | null;
+type TipoResentUsuario = {
     email: string;
-    password: string;
-    online: number | null;
-    activated: number | null;
-    matactiva: number | null;
-    lastConn: Date | null;
-    alumno: TipoAlumno
+    matricula: string | null;
 }
 
-export type TipoAlumno = {
-    cveentalu: string;
-    nomentalu: string;
-    apeentalu: string;
-    crpentalu: string;
-    mailentalu: string;
-}
 
-export const loginGraphQL = async (email:string,password:string) => {
+export const reenviaremailGraphQL = async (user:TipoResentUsuario) => {
     const { data } = await client.query<Query>({
-        variables:{email,password},
+        variables:{user},
         query: gql`
-          query Login($password: String!, $email: String!) {
-            login(password: $password, email: $email) {
-                respLogin
+          query Reenviaremail($user: ResentUser!) {
+            reenviaremail(user: $user) {
+                respReenviaremail
                 msg
                 usuario {
                     id
@@ -64,5 +49,5 @@ export const loginGraphQL = async (email:string,password:string) => {
         `,
       });
       
-      return data.login
+      return data?.reenviaremail
 }

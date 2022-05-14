@@ -186,7 +186,7 @@ const PerfilLayout = () => {
     //Comprobar si es necesario actualizar la contraseña
     actualizadoContra(auth.id).then((r:any)=>{
       
-      if(r.ok===true){
+      if(r.respNecesarioCambiarPass===true){
         subNavigation[1].icon=WarningPass
       }
 
