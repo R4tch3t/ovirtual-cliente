@@ -405,7 +405,7 @@ const Paso1:FC<Props> = ({paises}) => {
                                     }})//.then((r)=>{console.log(r.errors)})
                                     
                                 if(data?.nuevoAsp){
-                                    setDataModal({title: 'Éxito', txt: "El formulario se ah almacenado.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
                                 } 
                             }else{
@@ -421,7 +421,7 @@ const Paso1:FC<Props> = ({paises}) => {
                                     }
                                 })//.then((r)=>{console.log(r.errors)})
                                 if(data?.guardarAsp){
-                                    setDataModal({title: 'Éxito', txt: "El formulario se ah guardado.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
                                 }
                             }
