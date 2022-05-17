@@ -7,6 +7,8 @@ import {types} from '../types/types';
 import {scrollToBottomAnimated} from '../helpers/scrollToBottom';
 import writingState from '../helpers/writingState';
 import { urlSocket } from '../variables/url';
+import { obtenerUsuariosGQL } from '../apollo-cliente/chat/obtenerUsuarios';
+import { obtenerChatGQL } from '../apollo-cliente/chat';
 
 const SocketContext = createContext({});
 
@@ -32,7 +34,8 @@ const SocketProvider = ({ children }:any) => {
     //Escuchar los cambios en los usuarios conectados
 
     useEffect(()=>{
-        socket?.on("getUsuarios",(usuarios:any)=>{
+        socket?.on("getUsuarios",async (/*usuarios:any*/)=>{
+            const usuarios = await obtenerUsuariosGQL()
             dispatch({
                 type: types.usuariosCargados,
                 payload: usuarios
@@ -42,7 +45,9 @@ const SocketProvider = ({ children }:any) => {
 
     //recargar mensajes del chat
     useEffect(()=>{
-        socket?.on('recargarChat',(mensajes:any)=>{
+        socket?.on('recargarChat',async (/*mensajes:any*/payload:any)=>{
+            
+            const {mensajes} = await obtenerChatGQL(payload.de,payload.para,0,30)
             dispatch({
                 type: types.cargarMensajes,
                 payload: mensajes

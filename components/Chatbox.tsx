@@ -25,6 +25,8 @@ import useEffect from 'react';
 import { Loading } from '@nextui-org/react'
 import Fade from "@mui/material/Fade";
 import { MensajeCargando } from './MensajesCargando'
+import { grabarMensajeGQL, obtenerChatGQL, TipoNuevoMsj, upReadGQL } from '../apollo-cliente/chat'
+import client from '../apollo-cliente'
 const moods = [
     { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
     { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-white', bgColor: 'bg-pink-400' },
@@ -84,18 +86,30 @@ const keyDown = () => {
   );
 }
 
-const onSubmit=(e:any)=>{
+const onSubmit=async(e:any)=>{
   
   e.preventDefault();
   if(mensaje.length===0){return;}
 
-  socket.emit('mensaje-personal',
+  let nuevoMsj: TipoNuevoMsj = 
+  {
+    de:auth.id!,
+    para:chatState.chatActivo.id!,
+    readed: false!,
+    mensaje:mensaje!
+  }
+
+  
+  const socketMsj = await grabarMensajeGQL(nuevoMsj)
+  console.log('socketMsj: ',socketMsj)
+  socket.emit('mensaje-personal',{socketMsj});
+  /*socket.emit('mensaje-personal',
   {
     de:auth.id,
     para:chatState.chatActivo.id,
     readed: false,
     mensaje
-  });
+  });*/
 
   console.log(mensaje);
   console.log("mensaje-personal");
@@ -118,9 +132,13 @@ const handleReaded = async() => {
   //if(bandOnSubmit) return false
 
   const {id} = chatActivo
-  const resp = await fetchConToken(`mensajes/upRead`,{de:id},'POST');  
+  //const resp = await fetchConToken(`mensajes/upRead`,{de:id},'POST');  
+  const resp = await upReadGQL(id,auth.id)
+
   if(resp){
+    await client.resetStore()
     socket.emit("getUsuarios");
+    
     socket.emit("recargarChat",{
       de:auth.id,
       para:chatState.chatActivo.id,
@@ -148,7 +166,8 @@ const onScroll:TypeScroll = async (event)=>{
     
     event.preventDefault();
     const headers={skip,take}
-    const resp = await fetchConToken(`mensajes/${chatState.chatActivo.id}`,null,'GET',headers);
+    //const resp = await fetchConToken(`mensajes/${chatState.chatActivo.id}`,null,'GET',headers);
+    const resp = await obtenerChatGQL(auth.id,chatState.chatActivo.id,skip,take)
     setCargandoMsjs(false);
     dispatch({
         type: types.paginarMensajes,

@@ -14,7 +14,7 @@ import { cargarHomologacionDB } from '../../../components/tramite/homologacion/f
 import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 
 interface Props {
-  id: number,
+  id: string,
   tramite: TypeTramite,
   unidadesAcademicas: TypeUnidadesAcademicas[],
   paises: TypePais[]
@@ -78,10 +78,13 @@ const {head, body}  = state.table
               <TramiteTabs tramite={props.tramite} tabID={7} />
               {/*<TableTramite head={head} body={body} />*/}
 
-              {!homologacion && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} />}
+              {
+                props.id==="15" && <>
+                  {!homologacion && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} />}
 
-              {homologacion && <PasosHomologacion paises={props.paises} />}
-
+                  {homologacion && <PasosHomologacion paises={props.paises} />}
+                </>
+              }
               
             </div>
         </div>

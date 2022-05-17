@@ -7,6 +7,7 @@ import { ComboTramites } from "./ComboTramites"
 import { fetchConToken } from '../../helpers/fetch';
 import { TabsTramites } from './TabsTramites';
 import { useSocketContext } from '../../context/SocketContext';
+import { obtenerTramites } from '../../apollo-cliente';
 
 //import { ComboTramites } from "./ComboTramites"
 
@@ -40,8 +41,9 @@ const paraNivel = (n:number|null) => {
 
     //Escuchar los cambios en tramites 
     useEffect(()=>{
-      socket?.on("getTramites",(tramites:any)=>{
-          
+      socket?.on("getTramites",async(/*tramites:any*/)=>{
+        const tramites = await obtenerTramites()
+
           dispatch({
               type: types.cargarTramites,
               payload: {tramites,tta: 0, ttb: 0}

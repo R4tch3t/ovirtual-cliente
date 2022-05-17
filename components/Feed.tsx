@@ -7,6 +7,7 @@ import { diffDate } from '../helpers/spellDate';
 import {types} from '../types/types';
 import {useEffect} from 'react';
 import { Loading } from '@nextui-org/react';
+import { obtenerChatGQL } from '../apollo-cliente/chat';
 /*const people = [
     {
       name: 'Lindsay Walton',
@@ -39,7 +40,8 @@ export const Feed: NextPage = () => {
             type: types.activarChat,
             payload: user
         });
-        const resp = await fetchConToken(`mensajes/${user.id}`);
+        //const resp = await fetchConToken(`mensajes/${user.id}`);
+        const resp = await obtenerChatGQL(auth.id,user.id,0,30)
         dispatch({
             type: types.cargarMensajes,
             payload: resp.mensajes
