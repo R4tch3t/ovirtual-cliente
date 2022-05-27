@@ -19,7 +19,8 @@ const initialState:TypeTramitesState = {
     tta: 0,
     ttb: 4,
     procedimientos: {
-        homologacion: null
+        homologacion: null,
+        bajaTemporal: null
     }
 }
 

@@ -1,7 +1,7 @@
 import client, { TipoUsuario } from "..";
 import { gql } from "@apollo/client";
 interface Query {
-    revonarToken: {
+    renovarToken: {
         respRenovarToken: boolean;
         usuario:TipoUsuario|null;
         uuid: string;
@@ -20,8 +20,8 @@ export const renovarTokenGraphQL = async (tokenAnterior:string) => {
     const { data } = await client.query<Query>({
         variables:{tokenAnterior},
         query: gql`
-          query RevonarToken($tokenAnterior: String) {
-            revonarToken(tokenAnterior: $tokenAnterior) {
+          query RenovarToken($tokenAnterior: String) {
+            renovarToken(tokenAnterior: $tokenAnterior) {
                 respRenovarToken
                 usuario {
                     id
@@ -41,6 +41,26 @@ export const renovarTokenGraphQL = async (tokenAnterior:string) => {
                         crpentalu
                         mailentalu
                     }
+                    expediente {
+                        id
+                        userAlumnoId
+                        validado
+                        documento {
+                            id
+                            nombre
+                            descripcion
+                        }
+                    }
+                    vwAlumnoConPlanes {
+                        PLESXUR
+                        CVEENTESC
+                        CVEPLNEST
+                        VRSPLNEST
+                        ESCUELA
+                        PLANESTUDIOS
+                        NIVEL
+                        PERINIPLN
+                    }
                 }
                 uuid
                 token
@@ -50,5 +70,5 @@ export const renovarTokenGraphQL = async (tokenAnterior:string) => {
         `,
       });
       
-      return data.revonarToken
+      return data.renovarToken
 }

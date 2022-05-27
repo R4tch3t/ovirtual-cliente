@@ -10,18 +10,8 @@ interface NewUserChat extends TipoUsuario {
     lastMsg: TipoMensaje
 }
 
-/*type TipoMensaje = {
-    id: string;
-    mensaje: string | null;
-    time: Date | null;
-    readed: boolean | null;
-    de: number;
-    para: number;
-}*/
-
 
 export const obtenerUsuariosGQL = async () => {
-    //await client.resetStore()
     const { data } = await client.query<Query>({
         
         query: gql`

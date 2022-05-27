@@ -1,19 +1,12 @@
-import { ChangeEvent, FC, KeyboardEventHandler, useState } from "react"
+import { useState } from "react"
 import { useTramitesContext } from "../../../../../context/tramites/TramitesContext"
-import { TypePais } from "../../../../../interfaces"
-//import { Nacionalidad, Pais } from "../paso1/components"
-//import Fade from "@mui/material/Fade";
-import { Errors } from "../../../../Errors";
-import { Button, FormElement, Grid, Input, Loading, Spacer } from "@nextui-org/react";
+import { Spacer } from "@nextui-org/react";
 import { types } from "../../../../../types/tramites";
-//import { validarCURP } from "../../../../../helpers/validarCURP";
-//import { cambiarEstado, validarCalle, validarNumeroExt, validarColonia, validarCP } from "./helper";
 import { ClipboardCopyIcon, ExclamationIcon } from '@heroicons/react/solid'
 import { PuebloOriginario, EsPuebloOriginario, PadeceDiscapacidad, Discapacidad, EsAfroGuerrerense, EsResidenteSierra, EsHijoMigrante } from "./components";
 import Fade from "@mui/material/Fade";
 import { obtenerFormulario } from "../obtenerFormulario";
 import { ModalSuccess } from "../../../../ModalSucces";
-
 import { useGuardarAsp, useNuevoAsp } from "../../../../../hooks/useMutation";
 import { validarFormulario1 } from "../paso1/helper";
 import { validarFormulario2 } from "../paso2/helper";
@@ -38,15 +31,6 @@ const Paso3 = () => {
     }
 
     const onSubmit = () => {
-        //let valido: any = true;
-        //let validarCombos = paso2?.entidadFedID !== undefined && paso2?.municipioID !== undefined && paso2?.localidadID !== undefined
-        //validarCombos = paso1?.nacionalidadID === 1 ? (validarCombos && paso1?.paisID !== undefined) : validarCombos
-                    //&& paso1?.nombre !== undefined && paso1?.ape1 !== undefined && paso1?.ape2 !== undefined;
-        
-        
-        //valido = validarCombos && calleValida && coloniaValido && numeroExtValido && cpValido  
-
-        //re setstates
         let valido = paso3?.esPuebloOriginario !== undefined
         valido = paso3?.esPuebloOriginario === true ? (paso3.puebloID!==undefined) : valido
         valido = paso3?.padeceDiscapacidad === true ? (paso3.discapacidadID !== undefined && valido) : paso3?.padeceDiscapacidad !== undefined
@@ -186,7 +170,7 @@ const Paso3 = () => {
                                         aspMulti: form?.aspMulti!,
                                         aspSocioEco: form?.aspSocioEco!
                                     }
-                                })//.then((r)=>{console.log(r.errors)})
+                                })
                                 if(data?.guardarAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);

@@ -10,8 +10,6 @@ const validarEscuelaProcedencia = (value:string,setInputs:any,inputs:any,dispatc
         statusColor: 'error'
       }})
     }
-
-  //}
   
     if(valida){
         setInputs({...inputs,[name]:{

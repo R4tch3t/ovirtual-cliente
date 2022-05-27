@@ -1,14 +1,10 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
 export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
-  //const [open, setOpen] = useState(true)
-  //try{  
   const cancelButtonRef = useRef(null)
-    /*if(!setOpen){
-        return <></>
-    }*/
+    
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} initialFocus={cancelButtonRef} onClose={btn1.onClose} >
@@ -25,7 +21,6 @@ export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
             &#8203;
           </span>
@@ -61,16 +56,7 @@ export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
                   onClick={() => setOpen(false)}
                 >
                   {btn1.txt}
-                </button>
-                
-                {/*<button
-                  type="button"
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                  onClick={() => setOpen(false)}
-                  ref={cancelButtonRef}
-                >
-                  Cancel
-                </button>*/}
+                </button>                                
               </div>
               
               {btn2&&<div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
@@ -91,10 +77,4 @@ export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
       </Dialog>
     </Transition.Root>
   )
-/*}catch(e){
-    console.log(e)
-    return <></>
-}*/
 }
-
-export default ()=>null

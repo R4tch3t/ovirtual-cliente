@@ -1,5 +1,4 @@
 import {FC} from 'react';
-import { PaperClipIcon } from '@heroicons/react/solid'
 
 type Head = {
     nombre: string | null,

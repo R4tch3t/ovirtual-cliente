@@ -6,11 +6,6 @@ import { TypePais } from '../../../../../../interfaces'
 import { types } from '../../../../../../types/tramites'
 import { cambiarEstado } from '../helper'
 
-/*type TypeNacionalidad = {
-    id: number,
-    nombre: string
-}*/
-
 type Props = {
     paises: TypePais[]
 }
@@ -18,11 +13,6 @@ type Props = {
 function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
-
-/*const nacionalidades:TypeNacionalidad[] = [
-    {id: 1, nombre: 'MEXICANA'},
-    {id: 2, nombre: 'EXTRANJERA'},
-]*/
 
 const Pais:FC<Props> = ({paises}) => {
     const {tramitesState, dispatch} = useTramitesContext()
@@ -49,7 +39,6 @@ const Pais:FC<Props> = ({paises}) => {
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
         cambiarEstado(dispatch)
-        //setNaSelec(nacionalidad)
     }
     return (
         <>
@@ -62,7 +51,7 @@ const Pais:FC<Props> = ({paises}) => {
             displayValue={(pais:TypePais) => pais.nombrePais}
             
             />
-                                            {/* ${!focused?'w-full':''} mejor edicion del input, pero perdida de la anchura del boton */}      
+
             <Combobox.Button className={`absolute w-full inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none`}>
             <SelectorIcon className="h-5 w-5 text-gray-400 absolute right-0" aria-hidden="true" />
             </Combobox.Button>
@@ -82,19 +71,10 @@ const Pais:FC<Props> = ({paises}) => {
                 >
                     {({ active, selected }) => (
                     <>
-                        <div className="flex items-center">
-                            
-                        {/*<span
-                            className={classNames(
-                            'inline-block h-2 w-2 flex-shrink-0 rounded-full',
-                            tramite.necesitaValidacion===1 ? 'bg-green-400' : 'bg-gray-200'
-                            )}
-                            aria-hidden="true"
-                        />*/}
+                        <div className="flex items-center">                                                
 
                         <span className={classNames('ml-3 truncate', selected && 'font-semibold')}>
-                            {nacionalidad.nombrePais}
-                            {/*<span className="sr-only"> is {tramite.necesitaValidacion===1 ? 'online' : 'offline'}</span>*/}
+                            {nacionalidad.nombrePais}                            
                         </span>
 
                         </div>
@@ -118,7 +98,7 @@ const Pais:FC<Props> = ({paises}) => {
             )}
         </div>
         </Combobox>
-        {(paso1?.paisID! === undefined || paso1?.paisID === null) /*&& paso1?.completo! === false*/ &&  
+        {(paso1?.paisID! === undefined || paso1?.paisID === null) &&  
             <span className="mt-2 text-xs text-red-500">
                 Error, campo requerido
             </span>

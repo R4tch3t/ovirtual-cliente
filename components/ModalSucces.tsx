@@ -1,12 +1,9 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/outline'
 
 export const ModalSuccess = ({open, setOpen, title, txt, btnTxt}:any) => {
-    //const [open, setOpen] = useState(true)
- /*if(!setOpen){ 
-    return <></>
- }*/
+    
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} onClose={setOpen}>
@@ -23,7 +20,6 @@ export const ModalSuccess = ({open, setOpen, title, txt, btnTxt}:any) => {
             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
             &#8203;
           </span>
@@ -68,5 +64,3 @@ export const ModalSuccess = ({open, setOpen, title, txt, btnTxt}:any) => {
     </Transition.Root>
   )
 }
-
-export default ()=>null

@@ -11,8 +11,6 @@ const validarTelefono = (value:string,setInputs:any,inputs:any,dispatch:any) => 
     }})
   }
 
-//}
-
   if(valida){
       setInputs({...inputs,[name]:{
           color: 'secondary', 
@@ -20,14 +18,14 @@ const validarTelefono = (value:string,setInputs:any,inputs:any,dispatch:any) => 
           statusColor: 'primary'
       }})
   }
-      const nombrePaso='paso1';
-      const nombreCampo='telefono';
-      const valorCampo=value
-      
-      dispatch({
-          type: types.cambiarPaso,
-          payload: {nombrePaso,nombreCampo,valorCampo}
-      });
+  const nombrePaso='paso1';
+  const nombreCampo='telefono';
+  const valorCampo=value
+  
+  dispatch({
+      type: types.cambiarPaso,
+      payload: {nombrePaso,nombreCampo,valorCampo}
+  });
   
   return valida
 };

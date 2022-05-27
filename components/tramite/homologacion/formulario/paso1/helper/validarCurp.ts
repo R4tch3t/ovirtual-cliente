@@ -11,8 +11,6 @@ const validarCurp = (value:string,setInputs:any,inputs:any,dispatch:any) => {
         statusColor: 'error'
       }})
     }
-
-  //}
   
     if(valida){
         setInputs({...inputs,[name]:{
@@ -21,14 +19,14 @@ const validarCurp = (value:string,setInputs:any,inputs:any,dispatch:any) => {
             statusColor: 'primary'
         }})
     }
-        const nombrePaso='paso1';
-        const nombreCampo='curp';
-        const valorCampo=value
-        
-        dispatch({
-            type: types.cambiarPaso,
-            payload: {nombrePaso,nombreCampo,valorCampo}
-        });
+    const nombrePaso='paso1';
+    const nombreCampo='curp';
+    const valorCampo=value
+    
+    dispatch({
+        type: types.cambiarPaso,
+        payload: {nombrePaso,nombreCampo,valorCampo}
+    });
     
     return valida
 };

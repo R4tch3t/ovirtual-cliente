@@ -11,8 +11,6 @@ const validarColonia = (value:string,setInputs:any,inputs:any,dispatch:any) => {
     }})
   }
 
-//}
-
   if(valida){
       setInputs({...inputs,[name]:{
           color: 'primary', 
@@ -20,14 +18,14 @@ const validarColonia = (value:string,setInputs:any,inputs:any,dispatch:any) => {
           statusColor: 'primary'
       }})
   }
-      const nombrePaso='paso2';
-      const nombreCampo='colonia';
-      const valorCampo=value
-      
-      dispatch({
-          type: types.cambiarPaso,
-          payload: {nombrePaso,nombreCampo,valorCampo}
-      });
+  const nombrePaso='paso2';
+  const nombreCampo='colonia';
+  const valorCampo=value
+  
+  dispatch({
+      type: types.cambiarPaso,
+      payload: {nombrePaso,nombreCampo,valorCampo}
+  });
   
   return valida
 };

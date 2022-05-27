@@ -1,4 +1,3 @@
-
 import { useQuery, gql } from "@apollo/client";
 import { TypeUnidadesAcademicas } from "../../interfaces";
 import { TipoLocalidades } from "./localidades";

@@ -1,6 +1,4 @@
 import { types } from "../../../../../../types/tramites";
-import { confirmEmail } from "./confirmEmail";
-//import { TypePaso1 } from '../../../../../../interfaces/pasos/homologacion/paso1';
 
 const validarEmail = (confirmE:string, value:string,setInputs:any,inputs:any,dispatch:any) => {
     let valida:any = value !== undefined ? value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{1,4}$/i) : value;
@@ -13,7 +11,6 @@ const validarEmail = (confirmE:string, value:string,setInputs:any,inputs:any,dis
       }})
     }
 
-  //}
   
     if(valida){
         if(confirmE !== value){
@@ -50,8 +47,6 @@ const validarEmail = (confirmE:string, value:string,setInputs:any,inputs:any,dis
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
       
-        //confirmEmail(confirmE!,value.toLowerCase(),setInputs,inputs,dispatch)
-
     return valida
 };
 

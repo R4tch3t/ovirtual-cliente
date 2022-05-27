@@ -1,19 +1,16 @@
-import { ChangeEvent, FC, KeyboardEventHandler, useState, useEffect } from "react"
+import { ChangeEvent, FC, KeyboardEventHandler, useState } from "react"
 import { useTramitesContext } from "../../../../../context/tramites/TramitesContext"
 import { TypePais } from "../../../../../interfaces"
 import { Nacionalidad, Pais } from "../paso1/components"
 import Fade from "@mui/material/Fade";
 import { Errors } from "../../../../Errors";
-import { Button, FormElement, Grid, Input, Loading, Spacer } from "@nextui-org/react";
+import { FormElement, Input, Spacer } from "@nextui-org/react";
 import { types } from "../../../../../types/tramites";
-import { validarCURP } from "../../../../../helpers/validarCURP";
 import { cambiarEstado, confirmEmail, validarApe1, validarApe2, validarCelular, validarCurp, validarEmail, validarFormulario1, validarNombre, validarTelefono } from "../paso1/helper";
 import { ExclamationIcon,   ClipboardCopyIcon } from '@heroicons/react/solid'
 import { useGuardarAsp, useNuevoAsp } from "../../../../../hooks/useMutation";
-import { useMutation } from '@apollo/client';
 import { ModalSuccess } from "../../../../ModalSucces";
 import { obtenerFormulario } from "../obtenerFormulario";
-//import useEffect from 'react';
 import { coloresInputs1 } from './helper/coloresInputs';
 
 type Props = {
@@ -31,22 +28,11 @@ const advertencias = {
 const Paso1:FC<Props> = ({paises}) => {
     const {tramitesState, dispatch} = useTramitesContext()
     const {aspiranteId,paso1} = tramitesState.procedimientos.homologacion!
-    /*const [inputs, setInputs]:any = useState({
-        curp: {color: 'primary'},
-        nombre: {color: 'primary'},
-        ape1: {color: 'primary'},
-        ape2: {color: 'secondary'},
-        celular: {color: 'primary'},
-        telefono: {color: 'secondary'},
-        email: {color: 'primary'},
-        confirmEmail: {color: 'primary'}
-    });*/
     const [inputs, setInputs]:any = useState(coloresInputs1(paso1!));
     const [modalS, setModalS] = useState(false)
-    const [modalE, setModalE] = useState(false)
     const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
 
-    const [nuevoAsp, resultNuevoAsp] = useNuevoAsp()
+    const [nuevoAsp] = useNuevoAsp()
     const [guardarAsp] = useGuardarAsp()
 
     const formularioValido = () => {
@@ -56,12 +42,7 @@ const Paso1:FC<Props> = ({paises}) => {
             return valido
     }
 
-    //if(!validarFormulario1()){
-        
-    //}
-
     const onKeyUp:KeyboardEventHandler<FormElement> = ({currentTarget}) => {
-        //event.currentTarget.
         const {name} = currentTarget;
         switch(name){
             case 'curp':
@@ -80,8 +61,6 @@ const Paso1:FC<Props> = ({paises}) => {
     }
 
     const onChange:ChangeType = ({target}) => {
-        
-        //if(!target) return false;
         
         const {name, value} = target;
         switch(name){
@@ -110,13 +89,10 @@ const Paso1:FC<Props> = ({paises}) => {
             break
 
             case 'email':
-                //confirmEmail(paso1?.confirmEmail!,value.toLowerCase(),setInputs,inputs,dispatch)
                 validarEmail(paso1?.confirmEmail!,value.toLowerCase(),setInputs,inputs,dispatch)
-                //confirmEmail(paso1?.confirmEmail!,value.toLowerCase(),setInputs,inputs,dispatch)
             break
 
             case 'confirmEmail':
-                //const emailActual = (document.getElementById('email')! as any).value;
                 confirmEmail(value.toLowerCase(),paso1?.email!,setInputs,inputs,dispatch)
             break
         }
@@ -130,8 +106,6 @@ const Paso1:FC<Props> = ({paises}) => {
         let valido: any = true;
         let validarCombos = paso1?.nacionalidadID !== undefined 
         validarCombos = paso1?.nacionalidadID === 1 ? (validarCombos && paso1?.paisID !== undefined && paso1?.paisID !== null) : validarCombos
-                    //&& paso1?.nombre !== undefined && paso1?.ape1 !== undefined && paso1?.ape2 !== undefined;
-        console.log(validarCombos,' ', paso1?.paisID)
         const curpValida =  validarCurp(paso1?.curp!,setInputs,inputs,dispatch);
         const nombreValido =  validarNombre(paso1?.nombre!,setInputs,inputs,dispatch);
         const ape1Valido =  validarApe1(paso1?.ape1!,setInputs,inputs,dispatch);
@@ -141,8 +115,6 @@ const Paso1:FC<Props> = ({paises}) => {
 
         valido = validarCombos && curpValida && nombreValido && ape1Valido && celularValido && emailValido && confirmEmailValido 
 
-        //re setstates
-        
         if(!curpValida){
             inputs.curp={
                 color: 'error', 
@@ -195,28 +167,14 @@ const Paso1:FC<Props> = ({paises}) => {
 
         const nombrePaso='paso1';
         const nombreCampo='completo';
-        //guardar({variables: {asp: null, aspReg: null}})
-        //console.log(result)
-        //useMutation(NUEVOASPQUERY,{variables:{asp: null, aspReg: null}})
-        //if(!valido){
-            const valorCampo=!valido ? false:true//false
+        const valorCampo=!valido ? false:true//false
       
             dispatch({
                 type: types.cambiarPaso,
                 payload: {nombrePaso,nombreCampo,valorCampo}
             });
-        //}
-    }
-
-    /*if(paso1 !== null){
-        coloresInputs1(paso1,inputs)
-    }*/
-    /*useEffect(()=>{
-        if(formularioValido()){      
-            onSubmit()
-        }
         
-    },[onSubmit])*/
+    }
     
     return (
         <>
@@ -373,15 +331,15 @@ const Paso1:FC<Props> = ({paises}) => {
                         type="button"
                         onMouseUp={onSubmit}
                         style={{width: 120}}
-                        className={`ml-5 bg-${(/*paso1?.completo!==false || */formularioValido())?'sky-700':'red-600'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${(/*paso1?.completo!==false || */formularioValido())?'sky':'red'}-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                        className={`ml-5 bg-${(formularioValido())?'sky-700':'red-600'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${(/*paso1?.completo!==false || */formularioValido())?'sky':'red'}-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
                         disabled={!formularioValido()}
                     >
-                        {(/*paso1?.completo===false &&*/ !formularioValido()) && 
+                        {(!formularioValido()) && 
                         <ExclamationIcon  width={20} height={20} />}
                         {
                             'Siguiente'
                         }
-                        {(/*paso1?.completo!==false ||*/ formularioValido()) && <> → </>}
+                        {(formularioValido()) && <> → </>}
                         
                     </button>
                 </div>
@@ -402,7 +360,7 @@ const Paso1:FC<Props> = ({paises}) => {
                                         aspDomi: form?.aspDomi!,
                                         aspMulti: form?.aspMulti!,
                                         aspSocioEco: form?.aspSocioEco!
-                                    }})//.then((r)=>{console.log(r.errors)})
+                                    }})
                                     
                                 if(data?.nuevoAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
@@ -419,7 +377,7 @@ const Paso1:FC<Props> = ({paises}) => {
                                         aspMulti: form?.aspMulti!,
                                         aspSocioEco: form?.aspSocioEco!
                                     }
-                                })//.then((r)=>{console.log(r.errors)})
+                                })
                                 if(data?.guardarAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);

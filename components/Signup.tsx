@@ -1,6 +1,6 @@
 import type {NextPage} from 'next'
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../auth/authContext';
 import { ModalError } from './ModalError';
 import { ModalSuccess } from './ModalSucces';
@@ -16,14 +16,6 @@ const Signup: NextPage = () => {
         matricula:'',
         email:''
     });
-    
-    /*const crear = useCallback( ()=>{
-        const [user,  createUser ] = useCreateUserMutation()
-    
-    const newUser: UsuarioInput = {nombre: form.nombre, email:form.email, password: form.password, online: false}
-    createUser( { user: newUser } );
-    }, []);*/
-    
 
     const onChange = ({target}:any) => {
         const {name, value} = target;
@@ -34,38 +26,14 @@ const Signup: NextPage = () => {
     }
 
     const onSubmit = async (e:any) => {
-        e.preventDefault();
-        //crear()
-        
-        
-        /* con URQL
-        const user: UsuarioInput = {nombre: form.nombre, email:form.email, password: form.password, online: false}
-        const usuariosResult:any = (new Client({ url })).mutation(CreateUserDocument,{user}).toPromise()
-        usuariosResult.then((v:any)=>{
-            console.log("toPromise")
-            console.log("Usuario Creado")
-            console.log(v)
-        });*/
+        e.preventDefault();        
         
         const ok = await signup(form);
 
         if(ok!==true){
-            //sE=["Verificar usuario y/o contraseña"]
-            //const errors:any=[];
-            //errors.push("Verificar email y/o contraseña.");
-            //errors.push("Es posible que la cuenta ya exista.");
-            //errors.push(ok)
-            //console.log("error? "+ok)
-            //setELog({band:true,errors});
             setDataModal({title: "Error", txt: ok, btn1: {txt:"Regresar al registro", onClose:setModalE} })
             setModalE(true);
         } else {
-            /*const success:any=[];
-            success.push("El usuario se registró con éxito");
-            console.log("success!?")
-            //errors.push("Es posible que la cuenta ya exista.");
-            setSLog({band:ok,success});
-            setELog({band:false,errors:[]});*/
             setDataModal({title: "Éxito", txt: "El usuario se registró con éxito", btn1: {txt: "Regresar al registro", onClose:setModalE} })
             setModalS(true);
         }
@@ -79,16 +47,7 @@ const Signup: NextPage = () => {
     }
 
   return (
-    <main className="-mt-24">
-          {/*
-            This example requires updating your template:
-    
-            ```
-            <html class="h-full bg-gray-50">
-            <body class="h-full">
-            ```
-          */}
-          {/*eLog.band&&<Errors e={eLog.errors} setELog={setELog} />*/}
+    <main className="-mt-24">          
           {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
         txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />}
         {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
@@ -135,25 +94,7 @@ const Signup: NextPage = () => {
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                 </div>
-                </div>
-
-                {/*<div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                        Contraseña
-                    </label>
-                    <div className="mt-1">
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            autoComplete="current-password"
-                            value={form.password}
-                            onChange={onChange}
-                            required
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        />
-                    </div>
-                </div>*/}
+                </div>                
 
                 <div className="flex items-center justify-between">
 

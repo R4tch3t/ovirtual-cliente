@@ -6,7 +6,6 @@ import { TypeTramite } from '../../interfaces';
 import { TramiteHead } from './head';
 
 interface Props {
-    //id: number,
     tramite: TypeTramite
   }
   
@@ -24,7 +23,6 @@ const PaginaTramite: FC<Props> = ({children, tramite}) => {
                     nivel={tramite.nivelAplica+""}
                 />
                 {children}
-                {/*<TramiteTabs tramite={tramite} Tabs={Tabs} />*/}
             </TramiteLayout>
             </Home>
         </>

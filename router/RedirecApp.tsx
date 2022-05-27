@@ -10,13 +10,6 @@ export const RedirecApp=() => {
 
     },[verificaToken]);
 
-    /*console.log(auth)*/
-
-    /*if(auth.logged){
-        Router.push("/");
-    }*/
-    //const auth = useVerificaToken()
+    
     return auth
 }
-
-//export default ()=>null

@@ -19,17 +19,10 @@ const opciones:TypeOpciones[] = [
     {val: false, nombre: 'NO'},
 ]
 
-const EsPuebloOriginario = () => {
-    //const { data, loading, error } = useEntidadesFederativas()
+const EsPuebloOriginario = () => {    
     const {tramitesState, dispatch} = useTramitesContext()
-    const [query, setQuery] = useState('')
-    /*if(!data){
-        return <></>
-    }*/
-    //const {entidadesFederativas} = data!
+    const [query, setQuery] = useState('')    
     const {paso3} = tramitesState.procedimientos.homologacion!
-    //const [naSelec, setNaSelec] = useState()
-    //const naSelec = paso2 ? entidadesFederativas[paso2?.entidadFedID!] : undefined
     const naSelec = paso3 ? opciones?.find((op) => {
         return op.val === paso3.esPuebloOriginario
     }) : undefined;
@@ -51,7 +44,6 @@ const EsPuebloOriginario = () => {
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
         cambiarEstado(dispatch)
-        //setNaSelec(nacionalidad)
       }
     
     return (
@@ -65,7 +57,6 @@ const EsPuebloOriginario = () => {
             displayValue={(op:TypeOpciones) => op.nombre}
             
             />
-                                            {/* ${!focused?'w-full':''} mejor edicion del input, pero perdida de la anchura del boton */}      
             <Combobox.Button className={`absolute w-full inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none`}>
             <SelectorIcon className="h-5 w-5 text-gray-400 absolute right-0" aria-hidden="true" />
             </Combobox.Button>
@@ -87,17 +78,9 @@ const EsPuebloOriginario = () => {
                     <>
                         <div className="flex items-center">
                             
-                        {/*<span
-                            className={classNames(
-                            'inline-block h-2 w-2 flex-shrink-0 rounded-full',
-                            tramite.necesitaValidacion===1 ? 'bg-green-400' : 'bg-gray-200'
-                            )}
-                            aria-hidden="true"
-                        />*/}
 
                         <span className={classNames('ml-3 truncate', selected && 'font-semibold')}>
                             {op.nombre}
-                            {/*<span className="sr-only"> is {tramite.necesitaValidacion===1 ? 'online' : 'offline'}</span>*/}
                         </span>
 
                         </div>
@@ -121,7 +104,7 @@ const EsPuebloOriginario = () => {
             )}
         </div>
         </Combobox>
-        {paso3?.esPuebloOriginario! === undefined /*&& paso3?.completo! === false*/ &&  
+        {paso3?.esPuebloOriginario! === undefined &&  
             <span className="mt-2 text-xs text-red-500">
                 Error, campo requerido
             </span>

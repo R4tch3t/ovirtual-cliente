@@ -14,7 +14,7 @@ const Contraseña = ({handleUp, auth}:any) => {
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm font-medium text-gray-500">Contraseña actual </dt>
                 <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {/*<span className="flex-grow">Chelsea Hagon</span>*/}
+                  
                   <div className="flex-grow" ><Input l='' v={''} email={false} pass={true} id='password' /> </div>
                   
                 </dd>
@@ -23,7 +23,7 @@ const Contraseña = ({handleUp, auth}:any) => {
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
                 <dt className="text-sm font-medium text-gray-500">Nueva contraseña</dt>
                 <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {/*<span className="flex-grow">chelsea.hagon@example.com</span>*/}
+                  
                   <div className="flex-grow" ><Input l='' v={''} email={false} pass={true} id='newPass' /> </div>
                   
                 </dd>
@@ -31,8 +31,7 @@ const Contraseña = ({handleUp, auth}:any) => {
 
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
                 <dt className="text-sm font-medium text-gray-500">Confirmar contraseña</dt>
-                <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {/*<span className="flex-grow">chelsea.hagon@example.com</span>*/}
+                <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">                  
                   <div className="flex-grow" ><Input l='' v={''} email={false} pass={true} id='confirmPass' /> </div>
                 </dd>
               </div>
@@ -40,7 +39,6 @@ const Contraseña = ({handleUp, auth}:any) => {
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
                 <dt className="text-sm font-medium text-gray-500"></dt>
                 <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {/*<span className="flex-grow">chelsea.hagon@example.com</span>*/}
                   <div className="flex-grow" > </div>
                   <span className="ml-4 flex-shrink-0">
                     <button

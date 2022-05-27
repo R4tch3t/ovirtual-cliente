@@ -5,9 +5,9 @@ import { url } from "../variables/url";
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 const client = new ApolloClient({
-    //uri: "http://localhost:3000/graphql",
     uri: url,
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    
 });
 
 export * from './tramites' 

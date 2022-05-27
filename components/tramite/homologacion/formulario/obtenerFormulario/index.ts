@@ -6,11 +6,8 @@ import { validarFormulario3 } from "../paso3/helper";
 import { validarFormulario4 } from "../paso4/helper";
 import { validarFormulario5 } from '../paso5/helper';
 
-//type Guardar = (options?: MutationFunctionOptions<Mutation, OperationVariables, DefaultContext, ApolloCache<any>> | undefined) => Promise<...>
-
 const obtenerFormulario = (homologacion: TypeHomologacion, paso: number) => {
-    //const {tramitesState} = useTramitesContext();
-    const {aspiranteId, planID, paso1, paso2, paso3, paso4, paso5} = /*tramitesState.procedimientos.*/homologacion;
+    const {aspiranteId, planID, paso1, paso2, paso3, paso4, paso5} = homologacion;
     const nacionalidad = paso1?.nacionalidadID! === 0 ? 'MX' : 'NE' ;
 
     const asp: TipoAspirante = {
@@ -50,7 +47,7 @@ const obtenerFormulario = (homologacion: TypeHomologacion, paso: number) => {
     let aspDomi: TipoAspDomiciliario | null = null
     
     if(paso===2 || validarFormulario2(paso2!)){
-       // const {paso2} = homologacion
+       
         aspDomi = {
             aspiranteIdId: aspiranteId!,
             localityId: paso2?.localidadID!,
@@ -66,7 +63,6 @@ const obtenerFormulario = (homologacion: TypeHomologacion, paso: number) => {
     let aspMulti: TipoAspMulticulturalidad | null = null
 
     if(paso===3 || validarFormulario3(paso3!)){
-        // const {paso2} = homologacion
         
         aspMulti = {
             puebloOriginarioIdId: paso3?.puebloID!,
@@ -82,7 +78,6 @@ const obtenerFormulario = (homologacion: TypeHomologacion, paso: number) => {
      }
 
      if(paso===4 || validarFormulario4(paso4!)){
-        // const {paso2} = homologacion
         
         aspReg.egresadoUagro = paso4?.esEgresadoUag ? 1:0
         aspReg.claveEscuelaUagro = paso4?.escuelaUagroClave!
@@ -104,11 +99,8 @@ const obtenerFormulario = (homologacion: TypeHomologacion, paso: number) => {
             trabaja: paso5?.esEmpleado ? 1 : 0
         }
      }
-    //if(aspiranteId===null){
-       //const [data, setData] = useNuevoAsp(asp,aspReg)
-       //data({variables})
+     
        return {asp, aspReg, aspDomi, aspMulti, aspSocioEco}
-    //}
 }
 
 export {obtenerFormulario}

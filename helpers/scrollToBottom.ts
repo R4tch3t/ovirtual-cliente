@@ -14,10 +14,3 @@ export const scrollToBottomAnimated = (id:any) => {
     }
 }
 
-/*export const scrollToTopAnimated = (id:any) => {
-    const exist = document.getElementById(id)
-    if(exist){
-        animateScroll.scrollToTop({containerId: id, duration: 500})
-    }
-}*/
-

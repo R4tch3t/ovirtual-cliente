@@ -11,8 +11,6 @@ const validarApe2 = (value:string,setInputs:any,inputs:any,dispatch:any) => {
     }})
   }
 
-//}
-
   if(valida){
       setInputs({...inputs,[name]:{
           color: 'secondary', 

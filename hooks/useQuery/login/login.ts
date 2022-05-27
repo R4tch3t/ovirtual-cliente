@@ -46,11 +46,7 @@ const QUERY = gql`
 
 const useLogin = (password:string|null,email:string|null) => {
 
-    return useQuery<Query>(QUERY/*,{
-        variables:{
-            password,
-            email
-        }}*/);
+    return useQuery<Query>(QUERY);
 }
 
 export {useLogin}

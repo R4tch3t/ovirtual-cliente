@@ -1,12 +1,8 @@
-import { ChangeEvent, FC, KeyboardEventHandler, useState } from "react"
+import { ChangeEvent, KeyboardEventHandler, useState } from "react"
 import { useTramitesContext } from "../../../../../context/tramites/TramitesContext"
-import { TypePais } from "../../../../../interfaces"
-//import { Nacionalidad, Pais } from "../paso1/components"
-//import Fade from "@mui/material/Fade";
 import { Errors } from "../../../../Errors";
-import { Button, FormElement, Grid, Input, Loading, Spacer } from "@nextui-org/react";
+import { FormElement, Input, Spacer } from "@nextui-org/react";
 import { types } from "../../../../../types/tramites";
-//import { validarCURP } from "../../../../../helpers/validarCURP";
 import { cambiarEstado, validarCalle, validarNumeroExt, validarColonia, validarCP, validarFormulario2, coloresInputs2 } from "./helper";
 import { ClipboardCopyIcon, ExclamationIcon } from '@heroicons/react/solid'
 import { EntidadFederativa, Municipio, Localidad } from "./components";
@@ -24,13 +20,7 @@ const advertencias = {
 const Paso2 = () => {
     const {tramitesState, dispatch} = useTramitesContext()
     const {aspiranteId,paso1,paso2} = tramitesState.procedimientos.homologacion!
-    /*const [inputs, setInputs]:any = useState({
-        calle: {color: 'primary'},
-        numeroExt: {color: 'primary'},
-        numeroInt: {color: 'secondary'},
-        colonia: {color: 'primary'},
-        cp: {color: 'primary'},
-    });*/
+
     const [inputs, setInputs]:any = useState(coloresInputs2(paso2!));
     const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
@@ -48,7 +38,6 @@ const Paso2 = () => {
     }
 
     const onKeyUp:KeyboardEventHandler<FormElement> = ({currentTarget}) => {
-        //event.currentTarget.
         const {name} = currentTarget;
         switch(name){
             case 'calle':
@@ -61,9 +50,7 @@ const Paso2 = () => {
     }
 
     const onChange:ChangeType = ({target}) => {
-        
-        //if(!target) return false;
-    
+            
         const {name, value} = target;
         switch(name){
             case 'calle':
@@ -74,10 +61,6 @@ const Paso2 = () => {
                 validarNumeroExt(value.toUpperCase(),setInputs,inputs,dispatch)
             break
             
-            /*case 'numeroInt':
-                validarNumeroInt(value.toUpperCase(),setInputs,inputs,dispatch)
-            break*/
-
             case 'colonia':
                 validarColonia(value.toUpperCase(),setInputs,inputs,dispatch)
             break
@@ -96,9 +79,6 @@ const Paso2 = () => {
     const onSubmit = () => {
         let valido: any = true;
         let validarCombos = paso2?.entidadFedID !== undefined && paso2?.municipioID !== undefined && paso2?.localidadID !== undefined
-        //validarCombos = paso1?.nacionalidadID === 1 ? (validarCombos && paso1?.paisID !== undefined) : validarCombos
-                    //&& paso1?.nombre !== undefined && paso1?.ape1 !== undefined && paso1?.ape2 !== undefined;
-        
         const calleValida =  validarCalle(paso2?.calle!,setInputs,inputs,dispatch);
         const coloniaValido =  validarColonia(paso2?.colonia!,setInputs,inputs,dispatch);
         const numeroExtValido =  validarNumeroExt(paso2?.numeroExt!,setInputs,inputs,dispatch);
@@ -106,7 +86,6 @@ const Paso2 = () => {
         
         valido = validarCombos && calleValida && coloniaValido && numeroExtValido && cpValido  
 
-        //re setstates
         
         if(!calleValida){
             inputs.calle={
@@ -244,20 +223,6 @@ const Paso2 = () => {
 
                 <Municipio />
                 
-                {/*<Input id='municipioID' 
-                    width={"100%"} 
-                    name='municipioID'
-                    type={'text'}
-                    onChange={onChange}
-                    labelLeft='*'
-                    clearable bordered labelPlaceholder="* Telefono Celular (10 Dígitos)" 
-                    initialValue={paso1?.celular?.toString()} 
-                    helperColor={inputs.celular.color}
-                    helperText={inputs.celular.helper}
-                    color={inputs.celular.color}
-                    maxLength={10}
-                />*/}
-
                 <Spacer y={3} />
                 <Localidad />
                 <Spacer y={3} />
@@ -333,7 +298,7 @@ const Paso2 = () => {
                                         aspMulti: form?.aspMulti!,
                                         aspSocioEco: form?.aspSocioEco!
                                     }
-                                })//.then((r)=>{console.log(r.errors)})
+                                })
                                 if(data?.guardarAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);

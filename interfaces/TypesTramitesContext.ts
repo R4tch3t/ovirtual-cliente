@@ -52,8 +52,19 @@ export type TypeHomologacion = {
     paso5: TypePaso5 | null
 }
 
+export type TypeBajaTemporal = {
+    usuarioId: number | null,
+    plesXur: number,
+    unidadAcademica: string,
+    planElegido: string,
+    periodoLectivo: string | null,
+    causaBaja: string | null,
+    validoParaTramitar: boolean,
+}
+
 export type TypeProcedimiento = {
-    homologacion: TypeHomologacion | null
+    homologacion: TypeHomologacion | null,
+    bajaTemporal: TypeBajaTemporal | null
 }
 
 

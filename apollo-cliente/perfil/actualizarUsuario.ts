@@ -1,6 +1,5 @@
 import client, { TipoUsuario } from "..";
 import { gql } from "@apollo/client";
-import { TypeUserO } from "../../interfaces";
 interface Mutation {
     actualizarUsuario: {
         respActualizarUsuario: boolean,

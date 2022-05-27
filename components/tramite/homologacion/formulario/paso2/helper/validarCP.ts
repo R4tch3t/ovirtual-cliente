@@ -11,8 +11,6 @@ const validarCP = (value:string | undefined,setInputs:any,inputs:any,dispatch:an
     }})
   }
 
-//}
-
   if(valida){
       setInputs({...inputs,[name]:{
           color: 'primary', 
@@ -20,14 +18,14 @@ const validarCP = (value:string | undefined,setInputs:any,inputs:any,dispatch:an
           statusColor: 'primary'
       }})
   }
-      const nombrePaso='paso2';
-      const nombreCampo='cp';
-      const valorCampo=value
-      
-      dispatch({
-          type: types.cambiarPaso,
-          payload: {nombrePaso,nombreCampo,valorCampo}
-      });
+  const nombrePaso='paso2';
+  const nombreCampo='cp';
+  const valorCampo=value
+  
+  dispatch({
+      type: types.cambiarPaso,
+      payload: {nombrePaso,nombreCampo,valorCampo}
+  });
   
   return valida
 };

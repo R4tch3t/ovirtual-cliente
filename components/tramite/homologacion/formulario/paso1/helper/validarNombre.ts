@@ -10,8 +10,6 @@ const validarNombre = (value:string,setInputs:any,inputs:any,dispatch:any) => {
         statusColor: 'error'
       }})
     }
-
-  //}
   
     if(valida){
         setInputs({...inputs,[name]:{

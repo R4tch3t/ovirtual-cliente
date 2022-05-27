@@ -1,8 +1,6 @@
 import { TypePaso3 } from "../../../../../../interfaces/pasos/homologacion"
 
 const validarFormulario3 = (paso3: TypePaso3) => {
-    //const {tramitesState} = useTramitesContext()
-    //const {paso3} = tramitesState.procedimientos.homologacion!
     let valido = paso3?.esPuebloOriginario !== undefined
         valido = paso3?.esPuebloOriginario === true ? (paso3.puebloID!==undefined) : valido
         

@@ -1,5 +1,6 @@
+import { TipoUsuario } from "../apollo-cliente";
 
-export type TypeLogin = (email:string,password:string) => Promise<boolean>/*Promise<[any,TypeAuthState]>*/;
+export type TypeLogin = (email:string,password:string) => Promise<boolean>;
 export type TypeSignup = (user:TypeUser) => Promise<boolean|string>;
 export type TypeSignupO = (user:TypeUserO) => Promise<boolean|string>;
 export type TypeVerificaToken = () => Promise<boolean>;
@@ -27,7 +28,7 @@ export interface TypeAuthState {
     checking?:boolean,
     logged?:boolean,
     activated?:boolean,
-    usuario?:object|null,
+    usuario?:TipoUsuario|null,
     email?:string | null
 }
 

@@ -1,5 +1,5 @@
 import {NextPage} from 'next'
-import { DetailedHTMLProps, DOMAttributes, Fragment, HTMLAttributes, UIEventHandler, UIEvent, useState } from 'react'
+import { Fragment, UIEventHandler, useState } from 'react'
 import {
   EmojiHappyIcon,
   EmojiSadIcon,
@@ -13,15 +13,11 @@ import { Listbox, Transition } from '@headlessui/react'
 import {MensajeDe} from './MensajeDe'
 import {MensajePara} from './MensajePara'
 import { useChatContext } from '../context/chat/ChatContext'
-//import debounce from 'lodash.debounce';
 import { useAppContext } from '../auth/authContext'
 import { useSocketContext } from '../context/SocketContext'
 import Info from './Info'
-import { fetchConToken } from '../helpers/fetch'
 import Warning from './Warning'
 import { types } from '../types/types'
-//import { io, Socket } from "socket.io-client";
-import useEffect from 'react';
 import { Loading } from '@nextui-org/react'
 import Fade from "@mui/material/Fade";
 import { MensajeCargando } from './MensajesCargando'
@@ -35,7 +31,8 @@ const moods = [
     { name: 'Thumbsy', value: 'thumbsy', icon: ThumbUpIcon, iconColor: 'text-white', bgColor: 'bg-blue-500' },
     { name: 'I feel nothing', value: null, icon: XIcon, iconColor: 'text-gray-400', bgColor: 'bg-transparent' },
 ]
-  type TypeScroll = UIEventHandler<HTMLDivElement>
+
+type TypeScroll = UIEventHandler<HTMLDivElement>
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
 }
@@ -49,8 +46,6 @@ const [mensaje, setMensaje] = useState('');
 const [cargandoMsjs, setCargandoMsjs] = useState(false);
 const {socket}:any = useSocketContext();
 const {auth}:any = useAppContext();
-let bandOnSubmit = false;
-//const {chatState}:any = useChatContext();
 
 const onChange = ({target}:any) => {
   bandChange=true
@@ -101,38 +96,14 @@ const onSubmit=async(e:any)=>{
 
   
   const socketMsj = await grabarMensajeGQL(nuevoMsj)
-  console.log('socketMsj: ',socketMsj)
   socket.emit('mensaje-personal',{socketMsj});
-  /*socket.emit('mensaje-personal',
-  {
-    de:auth.id,
-    para:chatState.chatActivo.id,
-    readed: false,
-    mensaje
-  });*/
+  
 
-  console.log(mensaje);
-  console.log("mensaje-personal");
   setMensaje('');
-  bandOnSubmit=false;
-  //handleReaded()
-}
-//const socket: Socket = io();
-
-/*socket.on("msjfromserver", (data)=>{
-    const listmsj: any = document.getElementById("mensajes");
-    listmsj.innerHTML += `<li>${data.msj}</li>`
-});*/
-const handleDown = ({currentTarget}:any)=>{
-  console.log('handleDown')
-  bandOnSubmit=true;
 }
 
-const handleReaded = async() => {
-  //if(bandOnSubmit) return false
-
+const handleReaded = async() => {  
   const {id} = chatActivo
-  //const resp = await fetchConToken(`mensajes/upRead`,{de:id},'POST');  
   const resp = await upReadGQL(id,auth.id)
 
   if(resp){
@@ -143,13 +114,7 @@ const handleReaded = async() => {
       de:auth.id,
       para:chatState.chatActivo.id,
     });
-    
-    /*socket.emit('actualizarMensajes',
-      {
-        de:auth.id,
-        para:chatState.chatActivo.id,
-      }
-    );*/
+        
   }
 }
 
@@ -186,12 +151,10 @@ if(!chatActivo.id){
     </div>
   );
 }else{
-  //const nombreDe = chatState.chatActivo.nombre ? chatState.chatActivo.nombre:chatState.chatActivo.alumno.nomentalu
   const nombreDe = chatState.chatActivo.alumno ? chatState.chatActivo.alumno.nomentalu : chatState.chatActivo.nombre
   const nombrePara = auth.usuario?(auth.usuario.alumno?auth.usuario.alumno.nomentalu:auth.usuario.nombre):null 
   return (<>
     <div className='h-full chatBoxMain' onMouseUp={handleReaded} >
-      {/*<div className='w-full h-full .chatMsg chatFlow ' >*/}
       {!chatState.mensajes.length && !chatState.cargando &&
         <div className='h-full wMid' >
           <Warning msg={"Envia un mensaje para iniciar una conversación..."} />
@@ -216,12 +179,7 @@ if(!chatActivo.id){
           {cargandoMsjs&&<MensajeCargando />}
         </div>
       </Fade>}
-
-        {/*<MensajeDe name={'Victor'} txt={"hola mundoasjdaksljdaslkdjaskldjasiodjoaisdjasi"} />
-        <MensajePara name={'Victor2'} txt={"hola mundo 2"} />*/}
-      
-      {/*</div>*/}
-    
+        
     <div className="flex items-start space-x-4 w-full"  >
       <div className="flex-shrink-0">
         <img
@@ -250,9 +208,7 @@ if(!chatActivo.id){
               
             />
 
-            {/* Spacer element to match the height of the toolbar */}
             <div className="py-2" aria-hidden="true">
-              {/* Matches height of button in toolbar (1px border + 36px content height) */}
               <div className="py-px">
                 <div className="h-9" />
               </div>
@@ -345,7 +301,6 @@ if(!chatActivo.id){
             <div className="flex-shrink-0">
               <button
                 type="submit"
-                onMouseDown={handleDown}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Enviar

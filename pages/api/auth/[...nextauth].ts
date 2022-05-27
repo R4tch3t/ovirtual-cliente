@@ -32,8 +32,7 @@ export default NextAuth({
             matricula: {label: 'Correo ó matrícula', type: 'text',placeholder:'08083206'},
             password: {label: 'Contraseña', type: 'text',placeholder:'Contraseña'}
         },
-        async authorize(credentials){
-            console.log(credentials)
+        async authorize(credentials){            
             const {matricula, password}:any = credentials
             const user = {matricula,password}
             return user;
@@ -46,8 +45,6 @@ export default NextAuth({
         if(account){
             token.accessToken = account.access_token
             
-            console.log(token)
-            console.log(account)
             switch(account?.type){
                 case 'oauth': 
                     user!.tipoCuenta=account?.type

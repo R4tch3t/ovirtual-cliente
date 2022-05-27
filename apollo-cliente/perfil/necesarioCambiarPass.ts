@@ -1,4 +1,4 @@
-import client, { TipoUsuario } from "..";
+import client from "..";
 import { gql } from "@apollo/client";
 interface Query {
     necesarioCambiarPass: {
@@ -7,11 +7,6 @@ interface Query {
     }
 }
 
-/*export type TipoRenovarUsuario = {
-    id: number;
-    uuid: string | null;
-    email: string;
-}*/
 
 export const necesarioCambiarPassGQL = async (id:number) => {
     const { data } = await client.query<Query>({

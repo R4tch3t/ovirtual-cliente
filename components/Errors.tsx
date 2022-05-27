@@ -5,8 +5,7 @@ export const Errors=({title, e, setELog}:any) => {
     title = e&&e.length<2?"Se encontro el siguiente error en la consulta:":
       (`Se encontraron ${e.length} errores en la consulta`)
    }
-    /*<div className="rounded-md bg-red-50 p-4" style={{position: 'fixed', width: '100%'}} >*/
-  
+   
     return (
     <div className="rounded-md bg-red-50 p-4"  >
           <div className="flex">

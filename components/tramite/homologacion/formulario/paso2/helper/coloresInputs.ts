@@ -1,6 +1,6 @@
 import { TypePaso2 } from '../../../../../../interfaces/pasos/homologacion';
 export const coloresInputs2 = (paso2:TypePaso2) => {
-    //if(campo==='celular'){
+
     const inputs:any = {}    
     const calleValido = paso2?.calle?.match(/^[0-9A-Z ]{3,32}$/i)
     if(!calleValido){
@@ -47,8 +47,6 @@ export const coloresInputs2 = (paso2:TypePaso2) => {
     }else{
         inputs.cp={color: 'primary'}
     }
-
-    //}
-    
+   
     return inputs
 }

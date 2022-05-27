@@ -1,13 +1,11 @@
 import {
     ClipboardListIcon,
     IdentificationIcon,
-    UserRemoveIcon,
-    ThumbDownIcon,
-    ClockIcon,
     PencilAltIcon,
     LibraryIcon
   } from '@heroicons/react/outline'
-type TypeTramite={
+
+  type TypeTramite={
     nombre: string,
     descripcion: string,
     icon: JSX.Element

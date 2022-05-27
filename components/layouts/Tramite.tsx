@@ -1,10 +1,9 @@
 import Link from 'next/link';
-import { FC, ReactElement, useState } from 'react';
+import { FC, useState } from 'react';
 import { useAppContext } from '../../auth/authContext'; 
-import { TablaInicial, TramitesPrincipales } from '../tramites';
- 
+
 const Home:FC = ({children}) => {
-    const {auth,logout}:any = useAppContext();
+    const {auth}:any = useAppContext();
     const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '/perfil'}]});
     const user = {
         name: auth.usuario?auth.usuario.alumno.nomentalu:null,
@@ -20,19 +19,13 @@ const Home:FC = ({children}) => {
         { label: 'Sick days left', value: 4 },
         { label: 'Personal days left', value: 2 },
       ]
-     // let [btnHome, setBtnHome]:any = useState([{html: 'Ver perfil', href: '#'}]);
+     
       const ShowGridLog = () => {
         setState({...state, 
             logBand: !state.logBand,
-            //btnHome: [{html: 'Iniciar sesión', onMouseUp: ShowGridLog }]
         });
-        //setLogBand(!logBand);
-        //setBtnHome( [{html: 'Iniciar sesión', onMouseUp: ShowGridLog }]);  
       }
       
-      console.log('home:')
-      console.log(auth)
-
       if(!auth.email){
         state.btnHome = [{
             html: state.logBand?'Registrar cuenta':'Iniciar sesión',
@@ -42,7 +35,7 @@ const Home:FC = ({children}) => {
         state.btnHome = [{html: 'Ver perfil', href: '/perfil', onMouseUp: null}];
       }
 
-      const {logBand, btnHome} = state 
+      const {btnHome} = state 
 
     return (
       <main className="-mt-24 pb-8">
@@ -50,11 +43,8 @@ const Home:FC = ({children}) => {
           <h1 className="sr-only">Tramites</h1>
             <div className="grid grid-cols-1 gap-4 items-start lg:grid-cols-2 lg:gap-8">
 
-
-                  {/* Left column */ }
                   <div className="grid grid-cols-1 gap-4 lg:col-span-2">
-                    {// Welcome panel 
-                    }
+                    
                     <section aria-labelledby="profile-overview-title">
                       <div className="rounded-lg bg-white overflow-hidden shadow">
                         <h2 className="sr-only" id="profile-overview-title">
@@ -69,7 +59,6 @@ const Home:FC = ({children}) => {
                               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                                 <p className="text-sm font-medium text-gray-600">Bienvenido(a),</p>
                                 <p className="text-xl font-bold text-gray-900 sm:text-2xl">{user.name}</p>
-                                {/*<p className="text-xl font-bold text-gray-900 sm:text-2xl">{auth.email}</p>*/}
                                 <p className="text-sm font-medium text-gray-600">{user.role}</p>
                               </div>
                             </div>
@@ -108,25 +97,14 @@ const Home:FC = ({children}) => {
                       </div>
                     </section>
     
-                    {// Actions panel 
-                    }
                     <section aria-labelledby="quick-links-title">
-                        
-                      {/*<div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
-                        <div className='relative bg-white p-6' >*/}
                              
                             {children}
                           
-                        
-                        {/*</div>
-                      </div>*/}
-
                     </section>
                     
                   </div>
     
-                  
-
           </div>
         </div>
       </main>

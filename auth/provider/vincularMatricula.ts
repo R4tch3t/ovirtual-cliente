@@ -28,8 +28,6 @@ const vincularMatricula = async (usuario:TypeUserO):Promise<[resp,TypeAuthState]
 }
 
 export const vincularMatriculaApollo = (resp:any):[resp,TypeAuthState] => {
-        
-    //const resp = await fetchConToken("login/vincularMatricula",{usuario},"POST");
     const json:TypeAuthState = {}
     if(resp.respVincularMatricula){
         

@@ -3,8 +3,7 @@ import { GetStaticProps,GetStaticPaths, NextPage } from 'next';
 import Router from 'next/router';
 import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
-import { fetchSinToken } from '../../../helpers/fetch';
-import { TypeTramitesState, TypeTramite } from '../../../interfaces';
+import { TypeTramite } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
 import { obtenerTramites, tramitePorId } from '../../../apollo-cliente';
 
@@ -18,11 +17,9 @@ const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const [state, setState]:any = useState(
     {
-        //tabs: Tabs,
         table: {
             head: [ 'Nombre', 'Responsable', 'Telefono' ],
             body: [] 
-            //body: [{'Nombre': props.tramite.tramitesModuloAtencions, 'Descripción': 'Descripcion1'}]
         } 
     }
   );
@@ -35,14 +32,11 @@ const TramiteHome:NextPage<Props> = (props) =>{
     )
   }
 
-  //console.log(auth)
-
   if(!auth.logged||(auth.usuario&&auth.usuario.matactiva === 0)){
    
     Router.replace("/");
   }
 
-  //state.table.body = []
   props.tramite.tramitesModuloAtencions?.map((modulo)=>{
     
     state.table.body.push({
@@ -51,9 +45,8 @@ const TramiteHome:NextPage<Props> = (props) =>{
       'Telefono': modulo.telefono
     })
   })
-// const {tabs}  = state
-const {head, body}  = state.table
 
+  const {head, body}  = state.table
 
   return (
     <PaginaTramite tramite={props.tramite} >
@@ -73,8 +66,6 @@ const {head, body}  = state.table
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  //const { data } = await  // your fetch function here 
-  //const {tramites}:TypeTramitesState = await fetchSinToken(`tramites/todos`);
   const tramites:TypeTramite[] = await obtenerTramites()
   
   return {
@@ -86,10 +77,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 }
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
-  //const resp = await fetchSinToken(`tramites/todos`);
   const {id} = params as {id: string} 
-  //const resp = await fetchSinToken(`tramites/${id}`);
-  //const {ok,tramite} = resp
   const tramite:TypeTramite = await tramitePorId(parseInt(id))
   if(!tramite){
     return {

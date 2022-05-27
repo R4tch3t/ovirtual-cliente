@@ -1,17 +1,12 @@
-import { Fragment, useEffect, useState } from 'react'
-import { Disclosure, Menu, Switch, Transition } from '@headlessui/react'
+import { useEffect, useState } from 'react'
 import {
   BellIcon,
-  CogIcon,
+  CollectionIcon,
   CreditCardIcon,
   KeyIcon,
-  MenuIcon,
   UserCircleIcon,
-  ViewGridAddIcon,
-  XIcon,
 } from '@heroicons/react/outline'
-import { urlBase } from '../../variables/url'
-import { Button, Grid, Input, Loading, Spacer } from "@nextui-org/react";
+import { Input, Loading, Spacer } from "@nextui-org/react";
 import { useAppContext } from '../../auth/authContext';
 import CambiarContraseña from '../settings/CambiarContraseña';
 import { ModalSuccess } from '../ModalSucces';
@@ -22,11 +17,10 @@ import { actualizarContraGQL } from '../../apollo-cliente/perfil/actualizarContr
 
 const subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: false },
-  //{ name: 'Account', href: '#', icon: CogIcon, current: false },
   { name: 'Contraseña', href: '/perfil/contra', icon: KeyIcon, current: true },
+  { name: 'Expediente', href: '/perfil/expediente', icon: CollectionIcon, current: false },
   { name: 'Notificaciones', href: '#', icon: BellIcon, current: false },
   { name: 'Facturación', href: '#', icon: CreditCardIcon, current: false },
-  //{ name: 'Integrations', href: '#', icon: ViewGridAddIcon, current: false },
 ]
 
 
@@ -42,10 +36,6 @@ const WarningPass = () => {
 }
 
 const PerfilContraseñaLayout = () => {
-  /*const [availableToHire, setAvailableToHire] = useState(true)
-  const [privateAccount, setPrivateAccount] = useState(false)
-  const [allowCommenting, setAllowCommenting] = useState(true)
-  const [allowMentions, setAllowMentions] = useState(true)*/
   const {auth, actualizadoContra, updateUser}:any = useAppContext();
   const [usuario, setUsuario] = useState({
     id: auth.id, 
@@ -54,7 +44,6 @@ const PerfilContraseñaLayout = () => {
     apellidos: auth.usuario ? auth.usuario.alumno.apeentalu:null,
     email: auth.email,
     newEmail: auth.email,
-   // matactiva: auth.usuario?auth.usuario.matactiva:null,
     matricula: auth.usuario?auth.usuario.matricula:null,
     passwordN: '',
     passwordC: '',
@@ -76,7 +65,6 @@ const PerfilContraseñaLayout = () => {
 
   const validarContraseñas = (n:string='',c:string) => {
     const valida = n === c && n !== '' && c !== ''
-    //const names = ['passwordN','passwordC']
     if(!valida){
       const invalid = {
         color: 'error', 
@@ -86,17 +74,8 @@ const PerfilContraseñaLayout = () => {
       if(n===''||c===''){
         invalid.helper='Contraseña invalida'
       }
-      /*names.map((name)=>{
-        setInputs({...inputs,[name]:{
-          color: 'error', 
-          helper: 'Matrícula invalida',
-          statusColor: 'error'
-        }})
-      })*/
       setInputs({...inputs,passwordN:invalid,passwordC:invalid})
     }
-
-  //}
   
     if(valida){
       const valid = {
@@ -109,68 +88,33 @@ const PerfilContraseñaLayout = () => {
     return n === c
   };
 
-  const validarCorreo = (value:string) => {
-    const valida = value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
-    const name='email'
-    if(!valida){
-      setInputs({...inputs,[name]:{
-        color: 'error', 
-        helper: 'Correo invalido',
-        statusColor: 'error'
-      }})
-    }
-
-  //}
-  
-    if(valida){
-      setInputs({...inputs,[name]:{
-        color: 'primary', 
-        helper: undefined
-      }})
-    }
-    return valida
-  };
+ 
 
   const onChange = ({target}:any) => {
-        
-    //if(!target) return false;
-
+ 
     const {name, value} = target;
     setUsuario({
       ...usuario,
       [name]: value
     });
-    console.log(usuario.passwordC)
-    console.log(name)
     switch(name){
       
       case 'passwordC':
         let n = usuario.passwordN
-        let valida = validarContraseñas(value,n)
-        if(!valida){
-              
-          //return false
-        }
+        validarContraseñas(value,n)
+        
       break
       case 'passwordN':
         n = usuario.passwordC
-        valida = validarContraseñas(value,n)
-        if(!valida){
-              
-          //return false
-        }
+        validarContraseñas(value,n)
+        
       break
     }
-
-   /* if(value===""){
-      setInputs({...inputs,[name]:{...inputs[name], color: 'secondary', helper: undefined}})
-    }*/
   }
 
   const onSubmit = async (e:any) => {
     setCargando(true)
 
-    //const resp = await updateUser(usuario,"login/updatePass");
     const user = {
       id: usuario.id!,
       password: usuario.password!,
@@ -246,7 +190,7 @@ const PerfilContraseñaLayout = () => {
               </aside>
 
               <form className="divide-y divide-gray-200 lg:col-span-9" action="#" method="POST">
-                {/* Profile section */}
+                
                 <div className="py-6 px-4 sm:p-6 lg:pb-8">
                   <div>
                     <h2 className="text-lg leading-6 font-medium text-gray-900">Contraseña</h2>
@@ -302,7 +246,6 @@ const PerfilContraseñaLayout = () => {
 
                 </div>
 
-                {/* Privacy section */}
                 <div className="pt-6 divide-y divide-gray-200">
 
                   

@@ -1,98 +1,44 @@
-
-    /*import {
-        AcademicCapIcon,
-        BadgeCheckIcon,
-        CashIcon,
-        ClockIcon,
-        ReceiptRefundIcon,
-        UsersIcon,
-    } from '@heroicons/react/outline'*/
-
-    import Image from 'next/image'
-    import { FC } from 'react'
+import Image from 'next/image'
+import { FC } from 'react'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
-    import { TypeUnidadesAcademicas } from '../../../interfaces'
+import { TypeUnidadesAcademicas } from '../../../interfaces'
 
-    import IconUni from '../../../public/iconUni.png'
+import IconUni from '../../../public/iconUni.png'
 import { types } from '../../../types/tramites'
 
-    type Props = {
-      unidadesAcademicas: TypeUnidadesAcademicas[]
-    }
+type Props = {
+  unidadesAcademicas: TypeUnidadesAcademicas[]
+}
 
-    const icon = <Image src={IconUni} width={60} height={60} />
-    const colores = [
-      {
-          iconForeground: 'text-teal-700',
-          iconBackground: 'bg-teal-50',
-      },
-      {
-          iconForeground: 'text-purple-700',
-          iconBackground: 'bg-purple-50',
-      },
-      {
-          iconForeground: 'text-sky-700',
-          iconBackground: 'bg-sky-50',
-      },
-      {  
-          iconForeground: 'text-yellow-700', iconBackground: 'bg-yellow-50' },
-      {
-          iconForeground: 'text-rose-700',
-          iconBackground: 'bg-rose-50',
-      },
-      {
-          iconForeground: 'text-indigo-700',
-          iconBackground: 'bg-indigo-50',
-      },
-    ]
+const icon = <Image src={IconUni} width={60} height={60} />
+const colores = [
+  {
+      iconForeground: 'text-teal-700',
+      iconBackground: 'bg-teal-50',
+  },
+  {
+      iconForeground: 'text-purple-700',
+      iconBackground: 'bg-purple-50',
+  },
+  {
+      iconForeground: 'text-sky-700',
+      iconBackground: 'bg-sky-50',
+  },
+  {  
+      iconForeground: 'text-yellow-700', iconBackground: 'bg-yellow-50' },
+  {
+      iconForeground: 'text-rose-700',
+      iconBackground: 'bg-rose-50',
+  },
+  {
+      iconForeground: 'text-indigo-700',
+      iconBackground: 'bg-indigo-50',
+  },
+]
 
-    
-
-    /*const actions = [
-        {
-            title: 'Request time off',
-            href: '#',
-            icon,
-            iconForeground: 'text-teal-700',
-            iconBackground: 'bg-teal-50',
-        },
-        {
-            title: 'Benefits',
-            href: '#',
-            icon,
-            iconForeground: 'text-purple-700',
-            iconBackground: 'bg-purple-50',
-        },
-        {
-            title: 'Schedule a one-on-one',
-            href: '#',
-            icon,
-            iconForeground: 'text-sky-700',
-            iconBackground: 'bg-sky-50',
-        },
-        { 
-            title: 'Payroll', href: '#', 
-            icon, 
-            iconForeground: 'text-yellow-700', iconBackground: 'bg-yellow-50' },
-        {
-            title: 'Submit an expense',
-            href: '#',
-            icon,
-            iconForeground: 'text-rose-700',
-            iconBackground: 'bg-rose-50',
-        },
-        {
-            title: 'Training',
-            href: '#',
-            icon,
-            iconForeground: 'text-indigo-700',
-            iconBackground: 'bg-indigo-50',
-        },
-    ]*/
-  
-  function classNames(...classes:any) {
-    return classes.filter(Boolean).join(' ')
-  }
+function classNames(...classes:any) {
+  return classes.filter(Boolean).join(' ')
+}
 
 const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
   const {dispatch}:any = useTramitesContext();
@@ -142,10 +88,6 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
               <div style={{textAlign: 'center'}} >
                 <span
                   className={classNames(
-                    /*action.iconBackground,
-                    action.iconForeground,*/
-                    //'text-teal-700',
-                    //'bg-teal-50',
                     colores[c].iconBackground,
                     colores[c].iconForeground,
                     'rounded-lg inline-flex p-3 ring-4 ring-white'
@@ -153,13 +95,11 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
                   
                 >
                      {icon} 
-                  {/*<action.icon className="h-6 w-6" aria-hidden="true" />*/}
                 </span>
               </div>
               <div className="mt-8">
                 <h3 className="text-lg font-medium">
                   <a href={undefined} className="focus:outline-none">
-                    {/* Extend touch target to entire panel */}
                     <span className="absolute inset-0" aria-hidden="true" />
                     {unidad.nombrePlanEstudios}
                   </a>

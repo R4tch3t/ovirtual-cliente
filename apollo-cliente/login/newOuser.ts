@@ -1,6 +1,5 @@
 import client, { TipoUsuario } from "..";
 import { gql } from "@apollo/client";
-import { TypeUserO } from "../../interfaces";
 interface Mutation {
     newOuser: {
         respNewOuser: boolean,
@@ -40,6 +39,26 @@ export const newOuserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                         apeentalu
                         crpentalu
                         mailentalu
+                    }
+                    expediente {
+                        id
+                        userAlumnoId
+                        validado
+                        documento {
+                            id
+                            nombre
+                            descripcion
+                        }
+                    }
+                    vwAlumnoConPlanes {
+                        PLESXUR
+                        CVEENTESC
+                        CVEPLNEST
+                        VRSPLNEST
+                        ESCUELA
+                        PLANESTUDIOS
+                        NIVEL
+                        PERINIPLN
                     }
                 }
                 token

@@ -38,7 +38,7 @@ const tramitePorId = async (id:number) => {
           }
         `,
       });
-      console.log(data)
+      
       return data.tramitePorID
 }
 

@@ -18,15 +18,9 @@ const PasosHomologacion:FC<Props> = ({paises}) => {
   const {tramitesState, dispatch} = useTramitesContext()
   const {planElegido, localidad, paso1, paso2, paso3, paso4, paso5} = tramitesState.procedimientos.homologacion!
   const atras = (i: number) => {
-    //const nombrePaso='paso1';
-
-    const pasos = ['paso1', 'paso2', 'paso3', 'paso4', 'paso5']
-
-    // set undefined
-    const nombreCampo='completo';
-    //let i = pasos.length-1
-    //while(i<count-1){
-      //const paso = pasos[i]
+    
+  const pasos = ['paso1', 'paso2', 'paso3', 'paso4', 'paso5']
+  const nombreCampo='completo';
     pasos.map((paso)=>{
       dispatch({
         type: types.cambiarPaso,
@@ -34,37 +28,11 @@ const PasosHomologacion:FC<Props> = ({paises}) => {
       });
     })
     navegarPaso(i)
-    /*pasos.map((paso)=>{
-
-      //const valorCampo=undefined
-
-      dispatch({
-          type: types.cambiarPaso,
-          payload: {nombrePaso: paso,nombreCampo,valorCampo: valorCampo?false:undefined}
-      });  
-    })*/
-    
-    
-    //const valorCampo=false
-    /*if(i>0){
-      dispatch({
-        type: types.cambiarPaso,
-        payload: {nombrePaso: pasos[i-1], nombreCampo,valorCampo: true}
-      });
-    }*/
-
-    /*dispatch({
-        type: types.cambiarPaso,
-        payload: {nombrePaso,nombreCampo,valorCampo}
-    });*/
 }
 
   const navegarPaso = (count: number) => {
-    //const nombrePaso='paso1';
-
     const pasos = ['paso1', 'paso2', 'paso3', 'paso4', 'paso5']
 
-    // set undefined
     const nombreCampo='completo';
     let i = 0
     while(i<count-1){
@@ -75,28 +43,12 @@ const PasosHomologacion:FC<Props> = ({paises}) => {
       });
       i++;
     }
-    /*pasos.map((paso)=>{
-
-      //const valorCampo=undefined
-
-      dispatch({
-          type: types.cambiarPaso,
-          payload: {nombrePaso: paso,nombreCampo,valorCampo: valorCampo?false:undefined}
-      });  
-    })*/
     
-    
-    //const valorCampo=false
-
     dispatch({
       type: types.cambiarPaso,
       payload: {nombrePaso: pasos[i], nombreCampo,valorCampo: false}
     });
 
-    /*dispatch({
-        type: types.cambiarPaso,
-        payload: {nombrePaso,nombreCampo,valorCampo}
-    });*/
 }
 
   const steps = [
@@ -179,7 +131,6 @@ const PasosHomologacion:FC<Props> = ({paises}) => {
 
               {stepIdx !== steps.length - 1 ? (
                 <>
-                  {/* Arrow separator for lg screens and up */}
                   <div className="hidden md:block absolute top-0 right-0 h-full w-5" aria-hidden="true">
                     <svg
                       className="h-full w-full text-gray-300"

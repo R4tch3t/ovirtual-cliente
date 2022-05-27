@@ -1,9 +1,7 @@
 import { types } from "../../../../../../types/tramites";
 
-const confirmEmail = (value:string, emailActual:string, setInputs:any,inputs:any,dispatch:any) => {
-    //const valida = value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{1,4}$/i);
-    const valida = emailActual && value === emailActual 
-    console.log('emailActual, ',emailActual)
+const confirmEmail = (value:string, emailActual:string, setInputs:any,inputs:any,dispatch:any) => {    
+    const valida = emailActual && value === emailActual     
     const name='confirmEmail'
     if(!valida){
       const helper = emailActual ? '¡ERROR! La confirmación fallo...' : 'Email INVALIDO' 
@@ -14,7 +12,6 @@ const confirmEmail = (value:string, emailActual:string, setInputs:any,inputs:any
       }})
     }
 
-  //}
   
     if(valida){
       

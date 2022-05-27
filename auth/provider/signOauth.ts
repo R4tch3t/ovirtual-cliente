@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { fetchSinToken } from "../../helpers/fetch";
-import { TypeAuthState, TypeSignupO } from "../../interfaces/TypesContext";
+import { TypeAuthState } from "../../interfaces/TypesContext";
 
 type user = {
     name:string,
@@ -29,14 +29,11 @@ const signOauth = async (user:user):Promise<[resp,TypeAuthState]>  => {
         json.email=usuario.email
         json.usuario=usuario
         
-        //return resp.ok;
     }
     return [resp,json];
 }
 
 export const signOauthApollo = (resp:any):[resp,TypeAuthState]  => {
-    //const {name, email} = user
-    //const resp = await fetchSinToken("login/newO",{name,email},"POST");
     const json:TypeAuthState={}
     if(resp.respNewOuser){
         localStorage.setItem("token",resp.token);
@@ -50,7 +47,6 @@ export const signOauthApollo = (resp:any):[resp,TypeAuthState]  => {
         json.email=usuario.email
         json.usuario=usuario
         
-        //return resp.ok;
     }
     return [resp,json];
 }

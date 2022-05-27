@@ -11,8 +11,6 @@ const validarNumeroExt = (value:string | undefined,setInputs:any,inputs:any,disp
     }})
   }
 
-//}
-
   if(valida){
       setInputs({...inputs,[name]:{
           color: 'primary', 
@@ -20,14 +18,14 @@ const validarNumeroExt = (value:string | undefined,setInputs:any,inputs:any,disp
           statusColor: 'primary'
       }})
   }
-      const nombrePaso='paso2';
-      const nombreCampo='numeroExt';
-      const valorCampo=value
-      
-      dispatch({
-          type: types.cambiarPaso,
-          payload: {nombrePaso,nombreCampo,valorCampo}
-      });
+  const nombrePaso='paso2';
+  const nombreCampo='numeroExt';
+  const valorCampo=value
+  
+  dispatch({
+      type: types.cambiarPaso,
+      payload: {nombrePaso,nombreCampo,valorCampo}
+  });
   
   return valida
 };

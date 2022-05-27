@@ -27,6 +27,11 @@ a {
   box-sizing: border-box;
 }
 
+.select-file:hover{
+  color: #0070f3;
+  cursor: pointer;
+}
+
 .select-feed:hover{
   background-color:aliceblue;
   color: #0070f3;
@@ -172,11 +177,12 @@ a {
 }
 
 #nombrePerfil,#correoPerfil,#contraPerfil,
-#matriculaPerfil,#apePerfil,#contraNPerfil,
+#matriculaPerfil,#apePerfil,#ape2Perfil,#contraNPerfil,
 #contraCPerfil,#curp,#nombreTramite,#ape1Tramite,
 #ape2Tramite,#celular,#telefono,#email,#confirmEmail,
 #calle,#numeroExt,#numeroInt,#colonia,#cp,
-#escuelaProcedencia,#matricula{
+#escuelaProcedencia,#matricula,#periodoBaja,
+#causaBaja{
   @apply focus:ring-0;
 }
 

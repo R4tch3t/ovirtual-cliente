@@ -41,6 +41,16 @@ export const newUserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                         crpentalu
                         mailentalu
                     }
+                    expediente {
+                        id
+                        userAlumnoId
+                        validado
+                        documento {
+                            id
+                            nombre
+                            descripcion
+                        }
+                    }
                 }
                 token
                 msg

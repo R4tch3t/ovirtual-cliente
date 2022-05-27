@@ -1,17 +1,15 @@
 import type {NextPage} from 'next'
-import Router  from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAppContext } from '../auth/authContext';
 import { ModalError } from './ModalError';
 import { signIn } from "next-auth/react";
 import { Loading } from '@nextui-org/react';
 import Link from 'next/link';
+
 type TypeBands = {'github':boolean,'google':boolean,'facebook':boolean}
+
 const Login: NextPage = () => {
-  //let sE:any = ['']
-  //const auth = RedirecApp();
   const {auth, loading}:any = useAppContext();
-  //const [eLog, setELog] = useState({band: false, errors: ['']})
   const {login}:any = useAppContext()
   const [form, setForm] = useState({
     email:'',
@@ -52,59 +50,30 @@ const Login: NextPage = () => {
       localStorage.removeItem("email");
     const ok = await login(form.email,form.password);
     if(!ok){
-      //sE=["Verificar usuario y/o contraseña"]
-      /*const errors:any=[];
-      errors.push("Verificar usuario y/o contraseña.");
-      setELog({band:!ok,errors});*/
       setDataModal({title: "Error", txt: "Verificar usuario y/o contraseña.", btn1: {txt:"Regresar al inicio", onClose:setModalE} })
       setModalE(true);
     }
-    console.log(ok)
   }
 
   const todoOk = () => {
     return (form.email.length>0&&form.password.length>0)?true:false
   }
   const oAuth = (provider:string) => {
-    //loading();
     if(bandsL.github||bandsL.google||bandsL.facebook){
       return false
     }
     setBandsL({...bandsL,[provider]: true});
-    /*switch(provider){
-      case 'github':{
-        //bandsL[provider]=true
-        setBandsL({...bandsL,github: true});
-        break;
-      }
-    }*/
     
     signIn(provider,{redirect: false,callbackUrl: undefined});
   }
-  /*
-  if(auth.checking){
-    return <h1>ESPERE PORFAVOR...</h1>
-  }
-
-  if(auth.logged){
-      Router.push("/");
-  }*/
-
+  
   return (
     <main className="-mt-24">
-          {/*
-            This example requires updating your template:
+  
+    {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+      txt={dataModal.txt} btn1={dataModal.btn1} />}
     
-            ```
-            <html class="h-full bg-gray-50">
-            <body class="h-full">
-            ```
-          */}
-          {/*eLog.band&&<Errors e={eLog.errors} setELog={setELog} />*/}
-          {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-            txt={dataModal.txt} btn1={dataModal.btn1} />}
-          
-          {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
+    {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
           <h2 className='rightH2' >Acceso</h2>
     
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

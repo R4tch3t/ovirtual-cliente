@@ -1,6 +1,5 @@
 import { TypePaso4 } from '../../../../../../interfaces/pasos/homologacion';
 export const coloresInputs4 = (paso4:TypePaso4) => {
-    //if(campo==='celular'){
     const inputs:any = {}    
     
 
@@ -25,8 +24,6 @@ export const coloresInputs4 = (paso4:TypePaso4) => {
     }else{
         inputs.matricula={color: 'primary'}
     }
-
-    //}
-    
+   
     return inputs
 }

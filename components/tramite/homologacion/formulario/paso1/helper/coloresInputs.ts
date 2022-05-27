@@ -1,7 +1,7 @@
 import { validarCURP } from '../../../../../../helpers/validarCURP';
 import { TypePaso1 } from '../../../../../../interfaces/pasos/homologacion';
+
 export const coloresInputs1 = (paso1:TypePaso1) => {
-    //if(campo==='celular'){
     const inputs:any = {}    
     const curpValido = paso1?.curp !== undefined ? validarCURP(paso1?.curp) : paso1?.curp 
     if(!curpValido){
@@ -82,7 +82,6 @@ export const coloresInputs1 = (paso1:TypePaso1) => {
             inputs.confirmEmail={color: 'primary'}
         }
     }
-    //}
     
     return inputs
 }

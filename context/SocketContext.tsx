@@ -4,7 +4,6 @@ import {useSocket} from '../hooks/useSocket'
 import { useAppContext } from '../auth/authContext';
 import { useChatContext } from './chat/ChatContext';
 import {types} from '../types/types';
-import {scrollToBottomAnimated} from '../helpers/scrollToBottom';
 import writingState from '../helpers/writingState';
 import { urlSocket } from '../variables/url';
 import { obtenerUsuariosGQL } from '../apollo-cliente/chat/obtenerUsuarios';
@@ -34,7 +33,7 @@ const SocketProvider = ({ children }:any) => {
     //Escuchar los cambios en los usuarios conectados
 
     useEffect(()=>{
-        socket?.on("getUsuarios",async (/*usuarios:any*/)=>{
+        socket?.on("getUsuarios",async ()=>{
             const usuarios = await obtenerUsuariosGQL()
             dispatch({
                 type: types.usuariosCargados,
@@ -45,7 +44,7 @@ const SocketProvider = ({ children }:any) => {
 
     //recargar mensajes del chat
     useEffect(()=>{
-        socket?.on('recargarChat',async (/*mensajes:any*/payload:any)=>{
+        socket?.on('recargarChat',async (payload:any)=>{
             
             const {mensajes} = await obtenerChatGQL(payload.de,payload.para,0,30)
             dispatch({
@@ -63,20 +62,12 @@ const SocketProvider = ({ children }:any) => {
 
     useEffect(()=>{
         socket?.on('mensaje-personal',(mensaje:any)=>{
-            /*dispatch({
-                type: types.animacion,
-                payload: false
-            });*/
+            
             dispatch({
                 type: types.nuevoMensaje,
                 payload: mensaje
             });
-            /*dispatch({
-                type: types.animacion,
-                payload: true
-            });*/
-                //scrollToTopAnimated('chatBox');
-                //scrollToBottomAnimated('chatBox');
+            
         });
     },[socket,dispatch])
 
@@ -86,13 +77,11 @@ const SocketProvider = ({ children }:any) => {
             
             let {usuarios} = payload;
             usuarios = writingState(usuarios,payload.de,true);
-            console.log("writingDown")
-            console.log(usuarios)
             dispatch({
                 type: types.usuariosCargados,
                 payload: usuarios
             });
-                //scrollToBottomAnimated('chatBox');
+            
         });
 
     },[socket,dispatch])
@@ -107,7 +96,7 @@ const SocketProvider = ({ children }:any) => {
                 type: types.usuariosCargados,
                 payload: usuarios
             });
-                //scrollToBottomAnimated('chatBox');
+           
         });
         
     },[socket,dispatch])

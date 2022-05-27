@@ -3,8 +3,6 @@ import io from 'socket.io-client';
 
 
 export const useSocket = ( serverPath:any ) => {
-    
-    //const socket = useMemo(() => io( serverPath, {transports: ['websocket']} ), [ serverPath ] );
     const [socket, setSocket]:any = useState(null)
     const [ online, setOnline ] = useState(false);
 

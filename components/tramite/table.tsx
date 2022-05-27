@@ -1,7 +1,5 @@
 import Link from "next/link"
 import { FC } from "react"
-
-
 interface TipoTable  {
     head: string[],
     body: any[]

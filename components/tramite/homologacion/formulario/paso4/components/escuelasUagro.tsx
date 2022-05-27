@@ -11,28 +11,17 @@ function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
 
-/*const nacionalidades:TypeNacionalidad[] = [
-    {id: 0, nombre: 'MEXICANA'},
-    {id: 1, nombre: 'EXTRANJERA'},
-]*/
-
 const EscuelasUagro = () => {
     const {tramitesState, dispatch} = useTramitesContext()
     const {paso4} = tramitesState.procedimientos.homologacion!
     const [query, setQuery] = useState('')
-    let { data } = usePlanesOfertados(1)
-   // const { data } = paso2?.entidadFedID !== undefined ? useMunicipios(paso2?.entidadFedID) : {data: {municipios: []}}
+    let { data } = usePlanesOfertados(1)    
     
-    
-    if(!data){
-        //data={localidades: []}
+    if(!data){        
         return <></>
     }
 
     const {planesOfertados} = data!
-    
-    //const [naSelec, setNaSelec] = useState()
-    //const naSelec = paso2 ? entidadesFederativas[paso2?.entidadFedID!] : undefined
     const naSelec = paso4 ? planesOfertados?.find((plan) => {
         return plan.claveUnidadAcademica === paso4.escuelaUagroClave
     }) : undefined;
@@ -55,7 +44,6 @@ const EscuelasUagro = () => {
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
         cambiarEstado(dispatch)
-        //setNaSelec(nacionalidad)
       }
     
     return (
@@ -69,7 +57,6 @@ const EscuelasUagro = () => {
                 displayValue={(plan:TypeUnidadesAcademicas) => plan.nombreUnidadAcademica}
             
             />
-                                            {/* ${!focused?'w-full':''} mejor edicion del input, pero perdida de la anchura del boton */}      
             <Combobox.Button className={`absolute w-full inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none`}>
                 <SelectorIcon className="h-5 w-5 text-gray-400 absolute right-0" aria-hidden="true" />
             </Combobox.Button>
@@ -89,19 +76,10 @@ const EscuelasUagro = () => {
                 >
                     {({ active, selected }) => (
                     <>
-                        <div className="flex items-center">
-                            
-                        {/*<span
-                            className={classNames(
-                            'inline-block h-2 w-2 flex-shrink-0 rounded-full',
-                            tramite.necesitaValidacion===1 ? 'bg-green-400' : 'bg-gray-200'
-                            )}
-                            aria-hidden="true"
-                        />*/}
+                        <div className="flex items-center">                                                    
 
                         <span className={classNames('ml-3 truncate', selected && 'font-semibold')}>
-                            {plan.nombreUnidadAcademica}
-                            {/*<span className="sr-only"> is {tramite.necesitaValidacion===1 ? 'online' : 'offline'}</span>*/}
+                            {plan.nombreUnidadAcademica}                            
                         </span>
 
                         </div>

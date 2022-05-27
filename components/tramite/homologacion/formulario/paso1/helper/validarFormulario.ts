@@ -1,10 +1,7 @@
-//import { useTramitesContext } from "../../../../../../context/tramites/TramitesContext"
 import { validarCURP } from '../../../../../../helpers/validarCURP';
 import { TypePaso1 } from '../../../../../../interfaces/pasos/homologacion/paso1';
 
 const validarFormulario1 = (paso1: TypePaso1) => {
-    //const {tramitesState} = useTramitesContext()
-    //const {paso1} = tramitesState.procedimientos.homologacion!
     let valido: any = paso1?.nacionalidadID !== undefined
     valido = paso1?.nacionalidadID === 1 ? (valido && paso1?.paisID !== undefined && paso1?.paisID !== null) : valido
     valido = valido && 

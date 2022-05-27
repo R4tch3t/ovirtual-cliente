@@ -1,18 +1,15 @@
-import React, { createContext, FC, useCallback, useContext, useState } from "react";
+import React, { createContext, FC, useCallback, useState } from "react";
 import { useChatContext } from "../../context/chat/ChatContext";
-import {fetchConToken, fetchSinToken } from "../../helpers/fetch";
 import { TypeAuthState, TypeContext, TypeLogin, TypeVincular, TypeResentemail, TypeSignup, TypeSignupO } from "../../interfaces";
 import {types} from "../../types/types"; 
 import Cookies from 'js-cookie';
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from 'react';
-import loginRes, { loginApollo } from './login'
-import signOauthRes, { signOauthApollo } from './signOauth'
-import vincularMatriculaRes, { vincularMatriculaApollo } from './vincularMatricula'
-import { useLogin } from "../../hooks";
+import { loginApollo } from './login'
+import { signOauthApollo } from './signOauth'
+import { vincularMatriculaApollo } from './vincularMatricula'
 import { loginGraphQL, newOuserGraphQL, newUserGraphQL, renovarTokenGraphQL } from "../../apollo-cliente";
 import { necesarioCambiarPassGQL, vincularMatriculaGQL, actualizarUsuarioGQL } from "../../apollo-cliente/perfil";
-//import { actualizarUsuarioGQL } from "../../apollo-cliente/perfil/actualizarUsuario";
 import { reenviaremailGraphQL } from "../../apollo-cliente/login/reenviaremail";
 
 export const AuthContext = createContext({} as TypeContext);
@@ -31,13 +28,9 @@ export const AuthProvider: FC = ({ children }) => {
     const [auth, setAuth] = useState(initialState);
     const {dispatch} = useChatContext();
     const {data, status} = useSession();
-    //const LogginHook = useLogin(null,null)
     
     useEffect(()=>{
         if(status==="authenticated"){
-            console.log({data: data});
-            console.log({user: data?.user});
-            console.log({user: data?.account});
             const {tipoCuenta}:any = data?.user
             switch(tipoCuenta){
                 case 'oauth':
@@ -62,11 +55,7 @@ export const AuthProvider: FC = ({ children }) => {
 
     
     const login:TypeLogin = async (email:string, password:string) => {
-        //const LogginHook = useLogin(null,null)
-        //const {data} = useLogin(null,null)
-        //const {data} = await LogginHook.refetch({email,password});
         const data = await loginGraphQL(email,password);
-        //const [resp, auth] = await loginRes(email,password)
         const [resp, auth] = loginApollo(data)
         
         if(resp.respLogin){
@@ -76,15 +65,11 @@ export const AuthProvider: FC = ({ children }) => {
     }
 
     const signup:TypeSignup = async (user):Promise<boolean> => {
-        const {matricula, email, password} = user
         const nuevoUsuario = {
             matricula: user.matricula!,
             email: user.email!
         }
-        //const resp = await fetchSinToken("login/new",{matricula,email,password},"POST");
         const resp = await newUserGraphQL(nuevoUsuario)
-        console.log("registerProv");
-        console.log(resp);
         if(resp?.respNewUser){
             return resp?.respNewUser;
         }
@@ -92,7 +77,6 @@ export const AuthProvider: FC = ({ children }) => {
     }
 
     const signOauth:TypeSignupO = async (user) => {
-        //const [resp,auth] = await signOauthRes(user)
         const nU = {
             name: user.name!,
             email: user.email!
@@ -100,8 +84,7 @@ export const AuthProvider: FC = ({ children }) => {
 
         const data = await newOuserGraphQL(nU)
         const [resp, auth] = signOauthApollo(data);
-        console.log('auth')
-        console.log(auth)
+        
         if(resp.respNewOuser){
             setAuth(auth);
             return resp.respNewOuser
@@ -112,12 +95,11 @@ export const AuthProvider: FC = ({ children }) => {
     const resentemail:TypeResentemail = async (user) => {
         const {email, matricula} = user
         const resp = await reenviaremailGraphQL({email, matricula})
-        //const resp = await fetchSinToken("login/resentemail",{email},"POST");
-        console.log("registerProv");
-        console.log(resp);
+        
         if(resp.respReenviaremail){
             return resp.respReenviaremail;
         }
+
         return resp.msg;
     }
 
@@ -125,7 +107,6 @@ export const AuthProvider: FC = ({ children }) => {
 
     const verificaToken = useCallback( async()=>{
         const token = localStorage.getItem("token") || Cookies.get('next-auth.session-token')
-        console.log(token,"verificaToken??",Cookies.get('token'))
         if(!token){
             setAuth({
                 checking: false,  
@@ -135,9 +116,8 @@ export const AuthProvider: FC = ({ children }) => {
             return false;
         }
 
-        //const resp = await fetchConToken("login/renew")
         const resp = await renovarTokenGraphQL(localStorage.getItem("token")!)
-        //???wtf
+        
         if(resp.respRenovarToken){
             localStorage.setItem("token",resp.token);
             const {usuario}:any = resp
@@ -165,7 +145,6 @@ export const AuthProvider: FC = ({ children }) => {
     }, [setAuth]);
 
     const vincularMatricula:TypeVincular = async (usuario:any) => {
-        //const [resp,auth] = await vincularMatriculaRes(usuario)
         const u = {
             id: usuario.id!,
             name: usuario.name!,
@@ -192,7 +171,6 @@ export const AuthProvider: FC = ({ children }) => {
             });
             return false;
         }
-
         
         const ActualizarU = {
             id: user.id!,
@@ -204,16 +182,12 @@ export const AuthProvider: FC = ({ children }) => {
             newEmail: user.newEmail!,
             password: user.password!
         }
-        console.log("updateGQL: ",user)
-        //const resp = await fetchConToken(endpoint,{user},"POST")
+        
         const resp = await actualizarUsuarioGQL(ActualizarU!)
         if(resp?.respActualizarUsuario){
             localStorage.setItem("token",resp?.token!);
             Cookies.set("token",resp?.token!);
             const {usuario}:any = resp
-            //if(status==='authenticated'){
-                
-            //}
             setAuth({
                 id: usuario.id,
                 uuid: usuario.uuid,
@@ -247,7 +221,6 @@ export const AuthProvider: FC = ({ children }) => {
     }
     
     const actualizadoContra = async (id: number ) => {
-        //const resp = await fetchConToken("login/actualizadoContra",{id},"POST")
         const resp = await necesarioCambiarPassGQL(id)
         return resp
     }

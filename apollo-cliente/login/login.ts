@@ -20,7 +20,21 @@ export type TipoUsuario = {
     activated: number | null;
     matactiva: number | null;
     lastConn: Date | null;
-    alumno: TipoAlumno
+    alumno: TipoAlumno;
+    expediente: TipoExpediente[] | null;
+    vwAlumnoConPlanes: TipoVwAlumnoConPlanes[] | null
+}
+
+export type TipoExpediente = {
+    id: number
+    validado:number
+    documento: TipoDocumento
+}
+
+export type TipoDocumento = {
+    id: number,
+    nombre: string,
+    descripcion: string
 }
 
 export type TipoAlumno = {
@@ -29,6 +43,17 @@ export type TipoAlumno = {
     apeentalu: string;
     crpentalu: string;
     mailentalu: string;
+}
+
+export type TipoVwAlumnoConPlanes = {
+    PLESXUR: number,
+    CVEENTESC: number,
+    CVEPLNEST: number,
+    VRSPLNEST: number,
+    ESCUELA: string,
+    PLANESTUDIOS: string,
+    NIVEL: number,
+    PERINIPLN: string
 }
 
 export const loginGraphQL = async (email:string,password:string) => {
@@ -56,6 +81,26 @@ export const loginGraphQL = async (email:string,password:string) => {
                         apeentalu
                         crpentalu
                         mailentalu
+                    }
+                    expediente {
+                        id
+                        userAlumnoId
+                        validado
+                        documento {
+                            id
+                            nombre
+                            descripcion
+                        }
+                    }
+                    vwAlumnoConPlanes {
+                        PLESXUR
+                        CVEENTESC
+                        CVEPLNEST
+                        VRSPLNEST
+                        ESCUELA
+                        PLANESTUDIOS
+                        NIVEL
+                        PERINIPLN
                     }
                 }
                 token

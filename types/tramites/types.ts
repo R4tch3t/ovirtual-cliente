@@ -5,4 +5,6 @@ export const types = {
     seleccionarPlan: "[Tramites] Seleccionando plan",
     cambiarPaso: "[Tramites Pasos] Cambiar paso",
     cargarHomologacionDB: "[Tramites CargarDB] Cargar homologacion",
+    seleccionarPlanBajaTemporal: "[Tramite.BajaTemporal] Seleccionando plan",
+    cambiarEstado: "[Tramites] Cambiar estado",
 }

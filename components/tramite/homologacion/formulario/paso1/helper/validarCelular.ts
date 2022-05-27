@@ -13,19 +13,15 @@ const validarCelular = (value:string | undefined,setInputs:any,inputs:any,dispat
     }})
   }
 
-//}
-
   if(valida){
       setInputs({...inputs,[name]:{
           color: 'primary', 
           helper: 'Número de celular ¡VALIDO!',
           statusColor: 'primary'
       }})
-//      valorCampo=value
   }    
       const nombrePaso='paso1';
       const nombreCampo='celular';
-      //const valorCampo=value
       
       dispatch({
           type: types.cambiarPaso,

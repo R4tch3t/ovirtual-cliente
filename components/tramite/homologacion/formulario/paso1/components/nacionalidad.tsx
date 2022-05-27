@@ -23,7 +23,6 @@ const Nacionalidad = () => {
     const {tramitesState, dispatch} = useTramitesContext()
     const [query, setQuery] = useState('')
     const {paso1} = tramitesState.procedimientos.homologacion!
-    //const [naSelec, setNaSelec] = useState()
     const naSelec = paso1 ? nacionalidades[paso1.nacionalidadID!] : undefined
 
     const nacionalidadFiltrado =
@@ -43,7 +42,6 @@ const Nacionalidad = () => {
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
         cambiarEstado(dispatch)
-        //setNaSelec(nacionalidad)
       }
 
     return (
@@ -57,7 +55,7 @@ const Nacionalidad = () => {
             displayValue={(nacionalidad:TypeNacionalidad) => nacionalidad.nombre}
             
             />
-                                            {/* ${!focused?'w-full':''} mejor edicion del input, pero perdida de la anchura del boton */}      
+
             <Combobox.Button className={`absolute w-full inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none`}>
             <SelectorIcon className="h-5 w-5 text-gray-400 absolute right-0" aria-hidden="true" />
             </Combobox.Button>
@@ -79,17 +77,9 @@ const Nacionalidad = () => {
                     <>
                         <div className="flex items-center">
                             
-                        {/*<span
-                            className={classNames(
-                            'inline-block h-2 w-2 flex-shrink-0 rounded-full',
-                            tramite.necesitaValidacion===1 ? 'bg-green-400' : 'bg-gray-200'
-                            )}
-                            aria-hidden="true"
-                        />*/}
 
                         <span className={classNames('ml-3 truncate', selected && 'font-semibold')}>
-                            {nacionalidad.nombre}
-                            {/*<span className="sr-only"> is {tramite.necesitaValidacion===1 ? 'online' : 'offline'}</span>*/}
+                            {nacionalidad.nombre}                        
                         </span>
 
                         </div>

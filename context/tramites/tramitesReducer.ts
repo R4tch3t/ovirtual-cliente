@@ -1,12 +1,16 @@
 import { TypeTramitesAction, TypeTramitesState } from "../../interfaces";
 import {types} from "../../types/tramites";
-import { TypeHomologacion } from '../../interfaces/TypesTramitesContext';
 
 export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesAction):TypeTramitesState => {
+    let usuarioId = null
+    let plesXur = null
     let aspiranteId = null
     let planID = null
+    let unidadAcademica = null
     let planElegido = null
     let localidad = null
+    let periodoLectivo = null
+    let causaBaja = null
     let paso1 = null
     let paso2 = null
     let paso3 = null
@@ -26,7 +30,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                 catSeleccionado: action.payload
             }
         case types.seleccionarPlan:
-            //{planID, planElegido, localidad} = action.payload
+
             planID = action.payload.planID
             planElegido = action.payload.planElegido
             localidad = action.payload.localidad
@@ -34,6 +38,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
             return {
                 ...state,
                 procedimientos: {
+                    ...state.procedimientos,
                     homologacion: {
                         aspiranteId: null,
                         planID,
@@ -54,6 +59,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                 return {
                     ...state,
                     procedimientos: {
+                        ...state.procedimientos,
                         homologacion: {
                             ...state.procedimientos.homologacion!,
                             [nombrePaso]: {
@@ -78,6 +84,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                 return {
                     ...state,
                     procedimientos: {
+                        ...state.procedimientos,
                         homologacion: {
                             aspiranteId,
                             planID,
@@ -90,7 +97,44 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                             paso5
                         }
                     }
-                }                    
+                }
+            case types.seleccionarPlanBajaTemporal:
+        
+                usuarioId = action.payload.usuarioId
+                plesXur = action.payload.plesXur
+                planElegido = action.payload.planElegido
+                unidadAcademica = action.payload.unidadAcademica
+    
+                return {
+                    ...state,
+                    procedimientos: {
+                        ...state.procedimientos,
+                        bajaTemporal: {
+                            usuarioId,
+                            plesXur,
+                            planElegido,
+                            unidadAcademica,
+                            periodoLectivo,
+                            causaBaja,
+                            validoParaTramitar: false
+                        }
+                    }
+                }    
+            case types.cambiarEstado:
+                const {nombreTramite, nombreValor, valor} = action.payload
+                const tramites:any = state.procedimientos 
+                const tramite = tramites[nombreTramite]
+
+                return {
+                    ...state,
+                    procedimientos: {
+                        ...state.procedimientos,
+                        [nombreTramite]: {
+                            ...tramite,
+                            [nombreValor]: valor
+                        }
+                    }
+                }
         default: 
             return state;
     }

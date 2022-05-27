@@ -1,22 +1,12 @@
-import {useEffect} from 'react';
-import { useTramitesContext } from "../../../../../context/tramites/TramitesContext";
-import { QueryPreregistro, usePreregistroPorCurp } from "../../../../../hooks/useQuery";
+import { QueryPreregistro } from "../../../../../hooks/useQuery";
 import { TypePaso1, TypePaso2, TypePaso3, TypePaso4, TypePaso5 } from '../../../../../interfaces/pasos/homologacion';
 import { types } from "../../../../../types/tramites";
 
 
 const cargarHomologacionDB = (data:QueryPreregistro, dispatch: any) => {
-    //const {dispatch}:any = useTramitesContext();
-    
-    //const curp = auth.usuario ? auth.usuario?.alumno.crpentalu : ''
-    //console.log(curp)
-    //curp = curp ? curp : ''
-    
-    //const {aspirante} = data?.preregistroPorCurp!
     if(data?.preregistroPorCurp?.aspirante){
         const {aspirante, aspRegistro, aspDomiciliarios, aspMulticulturalidad, aspSocioEconomicos} = data?.preregistroPorCurp!
         const {planOfertado} = aspRegistro
-        console.log('cargarHomologacionDB: ',data?.preregistroPorCurp!.aspirante)
         const aspiranteId = aspirante.id
         const planID = aspRegistro.planOfertadoId
         const planElegido = planOfertado?.nombrePlanEstudios + " - " + planOfertado?.nombreUnidadAcademica;
@@ -74,7 +64,6 @@ const cargarHomologacionDB = (data:QueryPreregistro, dispatch: any) => {
         //paso3
         let paso3: TypePaso3 | null = null
 
-        //if(aspMulticulturalidad.aspiranteIdId!==undefined&&aspMulticulturalidad.aspiranteIdId!==null){
         if(aspMulticulturalidad){
             const esPuebloOriginario = aspMulticulturalidad?.pertenecePuebloOriginario === 1 
             let puebloID:any = aspMulticulturalidad?.puebloOriginarioIdId!
@@ -144,13 +133,8 @@ const cargarHomologacionDB = (data:QueryPreregistro, dispatch: any) => {
             type: types.cargarHomologacionDB,
             payload: {aspiranteId, planID, planElegido, localidad, paso1, paso2, paso3, paso4, paso5}
         });
-        //},[dispatch])
-    }/*else{
-        dispatch({
-            type: types.cargarHomologacionDB,
-            payload: {aspiranteId:undefined, planID:undefined, planElegido:undefined, localidad:undefined, paso1:null, paso2:null}
-        });
-    }*/
+    
+    }
 }
 
 export { cargarHomologacionDB }

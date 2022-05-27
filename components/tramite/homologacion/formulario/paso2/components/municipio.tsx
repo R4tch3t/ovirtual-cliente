@@ -10,28 +10,18 @@ function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
 
-/*const nacionalidades:TypeNacionalidad[] = [
-    {id: 0, nombre: 'MEXICANA'},
-    {id: 1, nombre: 'EXTRANJERA'},
-]*/
-
 const Municipio = () => {
     const {tramitesState, dispatch} = useTramitesContext()
     const {paso2} = tramitesState.procedimientos.homologacion!
     const [query, setQuery] = useState('')
-    let { data } = useMunicipios(paso2?.entidadFedID!)
-   // const { data } = paso2?.entidadFedID !== undefined ? useMunicipios(paso2?.entidadFedID) : {data: {municipios: []}}
-    
+    let { data } = useMunicipios(paso2?.entidadFedID!)   
     
     if(!data){
         data={municipios: []}
-        //return <></>
     }
 
     const {municipios} = data!
     
-    //const [naSelec, setNaSelec] = useState()
-    //const naSelec = paso2 ? entidadesFederativas[paso2?.entidadFedID!] : undefined
     const naSelec = paso2 ? municipios?.find((municipio) => {
         return municipio.id === paso2.municipioID
     }) : undefined;
@@ -54,7 +44,6 @@ const Municipio = () => {
             payload: {nombrePaso,nombreCampo,valorCampo}
         });
         cambiarEstado(dispatch)
-        //setNaSelec(nacionalidad)
       }
     
     return (
@@ -68,7 +57,7 @@ const Municipio = () => {
             displayValue={(entidad:TipoMunicipios) => entidad.nombre}
             
             />
-                                            {/* ${!focused?'w-full':''} mejor edicion del input, pero perdida de la anchura del boton */}      
+                                            
             <Combobox.Button className={`absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none`}>
             <SelectorIcon className="h-5 w-5 text-gray-400 absolute right-0" aria-hidden="true" />
             </Combobox.Button>
@@ -88,19 +77,10 @@ const Municipio = () => {
                 >
                     {({ active, selected }) => (
                     <>
-                        <div className="flex items-center">
-                            
-                        {/*<span
-                            className={classNames(
-                            'inline-block h-2 w-2 flex-shrink-0 rounded-full',
-                            tramite.necesitaValidacion===1 ? 'bg-green-400' : 'bg-gray-200'
-                            )}
-                            aria-hidden="true"
-                        />*/}
+                        <div className="flex items-center">                                                    
 
                         <span className={classNames('ml-3 truncate', selected && 'font-semibold')}>
-                            {entidad.nombre}
-                            {/*<span className="sr-only"> is {tramite.necesitaValidacion===1 ? 'online' : 'offline'}</span>*/}
+                            {entidad.nombre}                            
                         </span>
 
                         </div>

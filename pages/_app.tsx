@@ -13,16 +13,8 @@ import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-cliente";
 moment.locale('es-mx');
 
-/*type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode
-}
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
-}*/
 
 function MyApp({ Component, pageProps }: AppProps) {
-  //const getLayout = Component.getLayout ?? ((page) => page)
 
   return(  
     <ApolloProvider client={client}>

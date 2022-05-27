@@ -1,8 +1,7 @@
 import { ChangeEvent, KeyboardEventHandler, useState } from "react";
 import { useTramitesContext } from "../../../../../context/tramites/TramitesContext"
-import { Button, FormElement, Grid, Input, Loading, Spacer } from "@nextui-org/react";
+import { FormElement, Input, Spacer } from "@nextui-org/react";
 import { types } from "../../../../../types/tramites";
-//import { validarCURP } from "../../../../../helpers/validarCURP";
 import { cambiarEstado, validarEscuelaProcedencia, validarMatricula } from "./helper";
 import { ClipboardCopyIcon, ExclamationIcon } from '@heroicons/react/solid'
 import { EscuelasUagro, EsEgresadoUag } from "./components";
@@ -23,10 +22,6 @@ type ChangeType = (e: ChangeEvent<FormElement>) => void
 const Paso4 = () => {
     const {tramitesState, dispatch} = useTramitesContext()
     const {aspiranteId,paso1,paso2,paso3,paso4} = tramitesState.procedimientos.homologacion!
-    /*const [inputs, setInputs]:any = useState({
-        escuelaProcedencia: {color: 'primary'},
-        matricula: {color: 'primary'},
-    });*/
     const [inputs, setInputs]:any = useState(coloresInputs4(paso4!));
 
     const [nuevoAsp] = useNuevoAsp()
@@ -39,12 +34,10 @@ const Paso4 = () => {
     const formularioValido = () => {
         let valido = (paso4?.esEgresadoUag === false ? inputs.escuelaProcedencia.color === 'primary' : inputs.matricula.color === 'primary') 
         valido = valido && validarFormulario1(paso1!) && validarFormulario2(paso2!) && validarFormulario3(paso3!) && validarFormulario4(paso4!);
-        console.log('valido4: ',valido)
-            return valido
+        return valido
     }
 
     const onKeyUp:KeyboardEventHandler<FormElement> = ({currentTarget}) => {
-        //event.currentTarget.
         const {name} = currentTarget;
         switch(name){
             case 'escuelaProcedencia':
@@ -57,9 +50,6 @@ const Paso4 = () => {
     }
 
     const onChange:ChangeType = ({target}) => {
-        
-        //if(!target) return false;
-    
         const {name, value} = target;
         switch(name){
             case 'escuelaProcedencia':
@@ -76,15 +66,6 @@ const Paso4 = () => {
     }
      
     const onSubmit = () => {
-        //let valido: any = true;
-        //let validarCombos = paso2?.entidadFedID !== undefined && paso2?.municipioID !== undefined && paso2?.localidadID !== undefined
-        //validarCombos = paso1?.nacionalidadID === 1 ? (validarCombos && paso1?.paisID !== undefined) : validarCombos
-                    //&& paso1?.nombre !== undefined && paso1?.ape1 !== undefined && paso1?.ape2 !== undefined;
-        
-        
-        //valido = validarCombos && calleValida && coloniaValido && numeroExtValido && cpValido  
-
-        //re setstates
         let valido = paso4?.esEgresadoUag !== undefined
         valido = paso4?.esEgresadoUag === true ? 
         (paso4.escuelaUagroClave!==undefined && paso4.matricula!==undefined ) : 
@@ -149,14 +130,6 @@ const Paso4 = () => {
                 
                 <EsEgresadoUag />
 
-                {/*{paso3?.esPuebloOriginario===true && 
-                    <Fade in={paso3?.esPuebloOriginario===true}>
-                        <div >
-                        <Spacer y={2} />
-                            <PuebloOriginario />
-                        </div>
-                    </Fade>}*/} 
-
                 {paso4?.esEgresadoUag === false && 
                     <Fade in={true} >
                         <div>
@@ -189,7 +162,6 @@ const Paso4 = () => {
                                 width={"100%"} 
                                 name='matricula'
                                 type={'text'}
-                                //onKeyUp={onKeyUp}
                                 onChange={onChange}
                                 labelLeft='*'
                                 clearable bordered labelPlaceholder="* Matricula UAGro" 
@@ -265,7 +237,7 @@ const Paso4 = () => {
                                         aspMulti: form?.aspMulti!,
                                         aspSocioEco: form?.aspSocioEco!
                                     }
-                                })//.then((r)=>{console.log(r.errors)})
+                                })
                                 if(data?.guardarAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);

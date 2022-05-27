@@ -8,7 +8,7 @@ import {
     ChatAlt2Icon,
   } from '@heroicons/react/outline'
 import Link from 'next/link';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../../auth/authContext'; 
 import Login from '../Login';
 import Signup from '../Signup';
@@ -18,7 +18,7 @@ function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
 const Home = () => {
-    const {auth,logout}:any = useAppContext();
+    const {auth}:any = useAppContext();
     const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '/perfil'}]});
     const user = {
         name: auth.usuario?auth.usuario.alumno.nomentalu:null,
@@ -45,104 +45,24 @@ const Home = () => {
           iconForeground: 'text-sky-700',
           iconBackground: 'bg-sky-50',
         },
-        {
-          icon: ClockIcon,
-          name: 'Request time off',
-          href: '#',
-          descripcion: '',
-          iconForeground: 'text-teal-700',
-          iconBackground: 'bg-teal-50',
-        },
-        {
-          icon: BadgeCheckIcon,
-          name: 'Benefits',
-          href: '#',
-          descripcion: '',
-          iconForeground: 'text-purple-700',
-          iconBackground: 'bg-purple-50',
-        },
-        { icon: CashIcon, name: 'Payroll', href: '#', iconForeground: 'text-yellow-700', iconBackground: 'bg-yellow-50' },
-        {
-          icon: ReceiptRefundIcon,
-          name: 'Submit an expense',
-          href: '#',
-          descripcion: '',
-          iconForeground: 'text-rose-700',
-          iconBackground: 'bg-rose-50',
-        },
         
       ]
-      const recentHires = [
-        {
-          name: 'Leonard Krasner',
-          handle: 'leonardkrasner',
-          imageUrl:
-            'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
-        {
-          name: 'Floyd Miles',
-          handle: 'floydmiles',
-          imageUrl:
-            'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
-        {
-          name: 'Emily Selman',
-          handle: 'emilyselman',
-          imageUrl:
-            'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
-        {
-          name: 'Kristin Watson',
-          handle: 'kristinwatson',
-          imageUrl:
-            'https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
+      const recentHires:any = [
+        
       ]
-      const announcements = [
-        {
-          id: 1,
-          title: 'Office closed on July 2nd',
-          href: '#',
-          preview:
-            'Cum qui rem deleniti. Suscipit in dolor veritatis sequi aut. Vero ut earum quis deleniti. Ut a sunt eum cum ut repudiandae possimus. Nihil ex tempora neque cum consectetur dolores.',
-        },
-        {
-          id: 2,
-          title: 'New password policy',
-          href: '#',
-          preview:
-            'Alias inventore ut autem optio voluptas et repellendus. Facere totam quaerat quam quo laudantium cumque eaque excepturi vel. Accusamus maxime ipsam reprehenderit rerum id repellendus rerum. Culpa cum vel natus. Est sit autem mollitia.',
-        },
-        {
-          id: 3,
-          title: 'Office closed on July 2nd',
-          href: '#',
-          preview:
-            'Tenetur libero voluptatem rerum occaecati qui est molestiae exercitationem. Voluptate quisquam iure assumenda consequatur ex et recusandae. Alias consectetur voluptatibus. Accusamus a ab dicta et. Consequatur quis dignissimos voluptatem nisi.',
-        },
-      ]
+      
       const stats = [
         { label: 'Vacation days left', value: 12 },
         { label: 'Sick days left', value: 4 },
         { label: 'Personal days left', value: 2 },
       ]
-     // let [btnHome, setBtnHome]:any = useState([{html: 'Ver perfil', href: '#'}]);
+      
       const ShowGridLog = () => {
         setState({...state, 
             logBand: !state.logBand,
-            //btnHome: [{html: 'Iniciar sesión', onMouseUp: ShowGridLog }]
         });
-        //setLogBand(!logBand);
-        //setBtnHome( [{html: 'Iniciar sesión', onMouseUp: ShowGridLog }]);  
       }
       
-      console.log('home:')
-      console.log(auth)
-
       if(!auth.email){
         state.btnHome = [{
             html: state.logBand?'Registrar cuenta':'Iniciar sesión',
@@ -162,11 +82,8 @@ const Home = () => {
           <h1 className="sr-only">Perfil</h1>
             <div className="grid grid-cols-1 gap-4 items-start lg:grid-cols-3 lg:gap-8">
 
-
-                  {/* Left column */ }
                   <div className="grid grid-cols-1 gap-4 lg:col-span-2">
-                    {// Welcome panel 
-                    }
+                    
                     <section aria-labelledby="profile-overview-title">
                       <div className="rounded-lg bg-white overflow-hidden shadow">
                         <h2 className="sr-only" id="profile-overview-title">
@@ -181,7 +98,6 @@ const Home = () => {
                               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                                 <p className="text-sm font-medium text-gray-600">Bienvenido(a),</p>
                                 <p className="text-xl font-bold text-gray-900 sm:text-2xl">{user.name}</p>
-                                {/*<p className="text-xl font-bold text-gray-900 sm:text-2xl">{auth.email}</p>*/}
                                 <p className="text-sm font-medium text-gray-600">{user.role}</p>
                               </div>
                             </div>
@@ -203,18 +119,7 @@ const Home = () => {
                                     )
                                 )
                               }
-                              {/*
-                                btnHome.map((b:any,i:any)=>{
-                                    return <a
-                                    key={i}
-                                    href={b.href}
-                                    onMouseUp={b.onMouseUp}
-                                    className="flex tabSettings justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                                  >
-                                    {b.html}
-                                  </a>
-                                })*/
-                              }
+                              
 
                             </div>
                             
@@ -231,8 +136,6 @@ const Home = () => {
                       </div>
                     </section>
     
-                    {// Actions panel 
-                    }
                     <section aria-labelledby="quick-links-title">
                       <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
                         <h2 className="sr-only" id="quick-links-title">
@@ -263,9 +166,7 @@ const Home = () => {
                             <div className="mt-8">
                               <h3 className="text-lg font-medium">
                                 <Link href={action.href} >
-                                  <a  className="focus:outline-none">
-                                    {// Extend touch target to entire panel 
-                                    }
+                                  <a  className="focus:outline-none">                                
                                     <span className="absolute inset-0" aria-hidden="true" />
                                     {action.name}
                                   </a>
@@ -293,19 +194,14 @@ const Home = () => {
                       </div>
                     </section>
                   </div>
-    
-                  {// Right column 
-                  }
+
                   <div className="grid grid-cols-1 gap-4">
-                    {// Announcements 
-                    }
+                    
                     <section aria-labelledby="announcements-title">
                       <div className="rounded-lg bg-white overflow-hidden shadow">
                         <div className="p-6">
                           
-                          <div className="flow-root mt-6">
-                            {/* login */}  
-                            
+                          <div className="flow-root mt-6">                                                
                             {!auth.logged&&logBand&&<Login />}
                             {!auth.logged&&!logBand&&<Signup />}
                             {auth.logged&&<LogoDae width={400} height={400} />}
@@ -315,9 +211,7 @@ const Home = () => {
                       </div>
                     </section>
     
-                    {// Recent Hires 
-                    }
-                    <section aria-labelledby="recent-hires-title">
+                    {/*<section aria-labelledby="recent-hires-title">
                       <div className="rounded-lg bg-white overflow-hidden shadow">
                         <div className="p-6">
                           <h2 className="text-base font-medium text-gray-900" id="recent-hires-title">
@@ -358,7 +252,8 @@ const Home = () => {
                           </div>
                         </div>
                       </div>
-                    </section>
+                    </section>*/}
+
                   </div>
 
           </div>

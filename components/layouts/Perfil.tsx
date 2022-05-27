@@ -1,18 +1,14 @@
-import { Fragment, useState, useEffect } from 'react'
-import { Disclosure, Menu, Switch, Transition } from '@headlessui/react'
+import { useState, useEffect } from 'react'
 import {
   BellIcon,
-  CogIcon,
   CreditCardIcon,
   KeyIcon,
-  MenuIcon,
   UserCircleIcon,
-  ViewGridAddIcon,
-  XIcon,
+  CollectionIcon
 } from '@heroicons/react/outline'
 import { ExclamationIcon } from '@heroicons/react/solid'
 import { urlBase } from '../../variables/url'
-import { Button, Grid, Input, Loading, Spacer } from "@nextui-org/react";
+import { Button, Input, Loading, Spacer } from "@nextui-org/react";
 import { useAppContext } from '../../auth/authContext';
 import VincularMatricula from '../settings/VincularMatricula';
 import ActivarMatricula from '../settings/ActivarMatricula';
@@ -22,11 +18,10 @@ import Link from 'next/link';
 
 let subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: true },
-  //{ name: 'Account', href: '#', icon: CogIcon, current: false },
   { name: 'Contraseña', href: '/perfil/contra', icon: KeyIcon, current: false },
+  { name: 'Expediente', href: '/perfil/expediente', icon: CollectionIcon, current: false },
   { name: 'Notificaciones', href: '#', icon: BellIcon, current: false },
   { name: 'Facturación', href: '#', icon: CreditCardIcon, current: false },
-  //{ name: 'Integrations', href: '#', icon: ViewGridAddIcon, current: false },
 ]
 
 
@@ -42,19 +37,16 @@ const WarningPass = () => {
 }
 
 const PerfilLayout = () => {
-  /*const [availableToHire, setAvailableToHire] = useState(true)
-  const [privateAccount, setPrivateAccount] = useState(false)
-  const [allowCommenting, setAllowCommenting] = useState(true)
-  const [allowMentions, setAllowMentions] = useState(true)*/
   const {auth, vincularMatricula, updateUser,actualizadoContra}:any = useAppContext();
   const [usuario, setUsuario] = useState({
     id: auth.id, 
     nombreUsuario: auth.usuario? auth.usuario.nombre:null,
     name: auth.usuario ? auth.usuario.alumno.nomentalu:null,
-    apellidos: auth.usuario ? auth.usuario.alumno.apeentalu:null,
+    apellidos: auth.usuario ? auth.usuario.alumno.apeentalu.split('*'):null,
+    apellido: null,
+    apellido2: null,
     email: auth.email,
     newEmail: auth.email,
-   // matactiva: auth.usuario?auth.usuario.matactiva:null,
     matricula: auth.usuario?auth.usuario.matricula:null,
     password: '',
     role: 'Alumno(a)',
@@ -67,9 +59,10 @@ const PerfilLayout = () => {
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [inputs, setInputs]:any = useState({
     matricula: {color: 'secondary'},
-    email: {color: 'primary'}
+    email: {color: 'primary'},
+    password: {color: 'primary'}
   })
-
+  
   const validarMatricula = (value:string='') => {
     const valida = value.match(/^[0-9]{8,8}$/i);
     const name='matricula'
@@ -81,8 +74,6 @@ const PerfilLayout = () => {
       }})
     }
 
-  //}
-  
     if(valida){
       setInputs({...inputs,[name]:{
         color: 'secondary', 
@@ -102,8 +93,6 @@ const PerfilLayout = () => {
         statusColor: 'error'
       }})
     }
-
-  //}
   
     if(valida){
       setInputs({...inputs,[name]:{
@@ -115,14 +104,8 @@ const PerfilLayout = () => {
   };
 
   const onChange = ({target}:any) => {
-        
-    //if(!target) return false;
-
+     
     const {name, value} = target;
-    setUsuario({
-      ...usuario,
-      [name]: value
-    });
 
     switch(name){
       case 'matricula':
@@ -131,15 +114,32 @@ const PerfilLayout = () => {
       case 'email':
         validarCorreo(value)
       break
+      case 'apellido':
+        usuario.apellidos[0]=value
+      break
+      case 'apellido2':
+        usuario.apellidos[1]=value
+      break
+      case 'password':
+        if(value){
+          const name='password'
+          setInputs({...inputs,[name]:{
+            color: 'primary', 
+            helper: '',
+            statusColor: 'primary'
+          }})
+        }
+        break;
     }
 
-    /*if(value===""){
-      setInputs({...inputs,[name]:{...inputs[name], color: 'secondary', helper: undefined}})
-    }*/
+    setUsuario({
+      ...usuario,
+      [name]: value
+    });
+  
   }
 
   const vincularM = async({currentTarget}:any) => {
-    const {name} = currentTarget;
     let {matricula} = usuario
     let valida = matricula?validarMatricula(matricula):validarMatricula()
     
@@ -157,16 +157,26 @@ const PerfilLayout = () => {
 
     setCargando(false)
    
-   // console.log(ok)
-    
   }
 
   const onSubmit = async (e:any) => {
-    //e.preventDefault();
+  
+    if(!usuario.password){
+      const name='password'
+      setInputs({...inputs,[name]:{
+        color: 'error', 
+        helper: 'Campo requerido',
+        statusColor: 'error'
+      }})
+      return false
+    }
 
     const newEmail = usuario.email
     usuario.newEmail=newEmail
     usuario.email = auth.email
+    usuario.apellidos=usuario.apellidos.join('*');
+
+    
     setCargando(true)
 
     const resp = await updateUser(usuario,"login/update");
@@ -274,24 +284,6 @@ const PerfilLayout = () => {
                         </div>
                       </div>
 
-                      {/*<div>
-                        <label htmlFor="about" className="block text-sm font-medium text-gray-700">
-                          About
-                        </label>
-                        <div className="mt-1">
-                          <textarea
-                            id="about"
-                            name="about"
-                            rows={3}
-                            className="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                            defaultValue={''}
-                          />
-                        </div>
-                        <p className="mt-2 text-sm text-gray-500">
-                          Brief description for your profile. URLs are hyperlinked.
-                        </p>
-                      </div>*/}
-
                     </div>
 
                     <div className="mt-6 flex-grow lg:mt-0 lg:ml-6 lg:flex-grow-0 lg:flex-shrink-0">
@@ -380,6 +372,7 @@ const PerfilLayout = () => {
                     </div>
                   </div>
                   <Spacer y={2} />
+
                   <div className="mt-6 grid grid-cols-12 gap-6">
                     <div className="col-span-12 sm:col-span-6">
                       <Input id='nombrePerfil' 
@@ -394,15 +387,25 @@ const PerfilLayout = () => {
                     <div className="col-span-12 sm:col-span-6">
                     <Input id='apePerfil' 
                         width={"100%"} 
-                        name='apellidos'
+                        name='apellido'
                         onChange={onChange}
-                        clearable bordered labelPlaceholder="Apellidos" 
-                        initialValue={usuario.apellidos}
+                        clearable bordered labelPlaceholder="Primer Apellido" 
+                        initialValue={usuario.apellidos![0]!}
                         color="primary" />
                     </div>
                   </div>
+
                   <Spacer y={1} />
                   <div className="mt-6 grid grid-cols-12 gap-6" >
+                    <div className="col-span-12 sm:col-span-6">
+                      <Input id='ape2Perfil' 
+                          width={"100%"} 
+                          name='apellido2'
+                          onChange={onChange}
+                          clearable bordered labelPlaceholder="Segundo Apellido" 
+                          initialValue={usuario.apellidos![1]!}
+                          color="primary" />
+                    </div>
                     <div className="col-span-12 sm:col-span-6" >
                       <Input id='correoPerfil'
                         width={"100%"} 
@@ -426,130 +429,16 @@ const PerfilLayout = () => {
                           name='password'
                           onChange={onChange}
                           clearable bordered labelPlaceholder="Contraseña"
-                          color="primary" />
+                          helperColor={inputs.password.color}
+                          helperText={inputs.password.helper}
+                          color={inputs.password.color} />
                       </div>
                     </div>
                   </>}
 
                 </div>
 
-                {/* Privacy section */}
                 <div className="pt-6 divide-y divide-gray-200">
-
-                  {/*<div className="px-4 sm:px-6">
-                    <div>
-                      <h2 className="text-lg leading-6 font-medium text-gray-900">Privacy</h2>
-                      <p className="mt-1 text-sm text-gray-500">
-                        Ornare eu a volutpat eget vulputate. Fringilla commodo amet.
-                      </p>
-                    </div>
-                    <ul role="list" className="mt-2 divide-y divide-gray-200">
-                      <Switch.Group as="li" className="py-4 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <Switch.Label as="p" className="text-sm font-medium text-gray-900" passive>
-                            Available to hire
-                          </Switch.Label>
-                          <Switch.Description className="text-sm text-gray-500">
-                            Nulla amet tempus sit accumsan. Aliquet turpis sed sit lacinia.
-                          </Switch.Description>
-                        </div>
-                        <Switch
-                          checked={availableToHire}
-                          onChange={setAvailableToHire}
-                          className={classNames(
-                            availableToHire ? 'bg-teal-500' : 'bg-gray-200',
-                            'ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500'
-                          )}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              availableToHire ? 'translate-x-5' : 'translate-x-0',
-                              'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
-                            )}
-                          />
-                        </Switch>
-                      </Switch.Group>
-                      <Switch.Group as="li" className="py-4 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <Switch.Label as="p" className="text-sm font-medium text-gray-900" passive>
-                            Make account private
-                          </Switch.Label>
-                          <Switch.Description className="text-sm text-gray-500">
-                            Pharetra morbi dui mi mattis tellus sollicitudin cursus pharetra.
-                          </Switch.Description>
-                        </div>
-                        <Switch
-                          checked={privateAccount}
-                          onChange={setPrivateAccount}
-                          className={classNames(
-                            privateAccount ? 'bg-teal-500' : 'bg-gray-200',
-                            'ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500'
-                          )}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              privateAccount ? 'translate-x-5' : 'translate-x-0',
-                              'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
-                            )}
-                          />
-                        </Switch>
-                      </Switch.Group>
-                      <Switch.Group as="li" className="py-4 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <Switch.Label as="p" className="text-sm font-medium text-gray-900" passive>
-                            Allow commenting
-                          </Switch.Label>
-                          <Switch.Description className="text-sm text-gray-500">
-                            Integer amet, nunc hendrerit adipiscing nam. Elementum ame
-                          </Switch.Description>
-                        </div>
-                        <Switch
-                          checked={allowCommenting}
-                          onChange={setAllowCommenting}
-                          className={classNames(
-                            allowCommenting ? 'bg-teal-500' : 'bg-gray-200',
-                            'ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500'
-                          )}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              allowCommenting ? 'translate-x-5' : 'translate-x-0',
-                              'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
-                            )}
-                          />
-                        </Switch>
-                      </Switch.Group>
-                      <Switch.Group as="li" className="py-4 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <Switch.Label as="p" className="text-sm font-medium text-gray-900" passive>
-                            Allow mentions
-                          </Switch.Label>
-                          <Switch.Description className="text-sm text-gray-500">
-                            Adipiscing est venenatis enim molestie commodo eu gravid
-                          </Switch.Description>
-                        </div>
-                        <Switch
-                          checked={allowMentions}
-                          onChange={setAllowMentions}
-                          className={classNames(
-                            allowMentions ? 'bg-teal-500' : 'bg-gray-200',
-                            'ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500'
-                          )}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              allowMentions ? 'translate-x-5' : 'translate-x-0',
-                              'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
-                            )}
-                          />
-                        </Switch>
-                      </Switch.Group>
-                    </ul>
-                  </div>*/}
 
                   <div className="mt-4 py-4 px-4 flex justify-end sm:px-6">
                     <button

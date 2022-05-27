@@ -3,8 +3,7 @@ import { GetStaticProps,GetStaticPaths, NextPage } from 'next';
 import Router from 'next/router';
 import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
-import { fetchSinToken } from '../../../helpers/fetch';
-import { TypeTramitesState, TypeTramite } from '../../../interfaces';
+import { TypeTramite } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
 import { obtenerTramites, tramitePorId } from '../../../apollo-cliente';
 
@@ -21,7 +20,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
     {
         table: {
             head: ['Documento', 'Descripción' ],
-            body: [{'Documento': props.tramite.documentoObtiene, 'Descripción': 'Descripcion1'}]
+            body: [{'Documento': 'CURP', 'Descripción': 'Clave Única de Registro de Población'}]
         } 
     }
   );
@@ -33,8 +32,6 @@ const TramiteHome:NextPage<Props> = (props) =>{
       </div>
     )
   }
-
-  //console.log(auth)
 
   if(!auth.logged||(auth.usuario&&auth.usuario.matactiva === 0)){
    
@@ -62,8 +59,6 @@ const {head, body}  = state.table
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  //const { data } = await  // your fetch function here 
-  //const {tramites}:TypeTramitesState = await fetchSinToken(`tramites/todos`);
   const tramites:TypeTramite[] = await obtenerTramites()
   
   return {
@@ -75,12 +70,9 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 }
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
-  //const resp = await fetchSinToken(`tramites/todos`);
   const {id} = params as {id: string} 
-  //const resp = await fetchSinToken(`tramites/${id}`);
   const tramite:TypeTramite = await tramitePorId(parseInt(id))
 
-  //const {ok,tramite} = resp
   if(tramite===null){
     return {
       redirect: {
