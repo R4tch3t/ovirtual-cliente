@@ -1,6 +1,7 @@
 
 
-const validarPeriodo = (value:string,inputs:any) => {
+const validarPeriodo = (inputs:any) => {
+    const {value}:any = document.getElementById('periodoBaja')
     const valida = value ? value.match(/^[0-9]{4,4}-[0-9]{4,4}$/i):false;
     const name = 'periodoLectivo'
     if(!valida){

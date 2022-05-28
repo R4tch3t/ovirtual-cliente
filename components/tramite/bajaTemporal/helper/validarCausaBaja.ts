@@ -1,6 +1,7 @@
 
 
-const validarCausaBaja = (value:string,inputs:any) => {
+const validarCausaBaja = (inputs:any) => {
+    const {value}:any = document.getElementById('causaBaja')
     const valida = value ? value.match(/^[A0-Z9 ]{3,256}$/i):false;
     const name = 'causaBaja'
     if(!valida){

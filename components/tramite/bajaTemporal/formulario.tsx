@@ -8,12 +8,15 @@ import { types } from "../../../types/tramites";
 import { validarPeriodo, validarCausaBaja } from "./helper";
 
 type Props = {
-    mapDocInit: TypeMapDoc[]
+    mapDocInit: TypeMapDoc[],
+    periodoBajaVal: string,
+    causaBajaVal: string
 }
 
-export const FormularioBajaTemporal:FC<Props> = ({mapDocInit}) => {
+export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, causaBajaVal}) => {
     const [mapDoc, setMapDoc] = useState(mapDocInit)
     const {auth, verificaToken} = useAppContext();
+    const {tramitesState, dispatch} = useTramitesContext()
     const [inputs, setInputs]:any = useState({
         periodoLectivo: {
             color: 'primary'
@@ -23,9 +26,14 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit}) => {
         }
         ,
     });
-    const {tramitesState, dispatch} = useTramitesContext()
     const Y = new Date().getFullYear()
-    
+    //const periodoBajaVal = tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo! ?
+    periodoBajaVal = !tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo! ? 
+        periodoBajaVal : tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo!
+
+    causaBajaVal = !tramitesState?.procedimientos?.bajaTemporal?.causaBaja! ? 
+        causaBajaVal : tramitesState?.procedimientos?.bajaTemporal?.causaBaja!
+
     type Base64 = (file: any) => Promise<unknown>
     let fileName = ''
     let expedienteId:any=null
@@ -70,13 +78,9 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit}) => {
             payload: {nombreTramite,nombreValor,valor}
         });
         
-        const valuePeriodo = name==='periodoLectivo'?value:tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo!
-        const valueCausaBaja = name==='causaBaja'?value:tramitesState?.procedimientos?.bajaTemporal?.causaBaja!
-
-        //let newInputs = inputs
         let arrFormValido = [true,inputs]
-        arrFormValido[0] = validarPeriodo(valuePeriodo,arrFormValido)
-        arrFormValido[0] = arrFormValido[0] && validarCausaBaja(valueCausaBaja,arrFormValido)
+        arrFormValido[0] = validarPeriodo(arrFormValido)
+        arrFormValido[0] = arrFormValido[0] && validarCausaBaja(arrFormValido)
         
         setInputs(arrFormValido[1])
 
@@ -85,12 +89,11 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit}) => {
         nombreValor = 'validoParaTramitar'
         valor = formValido
 
-
-
         dispatch({
             type: types.cambiarEstado,
             payload: {nombreTramite,nombreValor,valor}
         });
+
     }
 
     return (
@@ -107,6 +110,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit}) => {
                         name='periodoLectivo'
                         onChange={onChange}
                         clearable bordered
+                        value={periodoBajaVal?periodoBajaVal:''}
                         label={' '}
                         placeholder={Y+'-'+(Y+1)}
                         helperColor={inputs.periodoLectivo.color}
@@ -128,6 +132,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit}) => {
                         width={"100%"} 
                         name='causaBaja'
                         onChange={onChange}
+                        value={causaBajaVal?causaBajaVal:''}
                         clearable bordered label={' '}
                         placeholder={'Descripción del porqué se da de baja... '}
                         helperColor={inputs?.causaBaja?.color!}

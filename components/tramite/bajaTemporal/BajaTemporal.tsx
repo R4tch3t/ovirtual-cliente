@@ -2,6 +2,8 @@ import { FC, useState } from 'react'
 import { guardarTramiteGQL, TramiteAlumnoInput } from '../../../apollo-cliente/tramites'
 import { useAppContext } from '../../../auth/authContext'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
+import { ObtenerTramiteAlumnoInput, useObtenerTramitesAlumno } from '../../../hooks/useQuery/tramites'
+import { types } from '../../../types/tramites'
 import { ModalError } from '../../ModalError'
 import { ModalSuccess } from '../../ModalSucces'
 import { HeadTramite } from '../headTramite'
@@ -18,7 +20,15 @@ const mapDocInit = [
 
 export const BajaTemporal: FC<Props> = ({tramiteId}) => {
   const {auth} = useAppContext();
-  const {tramitesState} = useTramitesContext()
+  const {tramitesState} = useTramitesContext();
+  const tramiteAlumno: ObtenerTramiteAlumnoInput = {
+    userAlumnoId: auth?.id!,
+    tramiteId,
+    plesxurRef: tramitesState?.procedimientos?.bajaTemporal?.plesXur!
+  }
+  const {data, refetch} = useObtenerTramitesAlumno(tramiteAlumno)
+  const datosTramite = data?.obtenerTramitesAlumno?.datosTramite
+  const {periodoLectivo,causaBaja} = JSON.parse(datosTramite?datosTramite:'{}')
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
@@ -27,22 +37,28 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc.id})
     btnDis = findDoc && btnDis
-  })
+  });
 
   const onSubmit = async () => {
+    const datosTramite = JSON.stringify({
+      periodoLectivo: tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo!,
+      causaBaja: tramitesState?.procedimientos?.bajaTemporal?.causaBaja!
+    });
     const tramite: TramiteAlumnoInput = {
       tramiteId,
       plesxurRef: tramitesState.procedimientos.bajaTemporal?.plesXur!,
       userAlumnoId: auth?.id!,
-      matricula: auth?.usuario?.matricula!
+      matricula: auth?.usuario?.matricula!,
+      datosTramite
     }
     const resp = await guardarTramiteGQL(tramite)
     if(resp){
-        setDataModal({title: 'Éxito', txt: "El trámite fue enviado con éxito.", btn1: {txt:"Aceptar", onClose:setModalE} })
-        setModalS(true);
+      await refetch()
+      setDataModal({title: 'Éxito', txt: "El trámite fue enviado con éxito.", btn1: {txt:"Aceptar", onClose:setModalE} })
+      setModalS(true);
     }
   }
-
+  
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
       {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
@@ -58,13 +74,14 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
         <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
 
           <HeadTramite />
-          <FormularioBajaTemporal mapDocInit={mapDocInit} />
+          <FormularioBajaTemporal mapDocInit={mapDocInit} periodoBajaVal={periodoLectivo} causaBajaVal={causaBaja} />
 
          
         </dl>
       </div>
 
       
+        {!data?.obtenerTramitesAlumno &&
         <div className="mt-4 py-4 px-4 flex justify-end sm:px-12">
             <button
                 type="button"
@@ -77,7 +94,8 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
                     'Enviar trámite'
                 }
             </button>
-      </div>
+        </div>
+        }
         
     </div>
   )

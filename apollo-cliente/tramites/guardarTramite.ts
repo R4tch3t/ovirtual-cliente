@@ -10,6 +10,7 @@ export interface TramiteAlumnoInput{
     plesxurRef: number;
     userAlumnoId: number;
     matricula: string;
+    datosTramite: string;
 }
 
 export const guardarTramiteGQL = async (tramite:TramiteAlumnoInput) => {
