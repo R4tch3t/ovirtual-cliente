@@ -5,6 +5,7 @@ export type TypeMapDoc = {
     nombre: string,
     descripcion: string,
     tipoDocumentoId: number,
+    validado?: number,
     cargado?: number,
     bajando?: number
 }

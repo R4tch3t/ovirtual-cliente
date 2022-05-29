@@ -163,6 +163,9 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                         }}
                     >
                         {m.nombre}
+                        <p className="text-xs font-medium text-gray-500">
+                            ESTADO: <b>{m.validado?'VALIDO':'NO VALIDO'}</b>
+                        </p>
                         {m.cargado!>0&&
                             <Grid>
                                 <Progress value={m.cargado} shadow color="primary" status="primary" />
