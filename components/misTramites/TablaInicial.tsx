@@ -1,17 +1,12 @@
-import {useEffect, useState} from 'react';
 import Image from 'next/image'
 import { Spacer } from "@nextui-org/react";
-import Link from "next/link";
 import { useTramitesContext } from "../../context/tramites/TramitesContext";
 import { types } from "../../types/tramites";
-import { TabsTramites } from './TabsTramites';
-import { useSocketContext } from '../../context/SocketContext';
-import { obtenerTramites } from '../../apollo-cliente';
 import { useAppContext } from '../../auth/authContext';
 import { useTodosTramitesAlumno } from '../../hooks/useQuery/tramites/todosTramitesAlumno';
 import IconUni from '../../public/iconUni.png'
-import { BajaTemporal } from '../tramite/bajaTemporal';
 import Fade from '@mui/material/Fade';
+import RetornarTramite from './RetornarTramite';
 
 const icon = <Image src={IconUni} width={60} height={60} />
 
@@ -64,8 +59,6 @@ const TablaInicial = () => {
     const {tramites} = tramitesState
     let c = -1
     const {data} = useTodosTramitesAlumno({userAlumnoId: auth?.id!})
-    //let tramiteId: any = null
-    //const [tramiteId, setTramiteId]:any = useState(null)
 
     const seleccionarTramite = (tramiteId: number, usuarioId: number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
       //Lo mas probable es que sea una función universal para todos los tramites
@@ -80,12 +73,8 @@ const TablaInicial = () => {
 
     }
 
-    if(tramitesState.tramiteAlumnoSeleccionado===1){
-      return (
-        <>
-          {tramitesState.procedimientos.bajaTemporal && <BajaTemporal tramiteId={tramitesState.tramiteAlumnoSeleccionado} />}
-        </>
-      )
+    if(tramitesState.tramiteAlumnoSeleccionado!==null){
+     return <RetornarTramite tramiteId={tramitesState.tramiteAlumnoSeleccionado} />
     }
 
     return (
@@ -153,7 +142,10 @@ const TablaInicial = () => {
                           <b>ESCUELA: </b>  {plexur?.ESCUELA}
                           </p>
                           <p className="mt-2 text-sm text-gray-500">
-                          <b>PLAN DE ESTUDIOS: </b> {plexur?.PLANESTUDIOS}
+                            <b>PLAN DE ESTUDIOS: </b> {plexur?.PLANESTUDIOS}
+                          </p>
+                          <p className="mt-2 text-sm text-gray-500">
+                            <b>FECHA DE CREACIÓN: </b> {tramiteAlumno.fechaCreacion}
                           </p>
                           <p className="mt-2 text-sm text-gray-500">
                             <b>ESTADO: </b> {estadoTramite(tramiteAlumno.estadoId)}
