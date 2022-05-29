@@ -74,7 +74,8 @@ export interface TypeTramitesState {
     catSeleccionado: TypeCatTramite,
     tta:number,
     ttb:number,
-    procedimientos: TypeProcedimiento
+    procedimientos: TypeProcedimiento,
+    tramiteAlumnoSeleccionado: number | null
 }
 
 export interface TypeTramitesContext {

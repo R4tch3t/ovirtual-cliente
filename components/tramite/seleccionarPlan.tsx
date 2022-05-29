@@ -41,6 +41,7 @@ export const SeleccionarPlan = () => {
     let c = -1
 
     const seleccionarPlan = (usuarioId:number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
+      //Lo mas probable es que sea una función universal para todos los tramites
         dispatch({
           type: types.seleccionarPlanBajaTemporal,
           payload: {usuarioId, plesXur, planElegido, unidadAcademica}

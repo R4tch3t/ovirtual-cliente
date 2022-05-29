@@ -42,7 +42,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
         { name: 'Inicio', href: '/', current: link==="Inicio" },
         { name: 'Perfil', href: '/perfil', current: link==="Perfil" },
         { name: 'Chat en linea', href: '/chat', current: link==="Chat" },
-        { name: 'Tramites', href: '/tramites', current: link==="Tramites" },
+        { name: 'Trámites', href: '/tramites', current: link==="Tramites" },
         { name: 'Openings', href: '#', current: false },
     ];
 

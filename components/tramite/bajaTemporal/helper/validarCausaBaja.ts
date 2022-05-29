@@ -2,7 +2,7 @@
 
 const validarCausaBaja = (inputs:any) => {
     const {value}:any = document.getElementById('causaBaja')
-    const valida = value ? value.match(/^[A0-Z9 ]{3,256}$/i):false;
+    const valida = value ? value.match(/^[AÁÉÍÓÚÑ,:0-Z9 ]{3,256}$/i):false;
     const name = 'causaBaja'
     if(!valida){
       inputs[1] = {...inputs[1],[name]:{

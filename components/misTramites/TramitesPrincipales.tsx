@@ -3,7 +3,7 @@ import {
     IdentificationIcon,
     PencilAltIcon,
     LibraryIcon
-  } from '@heroicons/react/outline'
+} from '@heroicons/react/outline'
 import Link from 'next/link'
 import { useTramitesContext } from '../../context/tramites/TramitesContext'
 import { types } from "../../types/tramites";
@@ -14,7 +14,6 @@ type TypeTramite={
     icon: JSX.Element,
     href: string
 }
-
 const tramites:TypeTramite[] = [
     {
         nombre: 'Mis trámites',
@@ -66,6 +65,14 @@ const tramites:TypeTramite[] = [
                   payload: {tramiteId: null}
                 });
             }} >
+              {i<1 &&
+                <a href={undefined} className="focus:outline-none">
+                  <span className="absolute inset-0" aria-hidden="true" />
+                  <p className="text-sm font-medium text-gray-900">{tramite.nombre}</p>
+                  <p className="text-sm text-gray-500 truncate">{tramite.descripcion}</p>
+                </a>
+              }
+              {i>0 &&
               <Link href={tramite.href}>
                 <a href={undefined} className="focus:outline-none">
                   <span className="absolute inset-0" aria-hidden="true" />
@@ -73,6 +80,8 @@ const tramites:TypeTramite[] = [
                   <p className="text-sm text-gray-500 truncate">{tramite.descripcion}</p>
                 </a>
               </Link>
+              }
+
             </div>
 
           </div>

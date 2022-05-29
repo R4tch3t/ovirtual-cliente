@@ -21,7 +21,9 @@ const initialState:TypeTramitesState = {
     procedimientos: {
         homologacion: null,
         bajaTemporal: null
-    }
+    },
+    tramiteAlumnoSeleccionado: null
+    
 }
 
 const TramitesProvider:FC = ({children})=>{

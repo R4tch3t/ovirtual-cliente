@@ -135,6 +135,13 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                         }
                     }
                 }
+            case types.seleccionarTramiteAlumno:
+                const {tramiteId} = action.payload
+
+                return {
+                    ...state,
+                    tramiteAlumnoSeleccionado: tramiteId
+                }
         default: 
             return state;
     }

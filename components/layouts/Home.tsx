@@ -31,9 +31,9 @@ const Home = () => {
     const actions = [
         {
           icon: AcademicCapIcon,
-          name: 'Tramites',
+          name: 'Trámites',
           href: '/tramites',
-          descripcion: 'Aquí podrá seleccionar los diferentes tramites disponibles.',
+          descripcion: 'Aquí podrá seleccionar los diferentes trámites disponibles.',
           iconForeground: 'text-indigo-700',
           iconBackground: 'bg-indigo-50',
         },

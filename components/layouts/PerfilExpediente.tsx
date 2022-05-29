@@ -38,7 +38,7 @@ const WarningPass = () => {
 }
 
 const mapDocInit = [
-  {id: null, nombre: 'CURP.pdf', descripcion: '', tipoDocumentoId: 1, cargado: 0, bajando: 0},
+  {id: null, nombre: 'CURP.pdf', descripcion: '', tipoDocumentoId: 1, validado:0, cargado: 0, bajando: 0},
   {id: null, nombre: 'ACTA DE NACIMIENTO.pdf', descripcion: '', tipoDocumentoId: 1},
   {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE SECUNDARIA.pdf', descripcion: '', tipoDocumentoId: 3},
   {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE BACHILLERATO.pdf', descripcion: '', tipoDocumentoId: 3 },
@@ -260,6 +260,9 @@ const PerfilExpedienteLayout = () => {
                                   }}
                                 >
                                   {m.nombre}
+                                  <p className="text-xs font-medium text-gray-500">
+                                    ESTADO: <b>{m.validado?'VALIDO':'NO VALIDO'}</b>
+                                  </p>
                                   {m.cargado!>0&&
                                     <Grid>
                                       <Progress value={m.cargado} shadow color="primary" status="primary" />
@@ -271,7 +274,8 @@ const PerfilExpedienteLayout = () => {
                                     </Grid>
                                   }
 
-                                </span>}
+                                </span>
+                                }
                                 {m.id===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
                                   {m.nombre}{' *'}
                                   {m.cargado!>0&&
