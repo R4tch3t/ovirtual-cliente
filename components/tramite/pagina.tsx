@@ -6,10 +6,11 @@ import { TypeTramite } from '../../interfaces';
 import { TramiteHead } from './head';
 
 interface Props {
-    tramite: TypeTramite
+    tramite: TypeTramite;
+    linkChildren?: string;
   }
   
-const PaginaTramite: FC<Props> = ({children, tramite}) => {
+const PaginaTramite: FC<Props> = ({children, tramite, linkChildren}) => {
     return (
         <>
             <Head>
@@ -18,9 +19,11 @@ const PaginaTramite: FC<Props> = ({children, tramite}) => {
             <Home link='Tramites' >
             <TramiteLayout > 
                 <TramiteHead 
+                    tramiteId={tramite.id}
                     nombre={tramite.nombre} 
                     descripcion={tramite.descripcion}
                     nivel={tramite.nivelAplica+""}
+                    linkChildren={linkChildren!}
                 />
                 {children}
             </TramiteLayout>

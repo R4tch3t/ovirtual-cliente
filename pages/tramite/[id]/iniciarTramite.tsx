@@ -4,11 +4,14 @@ import Router from 'next/router';
 import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
 import { TypeTramite, TypeUnidadesAcademicas, TypePais } from '../../../interfaces';
-import { TramiteTabs, PaginaTramite } from '../../../components/tramite';
+import { PaginaTramite, SeleccionarPlan } from '../../../components/tramite';
+import { PasosHomologacion } from '../../../components/tramite/homologacion';
+import { UnidadesAcademicas } from '../../../components/tramite/unidadAcademica';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
 import { obtenerTramites, planesOfertados, tramitePorId, Paises } from '../../../apollo-cliente';
 import { cargarHomologacionDB } from '../../../components/tramite/homologacion/formulario/cargarFormularioDB';
 import { usePreregistroPorCurp } from '../../../hooks/useQuery';
+import { BajaTemporal } from '../../../components/tramite/bajaTemporal';
 
 interface Props {
   id: string,
@@ -20,7 +23,8 @@ interface Props {
 
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
-  const {dispatch} = useTramitesContext()
+  const {tramitesState,dispatch} = useTramitesContext()
+  const {homologacion} = tramitesState.procedimientos
   const [state, setState]:any = useState(
     {
         table: {
@@ -57,15 +61,32 @@ const TramiteHome:NextPage<Props> = (props) =>{
   })
 
   return (
-    <PaginaTramite tramite={props.tramite} >
+
+    <PaginaTramite tramite={props.tramite} linkChildren={'iniciarTramite'} >
       <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
-            <div className='relative bg-white p-6' >
-              <TramiteTabs tramite={props.tramite} tabID={7} />
-              
-              
-            </div>
-        </div>
+          <div className='relative bg-white p-6' >
+
+            {
+              props.id==="15" && <>
+                {!homologacion && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} />}
+
+                {homologacion && <PasosHomologacion paises={props.paises} />}
+              </>
+            }
+
+            {
+              props.id==="1" && 
+              <>
+                {!tramitesState.procedimientos.bajaTemporal && <SeleccionarPlan />}
+                {tramitesState.procedimientos.bajaTemporal && <BajaTemporal tramiteId={parseInt(props.id)!} />}
+
+              </>
+            }
+            
+          </div>
+      </div>
     </PaginaTramite>
+
   )
 
 

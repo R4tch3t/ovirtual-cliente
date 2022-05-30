@@ -1,5 +1,5 @@
 import { Grid, Input, Progress } from "@nextui-org/react";
-import { PaperClipIcon } from '@heroicons/react/solid'
+import { ExclamationIcon, PaperClipIcon } from '@heroicons/react/solid'
 import { useState, FC } from "react";
 import { useAppContext } from "../../../auth/authContext";
 import { bajarArchivo, eliminarExpediente, subirArchivo, TypeMapDoc } from "../../../helpers/expedientes";
@@ -157,6 +157,13 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                     <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                     <div className="w-0 flex-1 flex items-center">
                     <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    { m.id!==null&&!m.validado&&
+                        <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                    }
+
+                    { m.id===null &&
+                        <ExclamationIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                    }
                     {m.id!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
                         onMouseDown={()=>{
                             bajarArchivo(auth?.usuario?.id!,m.id!,mapDoc,setMapDoc)
@@ -164,7 +171,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                     >
                         {m.nombre}
                         <p className="text-xs font-medium text-gray-500">
-                            ESTADO: <b>{m.validado?'VALIDO':'NO VALIDO'}</b>
+                            ESTADO: <b>{m.validado?'VALIDO':'NO VALIDADO'}</b>
                         </p>
                         {m.cargado!>0&&
                             <Grid>

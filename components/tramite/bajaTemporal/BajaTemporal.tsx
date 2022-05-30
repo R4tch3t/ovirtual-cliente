@@ -9,6 +9,7 @@ import EstadoTramite from '../estadoTramite'
 import { HeadTramite } from '../headTramite'
 import { FormularioBajaTemporal } from './formulario'
 import Fade from '@mui/material/Fade';
+import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 
 type Props = {
   tramiteId: number
@@ -33,7 +34,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
-  
+  const [clickEnviar, setClickEnviar] = useState(false)
   let btnDis:any = tramitesState?.procedimientos?.bajaTemporal?.validoParaTramitar!
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc.id})
@@ -63,10 +64,13 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
   return (
     <Fade in={true}>
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />}
-        {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-          txt={dataModal.txt} btn1={dataModal.btn1} />}
+        <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
+        <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+          txt={dataModal.txt} btn1={dataModal.btn1} />
+          
+          <ConfirmarTramite onSubmit={onSubmit} open={clickEnviar} setOpen={setClickEnviar} />
+
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg leading-6 font-medium text-gray-900">Baja temporal de estudios</h3>
           <p className="mt-1 max-w-2xl text-sm text-gray-500">Permite a un estudiante estar fuera por un periodo de tiempo.</p>
@@ -91,7 +95,9 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
           <div className="mt-4 py-4 px-4 flex justify-end sm:px-12">
               <button
                   type="button"
-                  onMouseUp={onSubmit}
+                  onMouseUp={()=>{
+                    setClickEnviar(true)
+                  }}
                   style={{width: 150}}
                   className={`ml-5 ${!btnDis?'bg-gray-500':'bg-sky-700'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:${!btnDis?'bg-gray-500':'bg-sky-800'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
                   disabled={!btnDis}
