@@ -21,21 +21,6 @@ const Home = () => {
         { label: 'Personal days left', value: 2 },
       ]
      
-      const ShowGridLog = () => {
-        setState({...state, 
-            logBand: !state.logBand,
-        });
-      }
-      
-
-      if(!auth.email){
-        state.btnHome = [{
-            html: state.logBand?'Registrar cuenta':'Iniciar sesión',
-            onMouseUp: ShowGridLog 
-        }];
-      }else{
-        state.btnHome = [{html: 'Ver perfil', href: '/perfil', onMouseUp: null}];
-      }
 
       const {btnHome} = state 
 

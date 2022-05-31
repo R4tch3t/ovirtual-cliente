@@ -15,9 +15,10 @@ const Resentemail = () => {
       });
       return (
       <>
-        {!auth.activated && <ModalError open={!auth.activated} setOpen={()=>{logout()}} title={dataModal.title} 
-        txt={dataModal.txt} btn1={dataModal.btn1} btn2={dataModal.btn2} />}
-      </>)
+         <ModalError open={!auth.activated} setOpen={()=>{logout()}} title={dataModal.title} 
+          txt={dataModal.txt} btn1={dataModal.btn1} btn2={dataModal.btn2} />
+      </>
+      )
 }
 
 export{

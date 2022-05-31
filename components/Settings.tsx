@@ -94,10 +94,10 @@ export const Settings = ({auth}:any) => {
     }
     
     return ( <>
-        {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-        txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
-        {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-        txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
+        <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+          txt={dataModal.txt} btnTxt={dataModal.btnTxt} />
+        <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+          txt={dataModal.txt} btnTxt={dataModal.btnTxt} />
        
         <main className="flex-1">
               <div className="relative max-w-4xl mx-auto md:px-8 xl:px-0">

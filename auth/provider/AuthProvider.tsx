@@ -21,7 +21,8 @@ const initialState: TypeAuthState = {
     logged: false,
     activated: true,
     usuario: null,
-    email: null
+    email: null,
+   // vincularOauth: null
 }
 
 export const AuthProvider: FC = ({ children }) => {
@@ -34,9 +35,11 @@ export const AuthProvider: FC = ({ children }) => {
             const {tipoCuenta}:any = data?.user
             switch(tipoCuenta){
                 case 'oauth':
+                    console.log('signO: ',data)
                     signOauth(data?.user as any)
                     break;
                 default:
+                    console.log('sign: ',data)
                     const {matricula,password}:any = data?.user
                     login(matricula, password);
                 break; 
@@ -59,15 +62,20 @@ export const AuthProvider: FC = ({ children }) => {
         const [resp, auth] = loginApollo(data)
         
         if(resp.respLogin){
+            //if(auth.usuario?.matricula){
+               
+            
             setAuth(auth);
+            //}
         }
         return resp.respLogin
     }
 
     const signup:TypeSignup = async (user):Promise<boolean> => {
+        console.log('signup:')
         const nuevoUsuario = {
-            matricula: user.matricula!,
-            email: user.email!
+            matricula: user?.matricula!,
+            email: user?.email!
         }
         const resp = await newUserGraphQL(nuevoUsuario)
         if(resp?.respNewUser){
@@ -82,7 +90,7 @@ export const AuthProvider: FC = ({ children }) => {
             email: user.email!
         }
 
-        const data = await newOuserGraphQL(nU)
+        const data = await newOuserGraphQL(nU);
         const [resp, auth] = signOauthApollo(data);
         
         if(resp.respNewOuser){
@@ -93,7 +101,7 @@ export const AuthProvider: FC = ({ children }) => {
     }
 
     const resentemail:TypeResentemail = async (user) => {
-        const {email, matricula} = user
+        const {email, matricula} = user!
         const resp = await reenviaremailGraphQL({email, matricula})
         
         if(resp.respReenviaremail){
@@ -107,17 +115,20 @@ export const AuthProvider: FC = ({ children }) => {
 
     const verificaToken = useCallback( async()=>{
         const token = localStorage.getItem("token") || Cookies.get('next-auth.session-token')
+        
         if(!token){
+            console.log('noToken ',token)
             setAuth({
                 checking: false,  
                 logged: false,
                 activated: true,
+                
             });
             return false;
         }
 
         const resp = await renovarTokenGraphQL(localStorage.getItem("token")!)
-        
+        console.log('verificatoken: ',resp)
         if(resp.respRenovarToken){
             localStorage.setItem("token",resp.token);
             const {usuario}:any = resp
@@ -149,9 +160,9 @@ export const AuthProvider: FC = ({ children }) => {
             id: usuario.id!,
             name: usuario.name!,
             email: usuario.email!,
-            matricula: usuario.matricula!
+            matricula: usuario?.matricula!
         }
-
+    
         const data = await vincularMatriculaGQL(u)
         const [resp,auth] = vincularMatriculaApollo(data)
         if(resp.respVincularMatricula){
@@ -230,6 +241,7 @@ export const AuthProvider: FC = ({ children }) => {
                 auth,
                 login,
                 signup,
+                signOauth,
                 verificaToken,
                 vincularMatricula,
                 updateUser,

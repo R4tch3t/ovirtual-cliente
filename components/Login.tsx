@@ -65,13 +65,14 @@ const Login: NextPage = () => {
     setBandsL({...bandsL,[provider]: true});
     
     signIn(provider,{redirect: false,callbackUrl: undefined});
+    
   }
   
   return (
     <main className="-mt-24">
   
-    {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-      txt={dataModal.txt} btn1={dataModal.btn1} />}
+     <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+      txt={dataModal.txt} btn1={dataModal.btn1} />
     
     {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
           <h2 className='rightH2' >Acceso</h2>
@@ -81,7 +82,7 @@ const Login: NextPage = () => {
                 <form className="space-y-6" onSubmit={onSubmit} method="POST">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Correo ó matrícula
+                      Correo
                     </label>
                     <div className="mt-1">
                       <input

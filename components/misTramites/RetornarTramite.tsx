@@ -5,7 +5,7 @@ type Props = {
     tramiteId: number
 }
 
-export default ({tramiteId}:Props) => {
+export default function RetornarTramite({tramiteId}:Props){
     return (
         <>
           {tramiteId===1 && <BajaTemporal tramiteId={tramiteId} />}

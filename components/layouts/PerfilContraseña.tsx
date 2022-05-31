@@ -44,7 +44,7 @@ const PerfilContraseñaLayout = () => {
     apellidos: auth.usuario ? auth.usuario.alumno.apeentalu:null,
     email: auth.email,
     newEmail: auth.email,
-    matricula: auth.usuario?auth.usuario.matricula:null,
+    matricula: auth.usuario?auth?.usuario?.matricula!:null,
     passwordN: '',
     passwordC: '',
     password: '',
@@ -150,10 +150,10 @@ const PerfilContraseñaLayout = () => {
 
     return (
         <main className="relative -mt-24">
-          {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-            txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />}
-          {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-            txt={dataModal.txt} btn1={dataModal.btn1} />}
+          <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+            txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
+          <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+            txt={dataModal.txt} btn1={dataModal.btn1} />
         <div className="max-w-screen-xl mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">

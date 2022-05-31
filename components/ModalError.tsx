@@ -1,14 +1,18 @@
-import { Fragment, useRef } from 'react'
+import { Fragment, useRef, useState } from 'react'
+import { Loading } from '@nextui-org/react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
+//import { useAppContext } from '../auth/authContext';
 
-export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
+export const ModalError=({open, setOpen, title, txt, btn1, btn2, input1, children}:any)=>{
+  
   const cancelButtonRef = useRef(null)
-    
+  console.log('modal error?')
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} initialFocus={cancelButtonRef} onClose={btn1.onClose} >
+      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} initialFocus={cancelButtonRef} onClose={btn1?.onClose!} >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          {children}
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -49,6 +53,7 @@ export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
                   </div>
                 </div>
               </div>
+              {btn1?.txt! &&
               <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
@@ -57,22 +62,51 @@ export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
                 >
                   {btn1.txt}
                 </button>                                
-              </div>
+              </div>}
               
+              {input1&&<div className="relative mt-5 border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+                  <label
+                    htmlFor="name"
+                    className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900"
+                  >
+                    {input1.label}
+                  </label>
+                  <input
+                    type="text"
+                    name={input1.name}
+                    id={input1.name}
+                    className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
+                    placeholder={input1.placeholder}
+                  />
+                </div>
+              }
+
               {btn2&&<div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                 
                 <button
+                  ref={cancelButtonRef}
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-500 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-                  onClick={btn2.onClick}
+                  
+                  onMouseUp={()=>{
+                    if(btn2?.loaded!){
+                      btn2?.setLoading(true)
+                      
+                    }
+                    btn2.onClick()
+                  }}
+                  //onClick={btn2.onClick}
+                  disabled={btn2?.loading!}
                 >
-                  {btn2.txt}
+                  {!btn2?.loading!&&btn2.txt}
+                  {btn2?.loading!&&<Loading type="spinner" color={'white'} size="md" />}
                 </button>
               </div>
               }
 
             </div>
           </Transition.Child>
+
         </div>
       </Dialog>
     </Transition.Root>

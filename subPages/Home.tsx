@@ -12,6 +12,7 @@ import Logo from '../components/Logo'
 import { Resentemail } from '../helpers/Resentemail'
 import Link from 'next/link'
 import { NextPage } from 'next';
+import { VincularOauth } from '../helpers/VincularOauth'
 
 
 const user = {
@@ -65,7 +66,8 @@ export const Home: NextPage<Props> = ({children, link}) => {
     }
 
     return (
-        <>          
+        <>
+          <VincularOauth />          
           <Resentemail />
           <div className="min-h-full">
             <Popover as="header" className="pb-24 bg-gradient-to-r from-uagrojo to-uagrojo">

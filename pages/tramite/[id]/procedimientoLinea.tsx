@@ -29,7 +29,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
         } 
     }
   );
-  const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu);
+  const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
     cargarHomologacionDB(data!,dispatch)
   },[data,dispatch])

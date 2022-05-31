@@ -16,7 +16,7 @@ const TramitesHome:NextPage<TypeTramitesState> = (props) =>{
   const {tramitesState} = useTramitesContext();
   const {tramites, tta,ttb} = tramitesState
   let fTramites = filtroTramites(props.tramites!,tta,ttb)
-        
+  
   if(!tramites || tramites === props.tramites){
     tramitesState.tramites=fTramites
   }
@@ -32,7 +32,7 @@ const TramitesHome:NextPage<TypeTramitesState> = (props) =>{
   if(!auth.logged||(auth.usuario&&auth.usuario.matactiva === 0)){
     Router.replace("/");
   }
-
+  console.log('tramitesHome: ',auth)
 return (
       <>
         <Head>
@@ -54,7 +54,7 @@ return (
 
 export const getStaticProps: GetStaticProps = async (ctx) => {  
   const tramites = await obtenerTramites()
-
+  console.log(tramites)
   return {
     props: {
       tramites

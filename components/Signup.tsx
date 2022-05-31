@@ -48,10 +48,10 @@ const Signup: NextPage = () => {
 
   return (
     <main className="-mt-24">          
-          {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-        txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />}
-        {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-        txt={dataModal.txt} btn1={dataModal.btn1} />}
+        <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+            txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
+        <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+            txt={dataModal.txt} btn1={dataModal.btn1} />
           
           {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
           <h2 className='rightH2' >Registro</h2>
@@ -69,7 +69,7 @@ const Signup: NextPage = () => {
                         name="matricula"
                         type="text"
                         placeholder='Ej: 08083206'
-                        value={form.matricula}
+                        value={form?.matricula!}
                         onChange={onChange}
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

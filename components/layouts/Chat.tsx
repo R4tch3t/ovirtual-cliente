@@ -19,7 +19,7 @@ const Home = () => {
     const height = window.innerHeight*0.8;
 
     const {auth}:any = useAppContext();
-    const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '#'}]});
+    const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '/perfil'}]});
     const user = {
         name: auth.usuario?auth.usuario.alumno.nomentalu:null,
         email: auth.email,
@@ -43,7 +43,7 @@ const Home = () => {
       { label: (offlineU === 1? 'Usuario desconectado':'Usuarios desconectados'), value: offlineU },
     ]
 
-    const ShowGridLog = () => {
+    /*const ShowGridLog = () => {
       setState({...state, 
           logBand: !state.logBand,
       });
@@ -57,7 +57,7 @@ const Home = () => {
       }];
     }else{
       state.btnHome = [{html: 'Ver perfil', href: '/perfil', onMouseUp: null}];
-    }
+    }*/
 
     const {logBand, btnHome} = state 
 

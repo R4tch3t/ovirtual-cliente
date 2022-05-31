@@ -19,7 +19,7 @@ export interface TypeUserO {
     name: string,
     matricula: string,
     email: string, 
-    password: string
+  //  password: string
 }
 
 export interface TypeAuthState {
@@ -29,13 +29,15 @@ export interface TypeAuthState {
     logged?:boolean,
     activated?:boolean,
     usuario?:TipoUsuario|null,
-    email?:string | null
+    email?:string | null,
+    vincularOauth?: boolean
 }
 
 export interface TypeContext {
     auth: TypeAuthState|null,
     login: TypeLogin|null,
     signup: TypeSignup|null,
+    signOauth: TypeSignupO|null,
     verificaToken: TypeVerificaToken|null,
     vincularMatricula: TypeVincular,
     updateUser: TypeUpdateUser|null,
