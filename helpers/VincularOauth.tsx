@@ -19,13 +19,11 @@ const VincularOauth = () => {
             emailO: auth?.usuario?.email!,
             matricula,
             name: auth?.usuario?.nombre!,
-        }
-        console.log("vincuMal ",auth!)
-        const respVinculacion = await vincularOusuarioGQL(user)
-        console.log("respVinc ",respVinculacion)
+        }        
+        const respVinculacion = await vincularOusuarioGQL(user)        
         if(!respVinculacion?.respNewOuser){
             setLoading(false)
-            return setOpenModalE(true)//setDataModalE({...dataModalE,open:true})
+            return setOpenModalE(true)
         }
 
         const userO = {
@@ -54,13 +52,12 @@ const VincularOauth = () => {
       };
     const [openModalE, setOpenModalE] = useState(false)
     const dataModalE = {
-        //open: false,
         title: 'Error', 
         txt:'Favor de verificar datos...', 
-        btn1:{onClose: ()=>{setOpenModalE(false)} /*useCallback(()=>{setOpenModalE(false)},[setOpenModalE])*/ },
+        btn1:{onClose: ()=>{setOpenModalE(false)} },
         btn2: {
             txt:'Aceptar',
-            onClick: /*()=>{setOpenModalE(false)}*/useCallback(()=>{setOpenModalE(false)},[setOpenModalE])
+            onClick: useCallback(()=>{setOpenModalE(false)},[setOpenModalE])
         }
     };
     

@@ -22,7 +22,6 @@ const initialState: TypeAuthState = {
     activated: true,
     usuario: null,
     email: null,
-   // vincularOauth: null
 }
 
 export const AuthProvider: FC = ({ children }) => {
@@ -34,12 +33,10 @@ export const AuthProvider: FC = ({ children }) => {
         if(status==="authenticated"){
             const {tipoCuenta}:any = data?.user
             switch(tipoCuenta){
-                case 'oauth':
-                    console.log('signO: ',data)
+                case 'oauth':                    
                     signOauth(data?.user as any)
                     break;
-                default:
-                    console.log('sign: ',data)
+                default:                    
                     const {matricula,password}:any = data?.user
                     login(matricula, password);
                 break; 
@@ -62,17 +59,14 @@ export const AuthProvider: FC = ({ children }) => {
         const [resp, auth] = loginApollo(data)
         
         if(resp.respLogin){
-            //if(auth.usuario?.matricula){
-               
             
             setAuth(auth);
-            //}
+            
         }
         return resp.respLogin
     }
 
-    const signup:TypeSignup = async (user):Promise<boolean> => {
-        console.log('signup:')
+    const signup:TypeSignup = async (user):Promise<boolean> => {        
         const nuevoUsuario = {
             matricula: user?.matricula!,
             email: user?.email!
@@ -116,8 +110,7 @@ export const AuthProvider: FC = ({ children }) => {
     const verificaToken = useCallback( async()=>{
         const token = localStorage.getItem("token") || Cookies.get('next-auth.session-token')
         
-        if(!token){
-            console.log('noToken ',token)
+        if(!token){            
             setAuth({
                 checking: false,  
                 logged: false,
@@ -128,7 +121,7 @@ export const AuthProvider: FC = ({ children }) => {
         }
 
         const resp = await renovarTokenGraphQL(localStorage.getItem("token")!)
-        console.log('verificatoken: ',resp)
+        
         if(resp.respRenovarToken){
             localStorage.setItem("token",resp.token);
             const {usuario}:any = resp

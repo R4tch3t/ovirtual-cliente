@@ -15,6 +15,7 @@ import ActivarMatricula from '../settings/ActivarMatricula';
 import { ModalSuccess } from '../ModalSucces';
 import { ModalError } from '../ModalError';
 import Link from 'next/link';
+import { retornarPrimerMat } from '../../helpers/retornarPrimerMat';
 
 let subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: true },
@@ -36,6 +37,7 @@ const WarningPass = () => {
   </>
 }
 
+
 const PerfilLayout = () => {
   const {auth, vincularMatricula, updateUser,actualizadoContra}:any = useAppContext();
   const [usuario, setUsuario] = useState({
@@ -47,7 +49,7 @@ const PerfilLayout = () => {
     apellido2: null,
     email: auth.email,
     newEmail: auth.email,
-    matricula: auth.usuario?auth?.usuario?.matricula!:null,
+    matricula: auth.usuario?retornarPrimerMat(auth?.usuario?.matricula!):null,
     password: '',
     role: 'Alumno(a)',
     imageUrl:
@@ -253,8 +255,7 @@ const PerfilLayout = () => {
                 </nav>
               </aside>
 
-              <form className="divide-y divide-gray-200 lg:col-span-9" action="#" method="POST">
-                {/* Profile section */}
+              <form className="divide-y divide-gray-200 lg:col-span-9" action="#" method="POST">                
                 <div className="py-6 px-4 sm:p-6 lg:pb-8">
                   <div>
                     <h2 className="text-lg leading-6 font-medium text-gray-900">Perfil</h2>

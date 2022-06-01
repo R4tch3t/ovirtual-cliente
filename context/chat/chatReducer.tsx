@@ -66,12 +66,7 @@ export const chatReducer = (state:TypeChatState,action:TypeChatAction):TypeChatS
                 }else{
                     return {...state,topeMsjs:true}
                 }
-            
-            /*case types.animacion:
-                return {
-                    ...state,
-                    animacion: action.payload
-                }*/                
+                            
             default: 
                 return state;
         }

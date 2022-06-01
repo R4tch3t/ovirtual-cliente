@@ -15,12 +15,6 @@ const AppLinker = () =>{
     )
   }
 
-  if(!auth.logged){
-    /*useEffect(()=>{
-        verificaToken();
-      },[]);*/
-    //Router.push("/login");
-  }
 
 return (
   <>

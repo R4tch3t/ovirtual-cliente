@@ -63,7 +63,6 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                         homologacion: {
                             ...state.procedimientos.homologacion!,
                             [nombrePaso]: {
-                                //...(state.procedimientos.homologacion![nombrePaso]),
                                 ...paso,
                                 [nombreCampo]: valorCampo
                             }
@@ -99,7 +98,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                     }
                 }
             case types.seleccionarPlanBajaTemporal:
-        
+                /// hacerla universal para cualquier tramite
                 usuarioId = action.payload.usuarioId
                 plesXur = action.payload.plesXur
                 planElegido = action.payload.planElegido
@@ -118,10 +117,12 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                             causaBaja,
                             validoParaTramitar: false
                         }
-                    }
+                    },
+                    nombreTramiteSeleccionado: 'bajaTemporal'
+
                 }    
             case types.cambiarEstado:
-                const {nombreTramite, nombreValor, valor} = action.payload
+                let {nombreTramite, nombreValor, valor} = action.payload
                 const tramites:any = state.procedimientos 
                 const tramite = tramites[nombreTramite]
 
@@ -141,6 +142,15 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                 return {
                     ...state,
                     tramiteAlumnoSeleccionado: tramiteId
+                }
+            case types.ponerTramiteEnNulo:
+                
+                return {
+                    ...state,
+                    procedimientos: {
+                        ...state.procedimientos,
+                        [state.nombreTramiteSeleccionado!]: null
+                    }
                 }
         default: 
             return state;

@@ -21,9 +21,6 @@ export default function Success({s, setSLog}:any) {
               <button
                 type="button"
                 
-                onMouseUp={()=>{
-                   // document.location="login"
-                }}
                 className="bg-green-50 px-2 py-1.5 rounded-md text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600"
               >
                <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">   

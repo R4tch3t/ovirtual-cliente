@@ -75,7 +75,8 @@ export interface TypeTramitesState {
     tta:number,
     ttb:number,
     procedimientos: TypeProcedimiento,
-    tramiteAlumnoSeleccionado: number | null
+    tramiteAlumnoSeleccionado: number | null,
+    nombreTramiteSeleccionado: string | null
 }
 
 export interface TypeTramitesContext {

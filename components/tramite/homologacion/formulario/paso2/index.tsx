@@ -173,7 +173,6 @@ const Paso2 = () => {
                 <Input id='numeroExt' 
                         width={"100%"} 
                         name='numeroExt'
-                      //  onKeyUp={onKeyUp}
                         onChange={onChange}
                         labelLeft='*'
                         clearable bordered labelPlaceholder="* Número exterior" 
@@ -189,7 +188,6 @@ const Paso2 = () => {
                 <Input id='numeroInt' 
                     width={"100%"} 
                     name='numeroInt'
-                  //  onKeyUp={onKeyUp}
                     onChange={onChange}
                     clearable bordered labelPlaceholder="Número interior" 
                     initialValue={paso2?.numeroInt} 

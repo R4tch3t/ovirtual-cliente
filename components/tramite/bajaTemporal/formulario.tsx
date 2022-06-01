@@ -27,7 +27,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
         ,
     });
     const Y = new Date().getFullYear()
-    //const periodoBajaVal = tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo! ?
+    
     periodoBajaVal = !tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo! ? 
         periodoBajaVal : tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo!
 

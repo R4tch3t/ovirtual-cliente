@@ -2,12 +2,13 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/outline'
 
-export const ModalSuccess = ({open, setOpen, title, txt, btnTxt}:any) => {
+export const ModalSuccess = ({open, setOpen, title, txt, btnTxt, children}:any) => {
     
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} onClose={setOpen}>
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        {children}
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

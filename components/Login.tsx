@@ -88,7 +88,6 @@ const Login: NextPage = () => {
                       <input
                         id="email"
                         name="email"
-                       // type="email"
                         value={form.email}
                         autoComplete="email"
                         placeholder='Ej: 08083206 ó 08083206@gmail.mx'

@@ -1,5 +1,7 @@
-import Link from 'next/link';
+import Router from 'next/router';
 import {FC} from 'react';
+import { useTramitesContext } from '../../context/tramites/TramitesContext';
+import { types } from '../../types/tramites';
 
 type Head = {
     tramiteId: number;
@@ -10,16 +12,33 @@ type Head = {
 }
 
 const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChildren}) => {
+  const {dispatch}:any = useTramitesContext();
   let btnState = {
     txt: 'Iniciar trámite',
     href: `/tramite/${tramiteId}/iniciarTramite`,
-    bgColor: 'bg-sky'
+    onClick: ()=>{
+      
+      dispatch({
+        type: types.ponerTramiteEnNulo,
+        payload: null
+      });
+      
+      Router.push(`/tramite/${tramiteId}/iniciarTramite`)
+      
+    },
+    bgColor1: 'bg-sky-700',
+    bgColor2: 'bg-sky-800'
   };
   
   if(linkChildren==='iniciarTramite'){
     btnState.txt='Cancelar'
+    btnState.onClick=()=>{
+      
+      Router.push(`/tramite/${tramiteId}`)
+    }
     btnState.href=`/tramite/${tramiteId}`
-    btnState.bgColor='bg-red'
+    btnState.bgColor1='bg-red-600'
+    btnState.bgColor2='bg-red-700'
   }
 
     return (
@@ -28,17 +47,17 @@ const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChild
             <h3 className="text-lg leading-6 font-medium text-gray-900">NOMBRE DEL TRÁMITE:</h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">{nombre}</p>
             
-            <Link href={btnState.href} >
               <button
                 type="button"
+                onClick={btnState.onClick}
                 style={{width: 150}}
-                className={`${btnState.bgColor}-700 mt-5 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:${btnState.bgColor}-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                className={`${btnState.bgColor1} mt-5 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:${btnState.bgColor2} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
               >
                 {
                     btnState.txt
                 }
               </button>
-            </Link>
+            
 
           </div>
           <div className="border-t border-gray-200">

@@ -50,7 +50,6 @@ export default NextAuth({
                     user!.tipoCuenta=account?.type
                     token.user=user
                     
-                    //compare user pass
                 break;
                 
                 case 'credentials':

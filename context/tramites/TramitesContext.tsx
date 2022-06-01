@@ -22,7 +22,8 @@ const initialState:TypeTramitesState = {
         homologacion: null,
         bajaTemporal: null
     },
-    tramiteAlumnoSeleccionado: null
+    tramiteAlumnoSeleccionado: null,
+    nombreTramiteSeleccionado: null
     
 }
 

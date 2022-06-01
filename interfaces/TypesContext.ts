@@ -19,7 +19,6 @@ export interface TypeUserO {
     name: string,
     matricula: string,
     email: string, 
-  //  password: string
 }
 
 export interface TypeAuthState {

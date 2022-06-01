@@ -130,8 +130,6 @@ const onScroll:TypeScroll = async (event)=>{
     setCargandoMsjs(!chatState.topeMsjs);
     
     event.preventDefault();
-    const headers={skip,take}
-    //const resp = await fetchConToken(`mensajes/${chatState.chatActivo.id}`,null,'GET',headers);
     const resp = await obtenerChatGQL(auth.id,chatState.chatActivo.id,skip,take)
     setCargandoMsjs(false);
     dispatch({
@@ -203,8 +201,6 @@ if(!chatActivo.id){
               placeholder="Escribir mensaje..."
               value={mensaje}
               onChange={onChange}
-              
-              onEnded={()=>{console.log('Enden Capture?')}}
               
             />
 

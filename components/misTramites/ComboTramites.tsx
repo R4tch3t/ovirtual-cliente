@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { Combobox } from '@headlessui/react'
-import { Loading } from '@nextui-org/react'
 import { useTramitesContext } from '../../context/tramites/TramitesContext'
 import { types } from '../../types/tramites'
 import { TypeCatTramite } from '../../interfaces'

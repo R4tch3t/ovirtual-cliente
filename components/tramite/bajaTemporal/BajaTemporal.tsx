@@ -4,12 +4,13 @@ import { useAppContext } from '../../../auth/authContext'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
 import { ObtenerTramiteAlumnoInput, useObtenerTramitesAlumno } from '../../../hooks/useQuery/tramites'
 import { ModalError } from '../../ModalError'
-import { ModalSuccess } from '../../ModalSucces'
+import { ModalSuccess } from '../../ModalSucces';
 import EstadoTramite from '../estadoTramite'
 import { HeadTramite } from '../headTramite'
 import { FormularioBajaTemporal } from './formulario'
 import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
+import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 
 type Props = {
   tramiteId: number
@@ -50,26 +51,37 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
       tramiteId,
       plesxurRef: tramitesState.procedimientos.bajaTemporal?.plesXur!,
       userAlumnoId: auth?.id!,
-      matricula: auth?.usuario?.matricula!,
+      matricula: retornarPrimerMat(auth?.usuario?.matricula!),
       datosTramite
     }
     const resp = await guardarTramiteGQL(tramite)
     if(resp){
       await refetch()
-      setDataModal({title: 'Éxito', txt: "El trámite fue enviado con éxito.", btn1: {txt:"Aceptar", onClose:setModalE} })
       setModalS(true);
+      setDataModal({title: 'Éxito', txt: "El trámite fue enviado con éxito.", btn1: {txt:"Aceptar", onClose:setModalE} })
+      
     }
   }
   
   return (
     <Fade in={true}>
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
-        <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-          txt={dataModal.txt} btn1={dataModal.btn1} />
+        
+        {/*<ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+          txt={dataModal.txt} btn1={dataModal.btn1} />*/}
           
-          <ConfirmarTramite onSubmit={onSubmit} open={clickEnviar} setOpen={setClickEnviar} />
+          <ConfirmarTramite onSubmit={onSubmit} open={clickEnviar} setOpen={setClickEnviar} 
+            
+          >
+            <ModalSuccess open={modalS} setOpen={()=>{
+                setModalS(false);
+                setClickEnviar(false);
+              }} 
+              title={dataModal.title} 
+              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
+          
+            
+          </ConfirmarTramite>
 
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg leading-6 font-medium text-gray-900">Baja temporal de estudios</h3>

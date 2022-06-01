@@ -1,13 +1,4 @@
-
-import {
-    AcademicCapIcon,
-    BadgeCheckIcon,
-    CashIcon,
-    ClockIcon,
-    ReceiptRefundIcon,
-    UsersIcon,
-  } from '@heroicons/react/outline'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../../auth/authContext';
 import Login from '../Login';
 import Signup from '../Signup';

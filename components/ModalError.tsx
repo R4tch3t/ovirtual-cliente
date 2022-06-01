@@ -1,13 +1,12 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef } from 'react'
 import { Loading } from '@nextui-org/react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
-//import { useAppContext } from '../auth/authContext';
 
 export const ModalError=({open, setOpen, title, txt, btn1, btn2, input1, children}:any)=>{
   
   const cancelButtonRef = useRef(null)
-  console.log('modal error?')
+  
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} initialFocus={cancelButtonRef} onClose={btn1?.onClose!} >
@@ -95,7 +94,6 @@ export const ModalError=({open, setOpen, title, txt, btn1, btn2, input1, childre
                     }
                     btn2.onClick()
                   }}
-                  //onClick={btn2.onClick}
                   disabled={btn2?.loading!}
                 >
                   {!btn2?.loading!&&btn2.txt}

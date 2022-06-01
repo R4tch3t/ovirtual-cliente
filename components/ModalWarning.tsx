@@ -2,13 +2,14 @@ import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
-export const ModalWarning=({open, setOpen, title, txt, btn1, btn2}:any)=>{
+export const ModalWarning=({open, setOpen, title, txt, btn1, btn2, children}:any)=>{
   const cancelButtonRef = useRef(null)
     
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} initialFocus={cancelButtonRef} onClose={btn1.onClose} >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          {children}
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -62,6 +63,7 @@ export const ModalWarning=({open, setOpen, title, txt, btn1, btn2}:any)=>{
               {btn2&&<div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                 
                 <button
+                  ref={cancelButtonRef}
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-500 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
                   onClick={btn2.onClick}

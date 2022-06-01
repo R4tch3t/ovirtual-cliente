@@ -2,7 +2,7 @@ import { validarCURP } from "../../../../../../helpers/validarCURP";
 import { types } from "../../../../../../types/tramites";
 
 const validarCurp = (value:string,setInputs:any,inputs:any,dispatch:any) => {
-    const valida = value !== undefined ? validarCURP(value):value//value.match(/^[A-Z]{3,32}$/i);
+    const valida = value !== undefined ? validarCURP(value):value
     const name='curp'
     if(!valida){
       setInputs({...inputs,[name]:{

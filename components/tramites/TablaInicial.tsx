@@ -29,7 +29,6 @@ const paraNivel = (n:number|null) => {
     const {tramitesState, dispatch} = useTramitesContext();
     const {tramites} = tramitesState
     const {socket}:any = useSocketContext();
-    console.log('tablaInicial ', tramites)
 
     //Escuchar los cambios en tramites 
     useEffect(()=>{

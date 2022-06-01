@@ -36,7 +36,7 @@ const WarningPass = () => {
 }
 
 const PerfilContraseñaLayout = () => {
-  const {auth, actualizadoContra, updateUser}:any = useAppContext();
+  const {auth, actualizadoContra}:any = useAppContext();
   const [usuario, setUsuario] = useState({
     id: auth.id, 
     nombreUsuario: auth.usuario? auth.usuario.nombre:null,
