@@ -5,6 +5,11 @@ import { retornarPrimerMat } from "../../helpers/retornarPrimerMat";
 export const HeadTramite = () => {
     const {tramitesState} = useTramitesContext()
     const {auth} = useAppContext()
+    
+    if(!auth?.usuario){
+        return <></>
+    }
+
     const apellidos = auth?.usuario?.alumno?.apeentalu?.split('*')!
     return (
         <>
