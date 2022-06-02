@@ -5,7 +5,9 @@ import PerfilLayout from '../../components/layouts/Perfil'
 import { RedirecApp } from '../../router/RedirecApp';
 import Head from 'next/head';
 import { Loading } from '@nextui-org/react';
-const PerfilHome = () =>{
+
+
+const PerfilHome = () => {
   const auth = RedirecApp();
 
   if(auth.checking){
@@ -31,5 +33,7 @@ return (
       </>
 );
 }
+
+
 
 export default PerfilHome

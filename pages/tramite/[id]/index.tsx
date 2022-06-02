@@ -6,24 +6,23 @@ import { Loading } from '@nextui-org/react';
 import { TypeTramite } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
 import { obtenerTramites, tramitePorId } from '../../../apollo-cliente';
+import { obtenerRequisitosGQL, TipoRequisitos } from '../../../apollo-cliente/tramites/obtenerRequisitos';
 
 
 interface Props {
   id: number,
-  tramite: TypeTramite
+  tramite: TypeTramite,
+  requisitos: TipoRequisitos[]
 }
 
 
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
-  const [state, setState] = useState(
-    {
-        table: {
-            head: ['Documento', 'Descripción' ],
-            body: [{'Documento': 'CURP', 'Descripción': 'Clave Única de Registro de Población'}]
-        } 
-    }
-  );
+  const table:any = {
+            head: ['Documento', 'Descripción', 'Copias', 'Requiere Original' ],
+            //body: [{'Documento': 'CURP', 'Descripción': 'Clave Única de Registro de Población'}]
+            body: []
+  }
   
   if(auth.checking){
     return( 
@@ -37,9 +36,17 @@ const TramiteHome:NextPage<Props> = (props) =>{
    
     Router.replace("/");
   }
+  
+  props.requisitos.map((r)=>{
+    table?.body?.push({
+      'Documento': r.documento.nombre,
+      'Descripción': r.descripcion,
+      'Copias': r.numeroCopias,
+      'Requiere Original': r.requiereOriginal?'Si':'No',
+    })
+  })
 
-
-const {head, body}  = state.table
+  const {head, body}  = table
 
 
   return (
@@ -71,7 +78,9 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {id} = params as {id: string} 
-  const tramite:TypeTramite = await tramitePorId(parseInt(id))
+  const tramiteId = parseInt(id);
+  const tramite:TypeTramite = await tramitePorId(tramiteId)
+  const requisitos = await obtenerRequisitosGQL(tramiteId)
 
   if(tramite===null){
     return {
@@ -85,7 +94,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   return {
     props: {
       id,
-      tramite
+      tramite,
+      requisitos
     },
     revalidate: 86400
   }

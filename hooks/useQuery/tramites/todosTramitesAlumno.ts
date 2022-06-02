@@ -1,5 +1,6 @@
 
 import { useQuery, gql } from "@apollo/client";
+import { TipoRequisitos } from "../../../apollo-cliente/tramites/obtenerRequisitos";
 
 interface TodosTramiteAlumnoInput {
     userAlumnoId: number
@@ -9,7 +10,7 @@ interface Query {
     todosTramitesAlumno: TramiteAlumno[]
 }
 
-interface TramiteAlumno {
+export interface TramiteAlumno {
     id: number,
     tramiteId:  number,
     plesxurRef: number,
@@ -19,7 +20,8 @@ interface TramiteAlumno {
     informacionAdicional:string|null,
     visto: number,
     motivoRegresoValidacion:string|null,
-    datosTramite:string
+    datosTramite:string,
+    requisitos: TipoRequisitos[]
 }
 
 const QUERY = gql`
@@ -37,9 +39,23 @@ const QUERY = gql`
             visto
             motivoRegresoValidacion
             datosTramite
-            
+            requisitos {
+                id
+                descripcion
+                numeroCopias
+                requiereOriginal
+                activo
+                documento {
+                    id
+                    tipoDocumentoId
+                    nombre
+                    descripcion
+                    clave
+                    activo
+                }
+            }
         }
-    }
+}
 `;
 
 const useTodosTramitesAlumno = (alumnoTramite:TodosTramiteAlumnoInput) => {

@@ -43,13 +43,10 @@ export const newUserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                     }
                     expediente {
                         id
+                        documentoId
+                        observacionValidacion
                         userAlumnoId
                         validado
-                        documento {
-                            id
-                            nombre
-                            descripcion
-                        }
                     }
                 }
                 token

@@ -1,6 +1,7 @@
 import { subirDocumentoGQL } from "../../apollo-cliente/perfil"
+import { TypeDocumento } from "../../interfaces"
 
-export type TypeMapDoc = {
+/*export type TypeMapDoc = {
     id: null | number,
     nombre: string,
     descripcion: string,
@@ -8,14 +9,22 @@ export type TypeMapDoc = {
     validado?: number,
     cargado?: number,
     bajando?: number
+}*/
+
+export interface CatDocumentos extends TypeDocumento {
+  expedienteId?: number
+  validado?: number
+  cargado?: number
+  bajando?: number
 }
 
 export const subirArchivo = async (
     expedienteId:number | null, 
+    documentoId: number,
     userId: number,
     fileName: string,
     tipoDocumentoId:number,
-    mapDoc: TypeMapDoc[],
+    mapDoc: CatDocumentos[],
     setMapDoc: any,
     verificaToken:any,
     base64:string
@@ -32,10 +41,10 @@ export const subirArchivo = async (
       expedienteId
     }
     const archivo = {
-      id: null,
-      nombre: fileName!,
+      id: documentoId,
+      /*nombre: fileName!,
       descripcion: descripcion!,
-      tipoDocumentoId,
+      tipoDocumentoId,*/
       actualizar,
       base64: part64//: result! as string  
     } 
@@ -49,14 +58,14 @@ export const subirArchivo = async (
 
     const respDoc = await subirDocumentoGQL(alumno,archivo)
     if(!archivo.actualizar){
-      archivo.id = respDoc?.documento.id! as any
+      //archivo.id = respDoc?.documento.id! as any
       alumno.expedienteId=respDoc?.documento?.expedienteId! as any
     }
     
 
     let newMap:any = []
       mapDoc.map((d)=>{
-        if(d.nombre===archivo.nombre){
+        if(d.id===archivo.id){
           d.cargado=buffer/bufferLength*100
         }
         newMap.push(d)
@@ -78,7 +87,7 @@ export const subirArchivo = async (
       
       const newMap:any = []
       mapDoc.map((d)=>{
-        if(d.nombre===archivo.nombre){
+        if(d.id===archivo.id){
           d.cargado=buffer/bufferLength*100
           
         }
@@ -90,7 +99,7 @@ export const subirArchivo = async (
     }
     
     mapDoc.map((d)=>{
-        if(d.nombre===archivo.nombre){
+        if(d.id===archivo.id){
           d.cargado=0
         }
       });

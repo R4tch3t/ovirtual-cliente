@@ -14,19 +14,15 @@ type TipoAlumno = {
 }
 
 type TipoArchivo = {
-    nombre: string;
+    id: number
+    /*nombre: string;
     descripcion: string;
-    tipoDocumentoId: number;
+    tipoDocumentoId: number;*/
     base64: string | null;
 }
 
 type TipoDocumento = {
-    id: number,
-    nombre: string,
-    descripcion: string,
-    tipoDocumentoId: number,
     expedienteId: number,
-    
 }
 
 export const subirDocumentoGQL = async (alumno:TipoAlumno,archivo:TipoArchivo) => {
@@ -37,10 +33,6 @@ export const subirDocumentoGQL = async (alumno:TipoAlumno,archivo:TipoArchivo) =
                 subirDocumento(archivo: $archivo, alumno: $alumno) {
                     respSubirDocumento
                     documento {
-                        id
-                        nombre
-                        descripcion
-                        tipoDocumentoId
                         expedienteId
                     }
                     msg

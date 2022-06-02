@@ -42,13 +42,10 @@ export const newOuserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                     }
                     expediente {
                         id
+                        documentoId
+                        observacionValidacion
                         userAlumnoId
                         validado
-                        documento {
-                            id
-                            nombre
-                            descripcion
-                        }
                     }
                     vwAlumnoConPlanes {
                         PLESXUR

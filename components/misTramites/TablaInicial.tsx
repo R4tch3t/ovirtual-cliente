@@ -73,8 +73,10 @@ const TablaInicial = () => {
 
     }
 
+    
+
     if(tramitesState.tramiteAlumnoSeleccionado!==null){
-     return <RetornarTramite tramiteId={tramitesState.tramiteAlumnoSeleccionado} />
+     return <RetornarTramite tramiteId={tramitesState.tramiteAlumnoSeleccionado} tramites={data?.todosTramitesAlumno!} />
     }
 
     return (

@@ -1,14 +1,14 @@
 import { Grid, Input, Progress } from "@nextui-org/react";
-import { ExclamationIcon, PaperClipIcon } from '@heroicons/react/solid'
+import { CheckCircleIcon, ExclamationIcon, PaperClipIcon } from '@heroicons/react/solid'
 import { useState, FC } from "react";
 import { useAppContext } from "../../../auth/authContext";
-import { bajarArchivo, eliminarExpediente, subirArchivo, TypeMapDoc } from "../../../helpers/expedientes";
+import { bajarArchivo, eliminarExpediente, subirArchivo, CatDocumentos } from "../../../helpers/expedientes";
 import { useTramitesContext } from "../../../context/tramites/TramitesContext";
 import { types } from "../../../types/tramites";
 import { validarPeriodo, validarCausaBaja } from "./helper";
 
 type Props = {
-    mapDocInit: TypeMapDoc[],
+    mapDocInit: CatDocumentos[],
     periodoBajaVal: string,
     causaBajaVal: string
 }
@@ -37,6 +37,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
     type Base64 = (file: any) => Promise<unknown>
     let fileName = ''
     let expedienteId:any=null
+    let documentoId:any=null
     let tipoDocumentoId:number=0
     const toBase64:Base64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -56,6 +57,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
         
         subirArchivo(
             expedienteId!,
+            documentoId!,
             auth?.usuario?.id!,
             fileName,
             tipoDocumentoId,
@@ -150,28 +152,33 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
               <ul role="list" className="border border-gray-200 rounded-md divide-y divide-gray-200">
               {mapDoc.map(m=>{
 
-                    const doc = auth?.usuario?.expediente?.find((d)=>{return d?.documento?.nombre===m.nombre})
-                    m.id = !doc?.id! ? null:doc?.id! as any
+                    const exp = auth?.usuario?.expediente?.find((d)=>{return d?.documentoId===m.id})
+                    m.expedienteId = !exp?.id! ? null:exp?.id! as any
 
                     return (
                     <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                     <div className="w-0 flex-1 flex items-center">
                     <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
-                    { m.id!==null&&!m.validado&&
+
+                    { m.expedienteId!==null&&exp?.validado===1&&
+                        <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
+                    }
+
+                    { m.expedienteId!==null&&!exp?.validado&&
                         <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
                     }
 
-                    { m.id===null &&
+                    { m.expedienteId===null &&
                         <ExclamationIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
                     }
-                    {m.id!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
+                    {m.expedienteId!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
                         onMouseDown={()=>{
-                            bajarArchivo(auth?.usuario?.id!,m.id!,mapDoc,setMapDoc)
+                            bajarArchivo(auth?.usuario?.id!,m.expedienteId!,mapDoc,setMapDoc)
                         }}
                     >
                         {m.nombre}
                         <p className="text-xs font-medium text-gray-500">
-                            ESTADO: <b>{m.validado?'VALIDO':'NO VALIDADO'}</b>
+                            ESTADO: <b>{exp?.validado?'VALIDO':'NO VALIDADO'}</b>
                         </p>
                         {m.cargado!>0&&
                             <Grid>
@@ -185,7 +192,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                         }
 
                     </span>}
-                    {m.id===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
+                    {m.expedienteId===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
                         {m.nombre}{' *'}
                         {m.cargado!>0&&
                         <Grid>
@@ -197,14 +204,15 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                     
                     </div>
 
-                    {m.id !== null && 
+                    {m.expedienteId !== null && 
                     <div className="ml-4 flex-shrink-0 flex space-x-4">
                         <button
                         type="button"
                         onClick={()=>{
 
-                            fileName = m.nombre
-                            expedienteId=m.id
+                            fileName = m.nombre!
+                            expedienteId=m.expedienteId
+                            documentoId=m.id
                             document.getElementById('file-input')!.click()
                         
                         }}
@@ -219,7 +227,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                         <button
                             type="button"
                             onMouseDown={()=>{
-                                eliminarExpediente(m.id!,verificaToken)
+                                eliminarExpediente(m.expedienteId!,verificaToken)
                             }}
                             className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
@@ -228,14 +236,15 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                     </div>
                     }
 
-                    {m.id===null && 
+                    {m.expedienteId===null && 
                     <div className="ml-4 flex-shrink-0 flex space-x-4">
                         <button
                         type="button"
                         onClick={()=>{
 
-                            fileName = m.nombre
+                            fileName = m.nombre!
                             expedienteId=null
+                            documentoId=m.id
                             tipoDocumentoId=m.tipoDocumentoId
                             document.getElementById('file-input')!.click()
                         

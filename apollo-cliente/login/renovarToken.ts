@@ -43,13 +43,10 @@ export const renovarTokenGraphQL = async (tokenAnterior:string) => {
                     }
                     expediente {
                         id
+                        documentoId
+                        observacionValidacion
                         userAlumnoId
                         validado
-                        documento {
-                            id
-                            nombre
-                            descripcion
-                        }
                     }
                     vwAlumnoConPlanes {
                         PLESXUR

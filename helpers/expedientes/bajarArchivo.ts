@@ -1,7 +1,7 @@
 import { bajarDocumentoGQL } from "../../apollo-cliente/perfil"
-import { TypeMapDoc } from "./subirArchivo"
+import { CatDocumentos } from "./subirArchivo"
 
-export const bajarArchivo = async (userId:number,expedienteId:number,mapDoc:TypeMapDoc[],setMapDoc:any) => {
+export const bajarArchivo = async (userId:number,expedienteId:number,mapDoc:CatDocumentos[],setMapDoc:any) => {
     let base64 = ''
     let fileName = ''
     const alumno = {
@@ -15,9 +15,9 @@ export const bajarArchivo = async (userId:number,expedienteId:number,mapDoc:Type
 
     let newMap:any = []
       mapDoc.map((d)=>{
-        if(d.id===expedienteId){
+        if(d.expedienteId===expedienteId){
           d.bajando=respDoc?.documento.bajando
-          fileName=d.nombre   
+          fileName=d.nombre!
         }
         newMap.push(d)
       });
@@ -31,7 +31,7 @@ export const bajarArchivo = async (userId:number,expedienteId:number,mapDoc:Type
       
       const newMap:any = []
       mapDoc.map((d)=>{
-        if(d.id===expedienteId){
+        if(d.expedienteId===expedienteId){
           d.bajando=respDoc?.documento.bajando
           
         }
@@ -44,7 +44,7 @@ export const bajarArchivo = async (userId:number,expedienteId:number,mapDoc:Type
     const downloadLink = document.createElement("a");
 
     downloadLink.href = base64;
-    downloadLink.download = fileName;
+    downloadLink.download = fileName+'.pdf';
     downloadLink.click();
 
     let pdfWindow = window!.open("")!;

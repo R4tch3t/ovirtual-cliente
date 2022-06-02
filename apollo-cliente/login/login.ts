@@ -27,8 +27,9 @@ export type TipoUsuario = {
 
 export type TipoExpediente = {
     id: number
+    documentoId: number;
     validado:number
-    documento: TipoDocumento
+    observacionValidacion: string;
 }
 
 export type TipoDocumento = {
@@ -84,13 +85,10 @@ export const loginGraphQL = async (email:string,password:string) => {
                     }
                     expediente {
                         id
+                        documentoId
+                        observacionValidacion
                         userAlumnoId
                         validado
-                        documento {
-                            id
-                            nombre
-                            descripcion
-                        }
                     }
                     vwAlumnoConPlanes {
                         PLESXUR

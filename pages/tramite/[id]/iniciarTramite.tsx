@@ -12,12 +12,15 @@ import { obtenerTramites, planesOfertados, tramitePorId, Paises } from '../../..
 import { cargarHomologacionDB } from '../../../components/tramite/homologacion/formulario/cargarFormularioDB';
 import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 import { BajaTemporal } from '../../../components/tramite/bajaTemporal';
+import { obtenerRequisitosGQL, TipoRequisitos } from '../../../apollo-cliente/tramites/obtenerRequisitos';
+import { CatDocumentos } from '../../../helpers/expedientes';
 
 interface Props {
   id: string,
   tramite: TypeTramite,
   unidadesAcademicas: TypeUnidadesAcademicas[],
-  paises: TypePais[]
+  paises: TypePais[],
+  requisitos: TipoRequisitos[]
 }
 
 
@@ -25,14 +28,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const {tramitesState,dispatch} = useTramitesContext()
   const {homologacion} = tramitesState.procedimientos
-  const [state, setState]:any = useState(
-    {
-        table: {
-            head: [ 'Nombre', 'Responsable', 'Telefono' ],
-            body: [] 
-        } 
-    }
-  );
+  
   const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
     cargarHomologacionDB(data!,dispatch)
@@ -50,15 +46,10 @@ const TramiteHome:NextPage<Props> = (props) =>{
    
     Router.replace("/");
   }
-
-  props.tramite.tramitesModuloAtencions?.map((modulo)=>{
-    
-    state.table.body.push({
-      'Nombre': modulo.nombre,
-      'Responsable': modulo.responsable,
-      'Telefono': modulo.telefono
-    })
-  })
+  const mapDocInit: CatDocumentos[] = []
+  props.requisitos.map((r)=>{
+    mapDocInit.push(r.documento)
+  });
 
   return (
 
@@ -78,7 +69,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
               props.id==="1" && 
               <>
                 {!tramitesState.procedimientos.bajaTemporal && <SeleccionarPlan />}
-                {tramitesState.procedimientos.bajaTemporal && <BajaTemporal tramiteId={parseInt(props.id)!} />}
+                {tramitesState.procedimientos.bajaTemporal && <BajaTemporal tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
 
               </>
             }
@@ -107,9 +98,11 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {id} = params as {id: string} 
-  const tramite:TypeTramite = await tramitePorId(parseInt(id))
+  const tramiteId = parseInt(id)
+  const tramite:TypeTramite = await tramitePorId(tramiteId)
   const unidadesAcademicas = await planesOfertados(6)
   const paises = await Paises()
+  const requisitos = await obtenerRequisitosGQL(tramiteId)
   
   if(!tramite){
     return {
@@ -125,7 +118,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
       id,
       tramite,
       unidadesAcademicas,
-      paises
+      paises,
+      requisitos
     },
     revalidate: 86400
   }

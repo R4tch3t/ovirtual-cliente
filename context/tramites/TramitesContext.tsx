@@ -18,6 +18,7 @@ const initialState:TypeTramitesState = {
     catSeleccionado: catTramites[0],
     tta: 0,
     ttb: 4,
+    documentos: null,
     procedimientos: {
         homologacion: null,
         bajaTemporal: null

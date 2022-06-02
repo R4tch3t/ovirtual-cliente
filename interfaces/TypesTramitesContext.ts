@@ -62,6 +62,15 @@ export type TypeBajaTemporal = {
     validoParaTramitar: boolean,
 }
 
+export type TypeDocumento = {
+    id: number|null;
+    tipoDocumentoId: number;
+    nombre: string | null;
+    descripcion: string | null;
+    clave: string | null;
+    activo: number | null;
+}
+
 export type TypeProcedimiento = {
     homologacion: TypeHomologacion | null,
     bajaTemporal: TypeBajaTemporal | null
@@ -74,6 +83,7 @@ export interface TypeTramitesState {
     catSeleccionado: TypeCatTramite,
     tta:number,
     ttb:number,
+    documentos: TypeDocumento[]|null,
     procedimientos: TypeProcedimiento,
     tramiteAlumnoSeleccionado: number | null,
     nombreTramiteSeleccionado: string | null

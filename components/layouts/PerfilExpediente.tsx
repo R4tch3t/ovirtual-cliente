@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {
   BellIcon,
   CollectionIcon,
@@ -12,10 +12,10 @@ import { useAppContext } from '../../auth/authContext';
 import { ModalSuccess } from '../ModalSucces';
 import { ModalError } from '../ModalError';
 import Link from 'next/link';
-import { ExclamationIcon } from '@heroicons/react/solid';
+import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
 import { actualizarContraGQL } from '../../apollo-cliente/perfil/actualizarContra';
 import Info from '../Info';
-import { bajarArchivo, eliminarExpediente, subirArchivo } from '../../helpers/expedientes';
+import { bajarArchivo, CatDocumentos, eliminarExpediente, subirArchivo } from '../../helpers/expedientes';
 
 const subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: false },
@@ -37,55 +37,14 @@ const WarningPass = () => {
   </>
 }
 
-const mapDocInit = [
-  {id: null, nombre: 'CURP.pdf', descripcion: '', tipoDocumentoId: 1, validado:0, cargado: 0, bajando: 0},
-  {id: null, nombre: 'ACTA DE NACIMIENTO.pdf', descripcion: '', tipoDocumentoId: 1},
-  {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE SECUNDARIA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE BACHILLERATO.pdf', descripcion: '', tipoDocumentoId: 3 },
-  {id: null, nombre: 'CERTIFICADO BASICO.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CERTIFICADO DE TEC. SUP. UNIV.pdf', descripcion: '', tipoDocumentoId: 3 },
-  {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE LICENCIATURA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'TITULO DE ESTUDIOS DE LICENCIATURA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'TITULO DE ESTUDIOS DE MAESTRIA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE MAESTRIA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CONSTANCIA CON CALIFICACIONES Y PROMEDIO.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'VALE POR ACTA DE NACIMIENTO.pdf', descripcion: '', tipoDocumentoId: 1},
-  {id: null, nombre: 'VALE POR CERTIFICADO MÉDICO.pdf', descripcion: '', tipoDocumentoId: 1},
-  {id: null, nombre: 'CONSTANCIA DE SERVICIO SOCIAL.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CONSTANCIA DE PRACTICAS PROFESIONALES.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'OFICIO DE AUTORIZACIÓN TEMA DE TITULACION ESCUELA.pdf', descripcion: '', tipoDocumentoId: 1},
-  {id: null, nombre: 'TESIS NIVEL MEDIO EN FORMATO PDF.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'OFICIO DE RECUPERACIÓN DE PERMANENCIA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'DICTAMEN RESULTADOS EXAMEN EGEL.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CERTIFICADO MÉDICO.pdf', descripcion: '', tipoDocumentoId: 1},
-  {id: null, nombre: 'COMPROBANTE DE PAGO DE DERECHOS DE TITULACIÓN (REALIZADO EN EL BANCO).pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'PAGO REPOSICIÓN DE CREDENCIAL.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CEDULA PROFESIONAL DE MAESTRÍA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'TESIS LICENCIATURA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'TESIS MAESTRIA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'TESIS DE DOCTORADO.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'TESIS DE POSDOCTORADO.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CEDULA PROFESIONAL LICENCIATURA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE DOCTORADO.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'OFICIO DICTAMINADO CONSEJO TUTORAL MAESTRIA.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'FORMATO DE PAGO REFERENCIADO (Descargado de la página http://dae.uagro.mx).pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'TESINA DE ESPECIALIDAD.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'OFICIO DICTAMINADO CONSEJO TUTORAL ESPECIALIDAD.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'OFICIO DICTAMINADO CONSEJO TUTORAL DOCTORADO.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'OFIC. DE AUTORIZACIÓN TEMA DE TITULACION NIV. SUP.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CERTIFICADO DE ESTUDIOS DE ESPECIALIDAD.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'FOTOGRAFIA FONDO BLANCO (Solo escuelas solicitadas).pdf', descripcion: '', tipoDocumentoId: 1},
-  {id: null, nombre: 'FORMATO PASE CENEVAL.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'REPORTE INDIVIDUAL DE RESULTADOS EGEL.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'COMPROBANTE PAGO INSCRIPCION.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'COMPROBANTE PAGO REINSCRIPCION.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'DICTAMEN DE EQUIVALENCIA o REVALIDACIÓN.pdf', descripcion: '', tipoDocumentoId: 3},
-  {id: null, nombre: 'CERTIFICADO TOTAL O PARCIAL DE LA INSTITUCIÓN DE PROCEDENCIA.pdf', descripcion: '', tipoDocumentoId: 3},
 
-]
+type Props = {
+  mapDocInit: CatDocumentos[]
+}
 
-const PerfilExpedienteLayout = () => {
+const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
   const {auth, actualizadoContra, verificaToken} = useAppContext();
+  //const {tramitesState} = useTramitesContext();
   const [usuario] = useState({
     id: auth!.id, 
     nombreUsuario: auth?.usuario? auth.usuario.nombre:null,
@@ -102,6 +61,7 @@ const PerfilExpedienteLayout = () => {
     imageUrl:
     "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
   });
+  
   const [cargando, setCargando] = useState(false)
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
@@ -150,7 +110,9 @@ const PerfilExpedienteLayout = () => {
   type Base64 = (file: any) => Promise<unknown>
   let fileName = ''
   let expedienteId:any=null
+  let documentoId:any=null
   let tipoDocumentoId = 0
+
   const toBase64:Base64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -169,6 +131,7 @@ const PerfilExpedienteLayout = () => {
     
     subirArchivo(
       expedienteId!,
+      documentoId!,
       usuario.id!,
       fileName,
       tipoDocumentoId,
@@ -247,30 +210,33 @@ const PerfilExpedienteLayout = () => {
                           <ul role="list" className="border border-gray-200 rounded-md divide-y divide-gray-200">
                             {mapDoc.map(m=>{
 
-                              const doc = auth?.usuario?.expediente?.find((d)=>{return d?.documento?.nombre===m.nombre})
-                              m.id = !doc?.id! ? null:doc?.id! as any
+                              const exp = auth?.usuario?.expediente?.find((d)=>{return d?.documentoId===m.id})
+                              m.expedienteId = !exp?.id! ? null:exp?.id! as any
 
                               return (
                               <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                               <div className="w-0 flex-1 flex items-center">
                                 <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                { m.id!==null&&!m.validado&&
+                                { m.expedienteId!==null&&exp?.validado===1&&
+                                  <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
+                                }
+                                { m.expedienteId!==null&&!exp?.validado&&
                                   <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
                                 }
 
-                                { m.id===null &&
+                                { m.expedienteId===null &&
                                   <ExclamationIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
                                 }
                                 
-                                {m.id!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
+                                {m.expedienteId!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
                                   onMouseDown={()=>{
-                                    bajarArchivo(auth?.usuario?.id!,m.id!,mapDoc,setMapDoc)
+                                    bajarArchivo(auth?.usuario?.id!,m.expedienteId!,mapDoc,setMapDoc)
                                   }}
                                 >
                                   {m.nombre}
 
                                   <p className="text-xs font-medium text-gray-500">
-                                    ESTADO: <b>{m.validado?'VALIDO':'NO VALIDADO'}</b>
+                                    ESTADO: <b>{exp?.validado?'VALIDO':'NO VALIDADO'}</b>
                                   </p>
                                   
                                   {m.cargado!>0&&
@@ -286,7 +252,7 @@ const PerfilExpedienteLayout = () => {
 
                                 </span>
                                 }
-                                {m.id===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
+                                {m.expedienteId===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
                                   {m.nombre}{' *'}
                                   {m.cargado!>0&&
                                     <Grid>
@@ -298,14 +264,15 @@ const PerfilExpedienteLayout = () => {
                                 
                               </div>
 
-                              {m.id !== null && 
+                              {m.expedienteId !== null && 
                                 <div className="ml-4 flex-shrink-0 flex space-x-4">
                                   <button
                                     type="button"
                                     onClick={()=>{
 
-                                      fileName = m.nombre
-                                      expedienteId=m.id
+                                      fileName = m.nombre!
+                                      expedienteId=m.expedienteId
+                                      documentoId=m.id!
                                       document.getElementById('file-input')!.click()
                                     
                                     }}
@@ -319,7 +286,7 @@ const PerfilExpedienteLayout = () => {
                                   </span>
                                   <button
                                     type="button"
-                                    onMouseDown={()=>{eliminarExpediente(m.id!,verificaToken)}}
+                                    onMouseDown={()=>{eliminarExpediente(m.expedienteId!,verificaToken)}}
                                     className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                   >
                                     Eliminar
@@ -327,15 +294,16 @@ const PerfilExpedienteLayout = () => {
                                 </div>
                               }
 
-                            {m.id===null && 
+                            {m.expedienteId===null && 
                                 <div className="ml-4 flex-shrink-0 flex space-x-4">
                                   <button
                                     type="button"
                                     onClick={()=>{
 
-                                      fileName = m.nombre
+                                      fileName = m.nombre!
                                       expedienteId=null
                                       tipoDocumentoId=m.tipoDocumentoId!
+                                      documentoId=m.id!
                                       document.getElementById('file-input')!.click()
                                     
                                     }}

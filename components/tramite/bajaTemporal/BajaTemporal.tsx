@@ -11,17 +11,19 @@ import { FormularioBajaTemporal } from './formulario'
 import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
+import { CatDocumentos } from '../../../helpers/expedientes'
 
 type Props = {
-  tramiteId: number
+  tramiteId: number,
+  mapDocInit: CatDocumentos[]
 }
 
-const mapDocInit = [
-  {id: null, nombre: 'CURP.pdf', descripcion: '',tipoDocumentoId:1},
-  {id: null, nombre: 'ACTA DE NACIMIENTO.pdf',descripcion: '', tipoDocumentoId:1},
-]
+/*const mapDocInit: CatDocumentos[] = [
+  {id: null, nombre: 'CURP.pdf', descripcion: '',tipoDocumentoId:1,clave:'',activo:1},
+  {id: null, nombre: 'ACTA DE NACIMIENTO.pdf',descripcion: '', tipoDocumentoId:1,clave:'',activo:1},
+]*/
 
-export const BajaTemporal: FC<Props> = ({tramiteId}) => {
+export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
   const {auth} = useAppContext();
   const {tramitesState} = useTramitesContext();
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
@@ -38,7 +40,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId}) => {
   const [clickEnviar, setClickEnviar] = useState(false)
   let btnDis:any = tramitesState?.procedimientos?.bajaTemporal?.validoParaTramitar!
   mapDocInit.map(doc=>{
-    const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc.id})
+    const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
     btnDis = findDoc && btnDis
   });
 
