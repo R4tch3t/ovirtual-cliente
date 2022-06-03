@@ -31,16 +31,16 @@ const paraNivel = (n:number|null) => {
     const {socket}:any = useSocketContext();
 
     //Escuchar los cambios en tramites 
-    useEffect(()=>{
+    /*useEffect(()=>{
       socket?.on("getTramites",async()=>{
         const tramites = await obtenerTramites()
 
           dispatch({
               type: types.cargarTramites,
-              payload: {tramites,tta: 0, ttb: 0}
+              payload: {tramites, catNivelEstudio:tramitesState.catNivelEstudio}
           })
       })
-    },[socket,dispatch]);
+    },[socket,dispatch]);*/
 
     return (
       <div className="px-4 sm:px-6 lg:px-8">
@@ -108,11 +108,7 @@ const paraNivel = (n:number|null) => {
                         <dt className="sr-only">Nivel</dt>
                         <dd className="mt-1 truncate text-gray-700">
                         {
-                          tramite.TipoTramites?.sort((a,b)=>a.nivelEstudios-b.nivelEstudios)
-                          .map((v,i)=>{
-                            const slash = i > 0 ? " / " : ""
-                            return slash + paraNivel(v.nivelEstudios)
-                          })    
+                          tramite.nivelEstudio  
                         }
                         </dd>
                         <dt className="sr-only">Descripcion</dt>
@@ -123,11 +119,7 @@ const paraNivel = (n:number|null) => {
                     </td>
                     <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                     {
-                      tramite.TipoTramites?.sort((a,b)=>a.nivelEstudios-b.nivelEstudios)
-                      .map((v,i)=>{
-                        const slash = i > 0 ? " / " : ""
-                        return slash + paraNivel(v.nivelEstudios)
-                      })
+                       tramite.nivelEstudio
                     }
                     </td>
                     <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{tramite.descripcion}</td>

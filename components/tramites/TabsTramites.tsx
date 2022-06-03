@@ -1,6 +1,7 @@
 import { useTramitesContext } from '../../context/tramites/TramitesContext'
 import { types } from '../../types/tramites'
 import { ComboTramites } from './ComboTramites'
+import { cambiarValorCombo } from './helper'
 
 function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
@@ -10,33 +11,6 @@ function classNames(...classes:any) {
 const TabsTramites = () => {
   const {tramitesState,dispatch} = useTramitesContext();
   const {catTramites, catSeleccionado} = tramitesState
-  
-   const cambiarValorCombo = (value:any) => {
-     switch(value.id){
-      case 1:
-        dispatch({
-          type: types.cargarTramites,
-          payload: {tramites: null, tta: 0, ttb: 4}
-        });
-         break
-      case 2:
-        dispatch({
-          type: types.cargarTramites,
-          payload: {tramites: null, tta: 3, ttb: 5}
-        });
-          break
-      case 3:
-        dispatch({
-          type: types.cargarTramites,
-          payload: {tramites: null, tta: 4, ttb: 6}
-        });
-          break
-     }
-    dispatch({
-      type: types.catSeleccionado,
-      payload: value
-    });
-   }
 
    return (
     <div>
@@ -50,7 +24,7 @@ const TabsTramites = () => {
               <a
                 key={tab.id}
                 href={undefined}
-                onMouseDown={()=>cambiarValorCombo(tab)}
+                onMouseDown={()=>cambiarValorCombo(tab,dispatch)}
                 className={classNames(
                   tab === catSeleccionado
                     ? 'border-indigo-500 text-indigo-600'

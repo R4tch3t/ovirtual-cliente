@@ -5,7 +5,7 @@ import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
 import { TypeTramite } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
-import { obtenerTramites, tramitePorId } from '../../../apollo-cliente';
+import { obtenerNivelEstudios, obtenerTramites, TipoNivelEstudio, tramitePorId } from '../../../apollo-cliente';
 
 interface Props {
   id: number,

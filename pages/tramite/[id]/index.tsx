@@ -36,7 +36,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
    
     Router.replace("/");
   }
-  
+
   props.requisitos.map((r)=>{
     table?.body?.push({
       'Documento': r.documento.nombre,
@@ -44,7 +44,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
       'Copias': r.numeroCopias,
       'Requiere Original': r.requiereOriginal?'Si':'No',
     })
-  })
+  });
 
   const {head, body}  = table
 
@@ -81,7 +81,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   const tramiteId = parseInt(id);
   const tramite:TypeTramite = await tramitePorId(tramiteId)
   const requisitos = await obtenerRequisitosGQL(tramiteId)
-
+  
   if(tramite===null){
     return {
       redirect: {

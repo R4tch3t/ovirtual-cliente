@@ -33,6 +33,7 @@ const tramitePorId = async (id:number) => {
                 tiempoValidezDocumento
                 descripcion
                 nivelAplica
+                nivelEstudio
                 unidadResponsableId
             }
           }

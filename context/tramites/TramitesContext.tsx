@@ -16,8 +16,7 @@ const initialState:TypeTramitesState = {
     tramites: null,
     catTramites,
     catSeleccionado: catTramites[0],
-    tta: 0,
-    ttb: 4,
+    catNivelEstudio:'T[4,5,6,7]',
     documentos: null,
     procedimientos: {
         homologacion: null,

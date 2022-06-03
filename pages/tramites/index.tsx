@@ -10,17 +10,22 @@ import { useTramitesContext } from '../../context/tramites/TramitesContext';
 import { TypeTramitesState } from '../../interfaces/TypesTramitesContext';
 import filtroTramites from '../../helpers/filtroTramites';
 import { obtenerTramites } from '../../apollo-cliente/tramites/obtenerTramites';
+import { obtenerNivelEstudios, TipoNivelEstudio } from '../../apollo-cliente';
 
-const TramitesHome:NextPage<TypeTramitesState> = (props) =>{
+interface Props extends TypeTramitesState{
+  nivelEstudios: TipoNivelEstudio[]
+}
+
+const TramitesHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const {tramitesState} = useTramitesContext();
-  const {tramites, tta,ttb} = tramitesState
-  let fTramites = filtroTramites(props.tramites!,tta,ttb)
+  const {tramites, catNivelEstudio} = tramitesState
+  let fTramites = filtroTramites(props.tramites!,props.nivelEstudios,catNivelEstudio!)
   
-  if(!tramites || tramites === props.tramites){
+  if(!tramites || tramites !== /*===*/ props.tramites){
     tramitesState.tramites=fTramites
   }
-    
+  
   if(auth.checking){
     return( 
       <div className='loadingDiv' > 
@@ -54,9 +59,12 @@ return (
 
 export const getStaticProps: GetStaticProps = async (ctx) => {  
   const tramites = await obtenerTramites()
+  const nivelEstudios = await obtenerNivelEstudios()
+
   return {
     props: {
-      tramites
+      tramites,
+      nivelEstudios
     },
     revalidate:   10
   }

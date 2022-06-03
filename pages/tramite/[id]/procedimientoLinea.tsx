@@ -6,7 +6,7 @@ import { Loading } from '@nextui-org/react';
 import { TypeTramite, TypeUnidadesAcademicas, TypePais } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite } from '../../../components/tramite';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
-import { obtenerTramites, planesOfertados, tramitePorId, Paises } from '../../../apollo-cliente';
+import { obtenerTramites, planesOfertados, tramitePorId, Paises, obtenerNivelEstudios, TipoNivelEstudio } from '../../../apollo-cliente';
 import { cargarHomologacionDB } from '../../../components/tramite/homologacion/formulario/cargarFormularioDB';
 import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 
@@ -46,6 +46,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
    
     Router.replace("/");
   }
+
 
   props.tramite.tramitesModuloAtencions?.map((modulo)=>{
     

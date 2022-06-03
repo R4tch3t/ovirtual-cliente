@@ -22,7 +22,7 @@ const PaginaTramite: FC<Props> = ({children, tramite, linkChildren}) => {
                     tramiteId={tramite.id}
                     nombre={tramite.nombre} 
                     descripcion={tramite.descripcion}
-                    nivel={tramite.nivelAplica+""}
+                    nivel={tramite.nivelEstudio}
                     linkChildren={linkChildren!}
                 />
                 {children}

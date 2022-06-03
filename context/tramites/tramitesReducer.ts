@@ -21,8 +21,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
             return {
                 ...state,
                 tramites: action.payload.tramites,
-                tta: action.payload.tta,
-                ttb: action.payload.ttb
+                catNivelEstudio: action.payload.catNivelEstudio
             }
         case types.catSeleccionado:
             return {

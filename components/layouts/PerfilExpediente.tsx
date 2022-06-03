@@ -7,15 +7,16 @@ import {
   PaperClipIcon,
   UserCircleIcon,
 } from '@heroicons/react/outline'
-import { Grid, Loading, Progress, Spacer } from "@nextui-org/react";
+import { Loading, Spacer } from "@nextui-org/react";
 import { useAppContext } from '../../auth/authContext';
 import { ModalSuccess } from '../ModalSucces';
 import { ModalError } from '../ModalError';
 import Link from 'next/link';
-import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
+import { ExclamationIcon } from '@heroicons/react/solid';
 import { actualizarContraGQL } from '../../apollo-cliente/perfil/actualizarContra';
 import Info from '../Info';
-import { bajarArchivo, CatDocumentos, eliminarExpediente, subirArchivo } from '../../helpers/expedientes';
+import { CatDocumentos } from '../../helpers/expedientes';
+import { TableFile } from '../TableFile';
 
 const subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: false },
@@ -43,7 +44,7 @@ type Props = {
 }
 
 const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
-  const {auth, actualizadoContra, verificaToken} = useAppContext();
+  const {auth, actualizadoContra} = useAppContext();
   //const {tramitesState} = useTramitesContext();
   const [usuario] = useState({
     id: auth!.id, 
@@ -66,7 +67,6 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
-  const [mapDoc, setMapDoc] = useState(mapDocInit)
 
   const infoMsg = "Todos los documentos deberán ser Escaneados a color, legibles, completos, sin sombras, claros, y con masca de agua de algún producto utilizado para el escaneo. "
     +"No deberán ser imagenes o fotografias recortadas y convertidas a formato PDF, debes cuidar la calidad de los archivos ya que formarán parte de tu expediente personal, "
@@ -107,39 +107,7 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
     
   },[actualizadoContra])
   
-  type Base64 = (file: any) => Promise<unknown>
-  let fileName = ''
-  let expedienteId:any=null
-  let documentoId:any=null
-  let tipoDocumentoId = 0
-
-  const toBase64:Base64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-
-  const selectFile = async () => {    
-    let file = document.querySelector('#file-input') as any//!.files[0]
-    file=file.files[0]
-    const result= await toBase64(file).catch(e => e);
-    if (result instanceof Error) {
-      console.log('Error: ', result.message);
-      return;
-    }
-    
-    subirArchivo(
-      expedienteId!,
-      documentoId!,
-      usuario.id!,
-      fileName,
-      tipoDocumentoId,
-      mapDoc,
-      setMapDoc,
-      verificaToken,
-      result as string)
-  };
+  
 
     return (
         <main className="relative -mt-24">
@@ -201,128 +169,9 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
 
                   <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                      
+                      <TableFile mapDocInit={mapDocInit} />                      
 
-
-                      <div className="sm:col-span-2">
-                        <input id="file-input" type="file" onChange={selectFile}  name="avatar" style={{display: 'none'}} />
-                        <dt className="text-sm font-medium text-gray-500">Documentos</dt>
-                        <dd className="mt-1 text-sm text-gray-900">
-                          <ul role="list" className="border border-gray-200 rounded-md divide-y divide-gray-200">
-                            {mapDoc.map(m=>{
-
-                              const exp = auth?.usuario?.expediente?.find((d)=>{return d?.documentoId===m.id})
-                              m.expedienteId = !exp?.id! ? null:exp?.id! as any
-
-                              return (
-                              <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                              <div className="w-0 flex-1 flex items-center">
-                                <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                { m.expedienteId!==null&&exp?.validado===1&&
-                                  <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
-                                }
-                                { m.expedienteId!==null&&!exp?.validado&&
-                                  <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                                }
-
-                                { m.expedienteId===null &&
-                                  <ExclamationIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
-                                }
-                                
-                                {m.expedienteId!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
-                                  onMouseDown={()=>{
-                                    bajarArchivo(auth?.usuario?.id!,m.expedienteId!,mapDoc,setMapDoc)
-                                  }}
-                                >
-                                  {m.nombre}
-
-                                  <p className="text-xs font-medium text-gray-500">
-                                    ESTADO: <b>{exp?.validado?'VALIDO':'NO VALIDADO'}</b>
-                                  </p>
-                                  
-                                  {m.cargado!>0&&
-                                    <Grid>
-                                      <Progress value={m.cargado} shadow color="primary" status="primary" />
-                                    </Grid>
-                                  }
-                                  {m.bajando!>0&&
-                                    <Grid>
-                                      <Progress value={m.bajando} shadow color="secondary" status="secondary" />
-                                    </Grid>
-                                  }
-
-                                </span>
-                                }
-                                {m.expedienteId===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
-                                  {m.nombre}{' *'}
-                                  {m.cargado!>0&&
-                                    <Grid>
-                                      <Progress value={m.cargado} shadow color="primary" status="primary" />
-                                    </Grid>
-                                  }
-                                </span>
-                                }
-                                
-                              </div>
-
-                              {m.expedienteId !== null && 
-                                <div className="ml-4 flex-shrink-0 flex space-x-4">
-                                  <button
-                                    type="button"
-                                    onClick={()=>{
-
-                                      fileName = m.nombre!
-                                      expedienteId=m.expedienteId
-                                      documentoId=m.id!
-                                      document.getElementById('file-input')!.click()
-                                    
-                                    }}
-                                    className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-
-                                  >
-                                    Actualizar
-                                  </button>
-                                  <span className="text-gray-300" aria-hidden="true">
-                                    |
-                                  </span>
-                                  <button
-                                    type="button"
-                                    onMouseDown={()=>{eliminarExpediente(m.expedienteId!,verificaToken)}}
-                                    className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                  >
-                                    Eliminar
-                                  </button>
-                                </div>
-                              }
-
-                            {m.expedienteId===null && 
-                                <div className="ml-4 flex-shrink-0 flex space-x-4">
-                                  <button
-                                    type="button"
-                                    onClick={()=>{
-
-                                      fileName = m.nombre!
-                                      expedienteId=null
-                                      tipoDocumentoId=m.tipoDocumentoId!
-                                      documentoId=m.id!
-                                      document.getElementById('file-input')!.click()
-                                    
-                                    }}
-                                    className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                  >
-                                    Subir
-                                  </button>
-                                  
-                                </div>
-                            }
-
-                            </li>
-                            )
-                            })}
-
-                          </ul>
-                        </dd>
-
-                      </div>
                     </dl>
                   </div>
 

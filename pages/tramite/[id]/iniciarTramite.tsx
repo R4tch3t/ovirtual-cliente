@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { GetStaticProps,GetStaticPaths, NextPage } from 'next';
 import Router from 'next/router';
 import { RedirecApp } from '../../../router/RedirecApp';
@@ -8,7 +8,7 @@ import { PaginaTramite, SeleccionarPlan } from '../../../components/tramite';
 import { PasosHomologacion } from '../../../components/tramite/homologacion';
 import { UnidadesAcademicas } from '../../../components/tramite/unidadAcademica';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
-import { obtenerTramites, planesOfertados, tramitePorId, Paises } from '../../../apollo-cliente';
+import { obtenerTramites, planesOfertados, tramitePorId, Paises, TipoNivelEstudio, obtenerNivelEstudios } from '../../../apollo-cliente';
 import { cargarHomologacionDB } from '../../../components/tramite/homologacion/formulario/cargarFormularioDB';
 import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 import { BajaTemporal } from '../../../components/tramite/bajaTemporal';
@@ -46,6 +46,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
    
     Router.replace("/");
   }
+
   const mapDocInit: CatDocumentos[] = []
   props.requisitos.map((r)=>{
     mapDocInit.push(r.documento)

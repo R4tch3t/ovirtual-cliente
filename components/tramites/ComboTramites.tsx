@@ -3,8 +3,8 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { Combobox } from '@headlessui/react'
 import { Loading } from '@nextui-org/react'
 import { useTramitesContext } from '../../context/tramites/TramitesContext'
-import { types } from '../../types/tramites'
 import { TypeCatTramite } from '../../interfaces'
+import { cambiarValorCombo } from './helper'
 
 function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
@@ -30,35 +30,12 @@ const ComboTramites = () => {
           return servicio.nombre.toLowerCase().includes(query.toLowerCase())
       })
 
-   const cambiarValorCombo = (value:any) => {     
-     switch(value.id){
-      case 1:
-        dispatch({
-          type: types.cargarTramites,
-          payload: {tramites: null, tta: 0, ttb: 4}
-        });
-         break
-      case 2:
-        dispatch({
-          type: types.cargarTramites,
-          payload: {tramites: null, tta: 3, ttb: 5}
-        });
-          break
-      case 3:
-        dispatch({
-          type: types.cargarTramites,
-          payload: {tramites: null, tta: 4, ttb: 6}
-        });
-          break
-     }
-    dispatch({
-      type: types.catSeleccionado,
-      payload: value
-    });
+   const onChange = (value:any) => {
+    cambiarValorCombo(value,dispatch)
    }
 
   return (
-    <Combobox as="div" value={catSeleccionado} onChange={cambiarValorCombo}  >
+    <Combobox as="div" value={catSeleccionado} onChange={onChange}  >
       <Combobox.Label className="block text-sm font-medium text-gray-700">Selecciona una categoría para los trámites</Combobox.Label>
       <div className="relative mt-1"  >
         <Combobox.Input

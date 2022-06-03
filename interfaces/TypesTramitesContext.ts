@@ -1,7 +1,7 @@
 import { Dispatch } from "react"
 import { TypePaso1, TypePaso2, TypePaso3, TypePaso4, TypePaso5 } from "./pasos/homologacion"
 
-export type TypeTramite = {
+export interface TypeTramite {
     id: number,
     nombre: string|null,
     clave: string|null,
@@ -10,10 +10,11 @@ export type TypeTramite = {
     necesitaValidacion: number|null,
     fechaInicialValidacion: Date|string|null,
     fechaFinalValidacion: Date|string|null
-    nivelAplica: number|null,
+    nivelAplica: string|null,
     documentoObtiene: string|null,
     TipoTramites: [TipoTramites]|[]|null,
-    tramitesModuloAtencions: TypeModuloAtencion[]|[]|null
+    tramitesModuloAtencions: TypeModuloAtencion[]|[]|null,
+    nivelEstudio: string | null
 }
 
 export type TypeModuloAtencion = {
@@ -81,8 +82,7 @@ export interface TypeTramitesState {
     tramites: TypeTramite[]|null,
     catTramites: TypeCatTramite[]|null,
     catSeleccionado: TypeCatTramite,
-    tta:number,
-    ttb:number,
+    catNivelEstudio: string|null,
     documentos: TypeDocumento[]|null,
     procedimientos: TypeProcedimiento,
     tramiteAlumnoSeleccionado: number | null,

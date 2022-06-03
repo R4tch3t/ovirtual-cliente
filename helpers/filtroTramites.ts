@@ -1,20 +1,45 @@
+import { TipoNivelEstudio } from '../apollo-cliente';
 import { TypeTramite } from '../interfaces/TypesTramitesContext';
-const filtroTramites = (tramites:TypeTramite[],tta:number, ttb:number) =>{
-    /*tramites = tramites!.filter((tramite) => {
-        // console.log(tramite.nivelAplica)
-         const tipoTramites = tramite.TipoTramites?.filter((tt)=>{
-           return tt.tipoTramite > tta && tt.tipoTramite < ttb
-         })
 
-         return tipoTramites&&tipoTramites!.length>0
-         //return tramite.nivelAplica! > 4 && tramite.nivelAplica! < 9
-       }).sort((a,b)=>{
-         const ta = a.TipoTramites && a.TipoTramites.length>0 && a.TipoTramites[0]?.id ? a.TipoTramites[0].id : a.id
-         const tb = b.TipoTramites && b.TipoTramites.length>0 && b.TipoTramites[0]?.id ? b.TipoTramites[0].id : b.id 
-         return ta-tb
-       });*/
+const filtroTramites = (tramites:TypeTramite[],nivelEstudio:TipoNivelEstudio[],catNivelEstudio:string) =>{
+    let newTramites: TypeTramite[] = []
+    const splitCatNivelEstudio = catNivelEstudio.split('[')[0]    
+    tramites.map((t)=>{
+                    
+      if(
+        t?.nivelAplica!.startsWith(splitCatNivelEstudio)
+        ||t?.nivelAplica!.startsWith(splitCatNivelEstudio+"-")
+        ||t?.nivelAplica!.includes("-"+splitCatNivelEstudio)
+      ){
+        
+        let nivelEstudioStr = '* ';
+        nivelEstudio.map((n) => {
+          if(catNivelEstudio.includes(n?.id!+'')&&t?.nivelAplica?.includes(n?.id!+'')){
+            nivelEstudioStr += ', ' + n.nombre
+          }
+        });
 
-    return tramites
+        nivelEstudioStr=nivelEstudioStr.replace('* ,','');
+        /*if(nivelEstudioStr===''){
+          nivelEstudioStr='*'
+        }*/
+        newTramites.push({...t,nivelEstudio:nivelEstudioStr});
+
+      }
+
+    });
+
+    newTramites = newTramites.sort((a,b)=>{
+      let splitA:any = a.nivelAplica?.split('[')
+      splitA = splitA![1].split(',')
+      splitA=parseInt(splitA[0])
+      let splitB:any = b.nivelAplica?.split('[')
+      splitB = splitB![1].split(',')
+      splitB=parseInt(splitB[0])
+      return splitA-splitB
+    })
+
+    return newTramites
 }
 
 export default filtroTramites
