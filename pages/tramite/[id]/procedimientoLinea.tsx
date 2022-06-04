@@ -6,8 +6,8 @@ import { Loading } from '@nextui-org/react';
 import { TypeTramite, TypeUnidadesAcademicas, TypePais } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite } from '../../../components/tramite';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
-import { obtenerTramites, planesOfertados, tramitePorId, Paises, obtenerNivelEstudios, TipoNivelEstudio } from '../../../apollo-cliente';
-import { cargarHomologacionDB } from '../../../components/tramite/homologacion/formulario/cargarFormularioDB';
+import { obtenerTramites, planesOfertados, tramitePorId, Paises } from '../../../apollo-cliente';
+import { cargarPreregistroDB } from '../../../components/tramite/preregistro/formulario/cargarFormularioDB';
 import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 
 interface Props {
@@ -31,7 +31,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
   );
   const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
-    cargarHomologacionDB(data!,dispatch)
+    cargarPreregistroDB(data!,dispatch)
   },[data,dispatch])
 
   if(auth.checking){

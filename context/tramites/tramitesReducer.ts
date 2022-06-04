@@ -38,7 +38,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                 ...state,
                 procedimientos: {
                     ...state.procedimientos,
-                    homologacion: {
+                    preregistro: {
                         aspiranteId: null,
                         planID,
                         planElegido,
@@ -53,14 +53,14 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
             }
             case types.cambiarPaso:
                 const {nombrePaso, nombreCampo, valorCampo} = action.payload
-                const homo:any = state.procedimientos.homologacion!
-                const paso = homo[nombrePaso]
+                const prereg:any = state.procedimientos.preregistro!
+                const paso = prereg[nombrePaso]
                 return {
                     ...state,
                     procedimientos: {
                         ...state.procedimientos,
-                        homologacion: {
-                            ...state.procedimientos.homologacion!,
+                        preregistro: {
+                            ...state.procedimientos.preregistro!,
                             [nombrePaso]: {
                                 ...paso,
                                 [nombreCampo]: valorCampo
@@ -68,7 +68,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                         }
                     }
                 }
-            case types.cargarHomologacionDB:
+            case types.cargarPreregistroDB:
                 aspiranteId = action.payload.aspiranteId
                 planID = action.payload.planID
                 planElegido = action.payload.planElegido
@@ -83,7 +83,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                     ...state,
                     procedimientos: {
                         ...state.procedimientos,
-                        homologacion: {
+                        preregistro: {
                             aspiranteId,
                             planID,
                             planElegido,

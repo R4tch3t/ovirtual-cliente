@@ -20,12 +20,13 @@ const Login: NextPage = () => {
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [bandsL, setBandsL] = useState<TypeBands>({github: false, google: false, facebook: false})
 
+  /*
   useEffect(()=>{
     const email = localStorage.getItem("email");
     if(email){
       setForm({...form,rememberme: true,email})
     }
-  },[form]);
+  },[form]);*/
 
   const onChange = ({target}:any) => {
     const {name, value} = target;
@@ -45,10 +46,12 @@ const Login: NextPage = () => {
     if(bandsL.github||bandsL.google||bandsL.facebook){
       return false
     }
+    
     form.rememberme?
       localStorage.setItem("email",form.email):
       localStorage.removeItem("email");
-    const ok = await login(form.email,form.password);
+    
+      const ok = await login(form.email,form.password);
     if(!ok){
       setDataModal({title: "Error", txt: "Verificar usuario y/o contraseña.", btn1: {txt:"Regresar al inicio", onClose:setModalE} })
       setModalE(true);

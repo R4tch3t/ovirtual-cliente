@@ -1,5 +1,5 @@
 import { Dispatch } from "react"
-import { TypePaso1, TypePaso2, TypePaso3, TypePaso4, TypePaso5 } from "./pasos/homologacion"
+import { TypePaso1, TypePaso2, TypePaso3, TypePaso4, TypePaso5 } from "./pasos/preregistro"
 
 export interface TypeTramite {
     id: number,
@@ -41,7 +41,7 @@ export type TypeTramitesAction = {
     payload?: any
 }
 
-export type TypeHomologacion = {
+export type TypePreregistro = {
     aspiranteId: number | null,
     planID: number,
     planElegido: string,
@@ -73,7 +73,7 @@ export type TypeDocumento = {
 }
 
 export type TypeProcedimiento = {
-    homologacion: TypeHomologacion | null,
+    preregistro: TypePreregistro | null,
     bajaTemporal: TypeBajaTemporal | null
 }
 

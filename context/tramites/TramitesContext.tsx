@@ -19,7 +19,7 @@ const initialState:TypeTramitesState = {
     catNivelEstudio:'T[4,5,6,7]',
     documentos: null,
     procedimientos: {
-        homologacion: null,
+        preregistro: null,
         bajaTemporal: null
     },
     tramiteAlumnoSeleccionado: null,
