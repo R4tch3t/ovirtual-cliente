@@ -22,7 +22,6 @@ export const obtenerUsuariosGQL = async () => {
                 matricula
                 nombre
                 email
-                password
                 online
                 activated
                 matactiva

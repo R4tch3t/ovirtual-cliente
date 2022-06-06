@@ -11,12 +11,20 @@ export let globalIsOpenRecount = false
 let globalSetOpen:any = null
 let globalSetRecount:any = null
 export const globalRecount = () =>{
+    const token = Cookies.get("token")
+    if(token){
+        Cookies.set("token",token!,{expires: 0.0023}) //0.00208333 = 3 minutos
+    }
+    
     segActual[0]=26        
     globalSetOpen!(false)
     clearTimeout(ultimosSegundos);
     globalSetRecount!(true)
+    
 }
-
+export const globalLimpiarContadorSesion = () => {
+    ultimoContador=null
+}
 export const CuentaRegresiva = () => {
     const {auth,logout} = useAppContext();
     const [open, setOpen] = useState(false)
@@ -36,6 +44,7 @@ export const CuentaRegresiva = () => {
         logout!()
         setOpen(false)
         ultimoContador=null
+        console.log('closeSession?')
       }
       globalSetOpen=setOpen
       globalSetRecount=setRecount
@@ -68,6 +77,7 @@ export const CuentaRegresiva = () => {
       const iniciarCuentaRegresiva = () =>{
         
         primerContador = setTimeout(()=>{
+            
             if(auth?.logged&&Cookies.get('expiresIn')==='3m'){
                 if(ultimoContador===null){
                     segActual[0]=25

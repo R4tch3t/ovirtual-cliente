@@ -124,7 +124,7 @@ export const AuthProvider: FC = ({ children }) => {
         const resp = await renovarTokenGraphQL(Cookies.get("token")!)
         
         if(resp.respRenovarToken){
-            if(localStorage.getItem("expiresIn")==='1y'){
+            if(Cookies.get("expiresIn")==='1y'){
                 Cookies.set("token",resp?.token!,{expires: 365}) 
             }else{
                 Cookies.set("token",resp?.token!,{expires: 0.0023}) //0.00208333 = 3 minutos
@@ -195,7 +195,7 @@ export const AuthProvider: FC = ({ children }) => {
         
         const resp = await actualizarUsuarioGQL(ActualizarU!)
         if(resp?.respActualizarUsuario){
-            if(localStorage.getItem("expiresIn")==='1y'){
+            if(Cookies.get("expiresIn")==='1y'){
                 Cookies.set("token",resp?.token!,{expires: 365}) 
             }else{
                 Cookies.set("token",resp?.token!,{expires: 0.0023}) //0.00208333 = 3 minutos
@@ -222,7 +222,9 @@ export const AuthProvider: FC = ({ children }) => {
 
     const logout = async () => {
         Cookies.remove('token')
-        
+        if(Cookies.get('expiresIn')==='3m'){
+            Cookies.remove('expiresIn')
+        }
         await client.clearStore()
         dispatch({type: types.cerrarSesion});
 
@@ -257,12 +259,7 @@ export const AuthProvider: FC = ({ children }) => {
 
                     <div className="h-full" onMouseMove={()=>{
                     
-                        if(!globalIsOpenRecount&&localStorage.getItem("expiresIn")==='3m'){
-                            const token = Cookies.get("token")
-                            if(token){
-                                
-                                Cookies.set("token",token!,{expires: 0.0023}) //0.00208333 = 3 minutos
-                            }
+                        if(!globalIsOpenRecount&&Cookies.get("expiresIn")==='3m'){                            
                             globalRecount()
                         }
                     

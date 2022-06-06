@@ -37,7 +37,7 @@ const Login: NextPage = () => {
   }
   const onSubmit = async (e:any) => {
     e.preventDefault();
-    if(bandsL.github||bandsL.google||bandsL.facebook){
+    if(bandsL.github||bandsL.google||bandsL.facebook||bandsL.default){
       return false
     }
     setBandsL({...bandsL,['default']: true});
@@ -53,6 +53,7 @@ const Login: NextPage = () => {
     if(!ok){
       setDataModal({title: "Error", txt: "Verificar usuario y/o contraseña.", btn1: {txt:"Regresar al inicio", onClose:setModalE} })
       setModalE(true);
+      setBandsL({...bandsL,['default']: false});
     }
   }
 
@@ -92,7 +93,7 @@ const Login: NextPage = () => {
                         name="email"
                         value={form.email}
                         autoComplete="email"
-                        placeholder='Ej: 08083206 ó 08083206@gmail.mx'
+                        placeholder='08083206@gmail.mx ó ejemplo@ejemplo.com'
                         onChange={onChange}
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

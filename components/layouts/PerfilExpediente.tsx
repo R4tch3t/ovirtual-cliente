@@ -193,7 +193,7 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
                       </Link>
                     </button>
 
-                      <button
+                      {/*<button
                         type="button"
                         onMouseUp={onSubmit}
                         style={{width: 120}}
@@ -205,7 +205,7 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
                             :
                             'Actualizar'
                         }
-                      </button>
+                      </button>*/}
                     
 
                   </div>

@@ -29,14 +29,21 @@ const PerfilHome:NextPage<Props> = (props) =>{
   if(!auth.logged){
     Router.replace("/");
   }
-  
+
+  const documentos: TypeDocumento[] = []
+
+  auth.usuario?.expediente?.map(e=>{
+    const doc = props.documentos.find((d)=>{return d.id===e.documentoId})
+    documentos.push(doc!)
+  })
+
 return (
       <>
         <Head>
           <title>Ovirtual - Chat</title>
         </Head>
         <Home link='Perfil' >
-          <PerfilLayout mapDocInit={props.documentos} />
+          <PerfilLayout mapDocInit={documentos} />
         </Home>
       </>
 );
