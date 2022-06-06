@@ -19,8 +19,7 @@ interface Props {
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const table:any = {
-            head: ['Documento', 'Descripción', 'Copias', 'Requiere Original' ],
-            //body: [{'Documento': 'CURP', 'Descripción': 'Clave Única de Registro de Población'}]
+            head: ['Documento', 'Descripción', 'Copias', 'Requiere Original' ],            
             body: []
   }
   

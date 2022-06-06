@@ -13,9 +13,6 @@ type Head = {
 
 const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChildren}) => {
   const {dispatch}:any = useTramitesContext();
-  //const {tramitesState} = useTramitesContext();
-  //const tramite = tramitesState.tramites?.find((t)=>{return t.id=tramiteId})
-  //nivel = tramite?.nivelEstudio!
   let btnState = {
     txt: 'Iniciar trámite',
     href: `/tramite/${tramiteId}/iniciarTramite`,

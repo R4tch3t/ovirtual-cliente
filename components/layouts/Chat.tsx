@@ -34,22 +34,6 @@ const Home = () => {
       { label: (offlineU === 1? 'Usuario desconectado':'Usuarios desconectados'), value: offlineU },
     ]
 
-    /*const ShowGridLog = () => {
-      setState({...state, 
-          logBand: !state.logBand,
-      });
-    }
-      
-    
-    if(!auth.email){
-      state.btnHome = [{
-          html: state.logBand?'Registrar cuenta':'Iniciar sesión',
-          onMouseUp: ShowGridLog 
-      }];
-    }else{
-      state.btnHome = [{html: 'Ver perfil', href: '/perfil', onMouseUp: null}];
-    }*/
-
     const {logBand, btnHome} = state 
 
     return (

@@ -18,8 +18,11 @@ const signOauth = async (user:user):Promise<[resp,TypeAuthState]>  => {
     const resp = await fetchSinToken("login/newO",{name,email},"POST");
     const json:TypeAuthState={}
     if(resp.ok){
-        localStorage.setItem("token",resp.token);
-        Cookies.set("token",resp.token);
+        if(Cookies.get("expiresIn")==='1y'){
+            Cookies.set("token",resp?.token!,{expires: 365}) 
+        }else{
+            Cookies.set("token",resp?.token!,{expires: 0.0023}) //0.00208333 = 3 minutos
+        }
         const {usuario} = resp
         json.id=usuario.id
         json.uuid=usuario.uuid
@@ -36,8 +39,11 @@ const signOauth = async (user:user):Promise<[resp,TypeAuthState]>  => {
 export const signOauthApollo = (resp:any):[resp,TypeAuthState]  => {
     const json:TypeAuthState={}
     
-        localStorage.setItem("token",resp.token);
-        Cookies.set("token",resp.token);
+        if(Cookies.get("expiresIn")==='1y'){
+            Cookies.set("token",resp?.token!,{expires: 365}) 
+        }else{
+            Cookies.set("token",resp?.token!,{expires: 0.0023}) //0.00208333 = 3 minutos
+        }
         const {usuario} = resp
         json.id=usuario.id
         json.uuid=usuario.uuid

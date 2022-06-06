@@ -8,9 +8,10 @@ import { useEffect } from 'react';
 import { loginApollo } from './login'
 import { signOauthApollo } from './signOauth'
 import { vincularMatriculaApollo } from './vincularMatricula'
-import { loginGraphQL, newOuserGraphQL, newUserGraphQL, renovarTokenGraphQL } from "../../apollo-cliente";
+import client, { loginGraphQL, newOuserGraphQL, newUserGraphQL, renovarTokenGraphQL } from "../../apollo-cliente";
 import { necesarioCambiarPassGQL, vincularMatriculaGQL, actualizarUsuarioGQL } from "../../apollo-cliente/perfil";
 import { reenviaremailGraphQL } from "../../apollo-cliente/login/reenviaremail";
+import { CuentaRegresiva, globalIsOpenRecount, globalRecount } from "../../helpers/cuentaRegresiva";
 
 export const AuthContext = createContext({} as TypeContext);
 
@@ -28,7 +29,7 @@ export const AuthProvider: FC = ({ children }) => {
     const [auth, setAuth] = useState(initialState);
     const {dispatch} = useChatContext();
     const {data, status} = useSession();
-    
+
     useEffect(()=>{
         if(status==="authenticated"){
             const {tipoCuenta}:any = data?.user
@@ -57,6 +58,7 @@ export const AuthProvider: FC = ({ children }) => {
     const login:TypeLogin = async (email:string, password:string) => {
         const data = await loginGraphQL(email,password);
         const [resp, auth] = loginApollo(data)
+        console.log("loginAut: ",auth)
         
         if(resp.respLogin){
             
@@ -108,7 +110,7 @@ export const AuthProvider: FC = ({ children }) => {
     
 
     const verificaToken = useCallback( async()=>{
-        const token = localStorage.getItem("token") || Cookies.get('next-auth.session-token')
+        const token = Cookies.get("token") || Cookies.get('next-auth.session-token')
         
         if(!token){            
             setAuth({
@@ -120,10 +122,15 @@ export const AuthProvider: FC = ({ children }) => {
             return false;
         }
 
-        const resp = await renovarTokenGraphQL(localStorage.getItem("token")!)
+        const resp = await renovarTokenGraphQL(Cookies.get("token")!)
         
         if(resp.respRenovarToken){
-            localStorage.setItem("token",resp.token);
+            if(localStorage.getItem("expiresIn")==='1y'){
+                Cookies.set("token",resp?.token!,{expires: 365}) 
+            }else{
+                Cookies.set("token",resp?.token!,{expires: 0.0023}) //0.00208333 = 3 minutos
+            }
+            
             const {usuario}:any = resp
             setAuth({
                 id: usuario?.id,
@@ -167,7 +174,7 @@ export const AuthProvider: FC = ({ children }) => {
     }
 
     const updateUser = useCallback( async(user,endpoint)=>{
-        const token = localStorage.getItem("token")
+        const token = Cookies.get("token")
         if(!token){
             setAuth({
                 checking: false,
@@ -189,8 +196,11 @@ export const AuthProvider: FC = ({ children }) => {
         
         const resp = await actualizarUsuarioGQL(ActualizarU!)
         if(resp?.respActualizarUsuario){
-            localStorage.setItem("token",resp?.token!);
-            Cookies.set("token",resp?.token!);
+            if(localStorage.getItem("expiresIn")==='1y'){
+                Cookies.set("token",resp?.token!,{expires: 365}) 
+            }else{
+                Cookies.set("token",resp?.token!,{expires: 0.0023}) //0.00208333 = 3 minutos
+            }
             const {usuario}:any = resp
             setAuth({
                 id: usuario.id,
@@ -211,8 +221,10 @@ export const AuthProvider: FC = ({ children }) => {
     }, [setAuth]);
     
 
-    const logout = () => {
-        localStorage.removeItem("token");
+    const logout = async () => {
+        Cookies.remove('token')
+        
+        await client.clearStore()
         dispatch({type: types.cerrarSesion});
 
         setAuth({
@@ -221,14 +233,14 @@ export const AuthProvider: FC = ({ children }) => {
             activated: true,
         });
 
-        signOut({redirect: false});
+        await signOut({redirect: false});
     }
     
     const actualizadoContra = async (id: number ) => {
         const resp = await necesarioCambiarPassGQL(id)
         return resp
     }
-
+    
     return (
             <AuthContext.Provider  value={{
                 auth,
@@ -243,7 +255,23 @@ export const AuthProvider: FC = ({ children }) => {
                 loading,
                 actualizadoContra
             }} >
-                { children }
+
+                    <div className="h-full" onMouseMove={()=>{
+                    
+                        if(!globalIsOpenRecount&&localStorage.getItem("expiresIn")==='3m'){
+                            const token = Cookies.get("token")
+                            if(token){
+                                
+                                Cookies.set("token",token!,{expires: 0.0023}) //0.00208333 = 3 minutos
+                            }
+                            globalRecount()
+                        }
+                    
+                    }} >
+                        <CuentaRegresiva />
+                        { children }
+                    </div>
+                    
             </AuthContext.Provider>
     )
 }

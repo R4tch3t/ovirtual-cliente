@@ -14,7 +14,6 @@ export default function RetornarTramite({tramiteId, tramites}:Props){
         console.log("tramSelec ",tramSelec)
         console.log("tramites ",tramites)
             tramSelec?.requisitos!.map((r)=>{
-                //mapDocInit.push(r.documento as CatDocumentos)
                 mapDocInit.push({
                     id: r.documento.id,
                     nombre: r.documento.nombre,

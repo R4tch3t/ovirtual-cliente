@@ -3,7 +3,6 @@ import {types} from "../../types/types";
 
 export const chatReducer = (state:TypeChatState,action:TypeChatAction):TypeChatState => {
     
-    //try{
         switch(action.type){
             case types.cerrarSesion:
                 return {
@@ -70,7 +69,4 @@ export const chatReducer = (state:TypeChatState,action:TypeChatAction):TypeChatS
             default: 
                 return state;
         }
-    /*}catch(e){
-        console.log(e)
-    }*/
 }

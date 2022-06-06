@@ -5,8 +5,9 @@ import { ModalError } from './ModalError';
 import { signIn } from "next-auth/react";
 import { Loading } from '@nextui-org/react';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 
-type TypeBands = {'github':boolean,'google':boolean,'facebook':boolean}
+type TypeBands = {'github':boolean,'google':boolean,'facebook':boolean, 'default':boolean}
 
 const Login: NextPage = () => {
   const {auth, loading}:any = useAppContext();
@@ -14,19 +15,11 @@ const Login: NextPage = () => {
   const [form, setForm] = useState({
     email:'',
     password: '',
-    rememberme: false
+    rememberme: Cookies.get("expiresIn")==='1y'
   });
   const [modalE, setModalE] = useState(false);
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
-  const [bandsL, setBandsL] = useState<TypeBands>({github: false, google: false, facebook: false})
-
-  /*
-  useEffect(()=>{
-    const email = localStorage.getItem("email");
-    if(email){
-      setForm({...form,rememberme: true,email})
-    }
-  },[form]);*/
+  const [bandsL, setBandsL] = useState<TypeBands>({github: false, google: false, facebook: false, default: false})
 
   const onChange = ({target}:any) => {
     const {name, value} = target;
@@ -36,6 +29,7 @@ const Login: NextPage = () => {
     });
   } 
   const toggleCheck = () => {
+
     setForm({
       ...form,
       rememberme: !form.rememberme
@@ -46,10 +40,14 @@ const Login: NextPage = () => {
     if(bandsL.github||bandsL.google||bandsL.facebook){
       return false
     }
-    
-    form.rememberme?
-      localStorage.setItem("email",form.email):
+    setBandsL({...bandsL,['default']: true});
+    if(form.rememberme){
+      localStorage.setItem("email",form.email);
+      Cookies.set("expiresIn",'1y',{expires: 365});
+    }else{
       localStorage.removeItem("email");
+      Cookies.set("expiresIn",'3m',{expires: 365});
+    }
     
       const ok = await login(form.email,form.password);
     if(!ok){
@@ -62,7 +60,7 @@ const Login: NextPage = () => {
     return (form.email.length>0&&form.password.length>0)?true:false
   }
   const oAuth = (provider:string) => {
-    if(bandsL.github||bandsL.google||bandsL.facebook){
+    if(bandsL.github||bandsL.google||bandsL.facebook||bandsL.default){
       return false
     }
     setBandsL({...bandsL,[provider]: true});
@@ -79,9 +77,10 @@ const Login: NextPage = () => {
     
     {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
           <h2 className='rightH2' >Acceso</h2>
-    
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-              <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                                                    {/* sm:max-w-md */}  
+            <div className="mt-8 sm:mx-auto sm:w-full">
+                                                 {/* shadow */}
+              <div className="bg-white py-8 px-4 sm:rounded-lg sm:px-10">
                 <form className="space-y-6" onSubmit={onSubmit} method="POST">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -157,9 +156,10 @@ const Login: NextPage = () => {
                     <button
                       type="submit"
                       disabled={!todoOk()}
-                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="cursor-pointer w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                      Iniciar sesión
+                      {bandsL.default&&<Loading className="w-5 h-5" type="points-opacity" color="white" size="sm" />}
+                      {!bandsL.default&& <>Iniciar sesión</> }
                     </button>
                   </div>
                 </form>

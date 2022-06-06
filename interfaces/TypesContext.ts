@@ -6,7 +6,7 @@ export type TypeSignupO = (user:TypeUserO) => Promise<boolean|string>;
 export type TypeVerificaToken = () => Promise<boolean>;
 export type TypeVincular = (user:TypeUserO) => Promise<boolean|string>;
 export type TypeUpdateUser = (user:TypeUser,endpoint:string) => Promise<boolean>;
-export type TypeLogout = () => void
+export type TypeLogout = () => Promise<void>
 export type TypeResentemail = (user:TypeUser) => Promise<any>
 
 export interface TypeUser {

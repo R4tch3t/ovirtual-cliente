@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { useCallback, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
@@ -7,16 +8,18 @@ export const useSocket = ( serverPath:any ) => {
     const [ online, setOnline ] = useState(false);
 
     const conectarSocket = useCallback(()=>{
-        const token = localStorage.getItem("token");
+        const token = Cookies.get("token")
         const socketTemp = io( serverPath, {
-            transports: ['websocket'],
-            autoConnect: true,
-            forceNew: true,
-            query: {
-                "x-token": token
-            }
-        });
-        setSocket(socketTemp);
+                transports: ['websocket'],
+                autoConnect: true,
+                forceNew: true,
+                query: {
+                    "x-token": token
+                }
+            });
+            setSocket(socketTemp);
+        
+        
     },[serverPath]);
 
     const desconectarSocket = useCallback(()=>{

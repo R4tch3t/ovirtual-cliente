@@ -30,18 +30,6 @@ const paraNivel = (n:number|null) => {
     const {tramites} = tramitesState
     const {socket}:any = useSocketContext();
 
-    //Escuchar los cambios en tramites 
-    /*useEffect(()=>{
-      socket?.on("getTramites",async()=>{
-        const tramites = await obtenerTramites()
-
-          dispatch({
-              type: types.cargarTramites,
-              payload: {tramites, catNivelEstudio:tramitesState.catNivelEstudio}
-          })
-      })
-    },[socket,dispatch]);*/
-
     return (
       <div className="px-4 sm:px-6 lg:px-8">
         <Spacer y={2} />

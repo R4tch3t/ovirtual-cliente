@@ -12,9 +12,7 @@ body {
 html{
   @apply bg-gray-100;
 }
-/*body{
-  @apply overflow-hidden
-}*/
+
 #__next {
   @apply h-full;
 }

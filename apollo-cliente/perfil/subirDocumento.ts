@@ -15,9 +15,6 @@ type TipoAlumno = {
 
 type TipoArchivo = {
     id: number
-    /*nombre: string;
-    descripcion: string;
-    tipoDocumentoId: number;*/
     base64: string | null;
 }
 

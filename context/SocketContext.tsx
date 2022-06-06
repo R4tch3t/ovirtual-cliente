@@ -15,17 +15,17 @@ const SocketContext = createContext({});
 const SocketProvider = ({ children }:any) => {
 
     const { socket, online, conectarSocket, desconectarSocket } = useSocket(urlSocket);
-    const {auth,logout}:any = useAppContext();
+    const {auth,logout} = useAppContext();
     const {dispatch}:any = useChatContext();
 
     useEffect(()=>{
-        if(auth.logged){
+        if(auth?.logged){
             conectarSocket()
         }
     },[auth,conectarSocket]);
 
     useEffect(()=>{
-        if(!auth.logged){
+        if(!auth?.logged){
             desconectarSocket()
         }
     },[auth,desconectarSocket]);
@@ -55,8 +55,8 @@ const SocketProvider = ({ children }:any) => {
     },[socket,dispatch])
 
     useEffect(()=>{
-        socket?.on("logout",()=>{
-            logout()
+        socket?.on("logout",async()=>{
+            await logout!()
         })
     },[socket,logout]);
 

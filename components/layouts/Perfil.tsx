@@ -193,7 +193,7 @@ const PerfilLayout = () => {
     setCargando(false)
 
   }
-
+  
   useEffect(()=>{
     //Comprobar si es necesario actualizar la contraseña
     actualizadoContra(auth.id).then((r:any)=>{

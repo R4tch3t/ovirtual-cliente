@@ -18,11 +18,6 @@ type Props = {
   mapDocInit: CatDocumentos[]
 }
 
-/*const mapDocInit: CatDocumentos[] = [
-  {id: null, nombre: 'CURP.pdf', descripcion: '',tipoDocumentoId:1,clave:'',activo:1},
-  {id: null, nombre: 'ACTA DE NACIMIENTO.pdf',descripcion: '', tipoDocumentoId:1,clave:'',activo:1},
-]*/
-
 export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
   const {auth} = useAppContext();
   const {tramitesState} = useTramitesContext();
@@ -68,9 +63,6 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
   return (
     <Fade in={true}>
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        
-        {/*<ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-          txt={dataModal.txt} btn1={dataModal.btn1} />*/}
           
           <ConfirmarTramite onSubmit={onSubmit} open={clickEnviar} setOpen={setClickEnviar} 
             

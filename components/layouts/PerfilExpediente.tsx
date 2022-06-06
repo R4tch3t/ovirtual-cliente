@@ -45,15 +45,13 @@ type Props = {
 
 const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
   const {auth, actualizadoContra} = useAppContext();
-  //const {tramitesState} = useTramitesContext();
   const [usuario] = useState({
     id: auth!.id, 
     nombreUsuario: auth?.usuario? auth.usuario.nombre:null,
     name: auth?.usuario ? auth.usuario.alumno.nomentalu:null,
     apellidos: auth?.usuario ? auth.usuario.alumno.apeentalu:null,
     email: auth!.email,
-    newEmail: auth!.email,
-   // matactiva: auth.usuario?auth.usuario.matactiva:null,
+    newEmail: auth!.email,   
     matricula: auth?.usuario?auth?.usuario?.matricula:null,
     passwordN: '',
     passwordC: '',

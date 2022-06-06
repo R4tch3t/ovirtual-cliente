@@ -50,7 +50,7 @@ export const Settings = ({auth}:any) => {
         let newEmail:any = document.getElementById("email")!
         newEmail=newEmail.value
         const {email} = auth
-        const user = {id: auth.id, uuid: auth.uuid, nombre, email, newEmail/*, password: auth.password*/}
+        const user = {id: auth.id, uuid: auth.uuid, nombre, email, newEmail}
         const resp = await updateUser(user,"login/update");
         if(!resp){
             setDataModal({title: "Error", txt: "El usuario NO fue actualizado.", btnTxt: "Regresar al perfil" })

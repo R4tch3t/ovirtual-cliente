@@ -2,7 +2,7 @@ import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
-export const ModalWarning=({open, setOpen, title, txt, btn1, btn2, children}:any)=>{
+export const ModalWarning=({open, setOpen, title, txt, txt2, btn1, btn2, children}:any)=>{
   const cancelButtonRef = useRef(null)
     
   return (
@@ -47,6 +47,9 @@ export const ModalWarning=({open, setOpen, title, txt, btn1, btn2, children}:any
                     <p className="text-sm text-gray-500">
                       {txt}
                     </p>
+                    {txt2 && <p className="text-sm text-gray-500">
+                      {txt2}
+                    </p>}
                   </div>
                 </div>
               </div>

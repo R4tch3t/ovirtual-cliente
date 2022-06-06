@@ -1,3 +1,4 @@
+import Cookies from "js-cookie"
 import { urlApi } from "../variables/url"
 export const fetchSinToken = async (endpoint:any,data:any="", method="GET") => {
     const baseUrl = `${urlApi}/${endpoint}`
@@ -19,7 +20,7 @@ export const fetchSinToken = async (endpoint:any,data:any="", method="GET") => {
 
 export const fetchConToken = async (endpoint:any,data:any='', method="GET",headers:any={}) => {
     const baseUrl = `${urlApi}/${endpoint}`
-    const token = localStorage.getItem("token")||'';
+    const token = Cookies.get("token")||'';
 
     headers['x-token'] = token
     if(method==="GET"){

@@ -1,16 +1,6 @@
 import { subirDocumentoGQL } from "../../apollo-cliente/perfil"
 import { TypeDocumento } from "../../interfaces"
 
-/*export type TypeMapDoc = {
-    id: null | number,
-    nombre: string,
-    descripcion: string,
-    tipoDocumentoId: number,
-    validado?: number,
-    cargado?: number,
-    bajando?: number
-}*/
-
 export interface CatDocumentos extends TypeDocumento {
   expedienteId?: number
   validado?: number
@@ -42,9 +32,6 @@ export const subirArchivo = async (
     }
     const archivo = {
       id: documentoId,
-      /*nombre: fileName!,
-      descripcion: descripcion!,
-      tipoDocumentoId,*/
       actualizar,
       base64: part64//: result! as string  
     } 

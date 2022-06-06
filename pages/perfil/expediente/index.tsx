@@ -17,7 +17,6 @@ interface Props {
 
 const PerfilHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
-  //const {tramitesState} = useTramitesContext();
 
   if(auth.checking){
     return( 
@@ -31,8 +30,6 @@ const PerfilHome:NextPage<Props> = (props) =>{
     Router.replace("/");
   }
   
-  //tramitesState.documentos=props.documentos
-  //console.log(tramitesState)
 return (
       <>
         <Head>
@@ -46,7 +43,6 @@ return (
 }
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
- // const {id} = params as {id: string} 
   const documentos:TypeDocumento[] = await obtenerCatDocumentos()
 
   if(documentos===null){
