@@ -58,7 +58,6 @@ export const AuthProvider: FC = ({ children }) => {
     const login:TypeLogin = async (email:string, password:string) => {
         const data = await loginGraphQL(email,password);
         const [resp, auth] = loginApollo(data)
-        console.log("loginAut: ",auth)
         
         if(resp.respLogin){
             

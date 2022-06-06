@@ -11,8 +11,6 @@ export default function RetornarTramite({tramiteId, tramites}:Props){
     if(tramiteId===1){
         const mapDocInit: CatDocumentos[] = []
         const tramSelec = tramites.find((t)=>{return t.tramiteId===tramiteId}) 
-        console.log("tramSelec ",tramSelec)
-        console.log("tramites ",tramites)
             tramSelec?.requisitos!.map((r)=>{
                 mapDocInit.push({
                     id: r.documento.id,
@@ -23,7 +21,6 @@ export default function RetornarTramite({tramiteId, tramites}:Props){
                     activo: r.documento.activo
                 })
             });
-            console.log("mapDocInit ",mapDocInit)
         return (
             <>
                 <BajaTemporal tramiteId={tramiteId} mapDocInit={mapDocInit} />
