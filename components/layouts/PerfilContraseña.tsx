@@ -30,7 +30,7 @@ function classNames(...classes:any) {
 
 const WarningPass = () => {
   return <>
-    <KeyIcon className="h-5 w-5" />
+    <KeyIcon className="h-5 w-5 text-gray-400 group-hover:text-gray-500" />
     <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
   </>
 }
@@ -178,7 +178,7 @@ const PerfilContraseñaLayout = () => {
                             item.current
                               ? 'text-teal-500 group-hover:text-teal-500'
                               : 'text-gray-400 group-hover:text-gray-500',
-                            'flex-shrink-0 -ml-1 mr-3 h-6 w-6'
+                              'flex-shrink-0 -ml-1 mr-3 h-6 w-6'
                           )}
                           aria-hidden="true"
                         />

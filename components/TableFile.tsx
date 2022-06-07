@@ -58,108 +58,143 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                     m.expedienteId = !exp?.id! ? null:exp?.id! as any
 
                     return (
-                    <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                    <div className="w-0 flex-1 flex items-center">
-                    <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
-                    { m.expedienteId!==null&&exp?.validado===1&&
-                        <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
-                    }
-                    { m.expedienteId!==null&&!exp?.validado&&
-                        <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                    }
+                        <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                        <div className="w-0 flex-1 flex items-center">
+                        <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
+                        { m.expedienteId!==null&&exp?.validado===2&&
+                            <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
+                        }
+                        { m.expedienteId!==null&&exp?.validado===1&&
+                            <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                        }
 
-                    { m.expedienteId===null &&
-                        <ExclamationIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
-                    }
-                    
-                    {m.expedienteId!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
-                        onMouseDown={()=>{
-                        bajarArchivo(auth?.usuario?.id!,m.expedienteId!,mapDoc,setMapDoc)
-                        }}
-                    >
-                        {m.nombre}
-
-                        <p className="text-xs font-medium text-gray-500">
-                        ESTADO: <b>{exp?.validado?'VALIDO':'NO VALIDADO'}</b>
-                        </p>
+                        { m.expedienteId===null || (exp?.validado===3) &&
+                            <ExclamationIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                        }
                         
-                        {m.cargado!>0&&
-                        <Grid>
-                            <Progress value={m.cargado} shadow color="primary" status="primary" />
-                        </Grid>
-                        }
-                        {m.bajando!>0&&
-                        <Grid>
-                            <Progress value={m.bajando} shadow color="secondary" status="secondary" />
-                        </Grid>
-                        }
-
-                    </span>
-                    }
-                    {m.expedienteId===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
-                        {m.nombre}{' *'}
-                        {m.cargado!>0&&
-                        <Grid>
-                            <Progress value={m.cargado} shadow color="primary" status="primary" />
-                        </Grid>
-                        }
-                    </span>
-                    }
-                    
-                    </div>
-
-                    {m.expedienteId !== null && 
-                    <div className="ml-4 flex-shrink-0 flex space-x-4">
-                        <button
-                        type="button"
-                        onClick={()=>{
-
-                            fileName = m.nombre!
-                            expedienteId=m.expedienteId
-                            documentoId=m.id!
-                            document.getElementById('file-input')!.click()
-                        
-                        }}
-                        className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-
+                        {m.expedienteId!==null&&<span className={`ml-2 flex-1 w-0 h-full truncate select-file`}
+                            onMouseDown={()=>{
+                                bajarArchivo(auth?.usuario?.id!,m.expedienteId!,mapDoc,setMapDoc)
+                            }}
                         >
-                        Actualizar
-                        </button>
-                        <span className="text-gray-300" aria-hidden="true">
-                        |
+                            {m.nombre}
+
+                            <p className="text-xs font-medium text-gray-500">
+                                ESTADO: 
+                                    <b>
+                                    {
+                                        exp?.validado===1?' PENDIENTE DE VALIDACIÓN' : 
+                                            (exp?.validado===2?' VALIDACIÓN CORRECTA' : ' DOCUMENTO NO VÁLIDO')
+                                    }
+                                    </b>
+                            </p>
+                            
+                            {m.cargado!>0&&
+                            <Grid>
+                                <Progress value={m.cargado} shadow color="primary" status="primary" />
+                            </Grid>
+                            }
+                            {m.bajando!>0&&
+                            <Grid>
+                                <Progress value={m.bajando} shadow color="secondary" status="secondary" />
+                            </Grid>
+                            }
+
                         </span>
-                        <button
-                        type="button"
-                        onMouseDown={()=>{eliminarExpediente(m.expedienteId!,verificaToken)}}
-                        className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                        Eliminar
-                        </button>
-                    </div>
+                        }
+                        {m.expedienteId===null&&<span className={`ml-2 flex-1 w-0 truncate text-red-500`}>
+                            {m.nombre}{' *'}
+                            {m.cargado!>0&&
+                            <Grid>
+                                <Progress value={m.cargado} shadow color="primary" status="primary" />
+                            </Grid>
+                            }
+                        </span>
+                        }
+                        
+                        </div>
+
+                        {(m.expedienteId !== null && exp?.validado === 3) && 
+                        <div className="ml-4 flex-shrink-0 flex space-x-4">
+                            <button
+                            type="button"
+                            onClick={()=>{
+
+                                fileName = m.nombre!
+                                expedienteId=m.expedienteId
+                                documentoId=m.id!
+                                document.getElementById('file-input')!.click()
+                            
+                            }}
+                            className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+
+                            >
+                                Actualizar
+                            </button>
+                            <span className="text-gray-300" aria-hidden="true">
+                                |
+                            </span>
+                            <button
+                                type="button"
+                                onMouseDown={()=>{eliminarExpediente(m.expedienteId!,verificaToken)}}
+                                className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                        }
+
+                    {(m.expedienteId !== null && exp?.validado! < 3) && 
+                        <div className="ml-4 flex-shrink-0 flex space-x-4">
+                            <button
+                            type="button"
+                            onClick={()=>{
+
+                                bajarArchivo(auth?.usuario?.id!,m.expedienteId!,mapDoc,setMapDoc,true)
+                            
+                            }}
+                            className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+
+                            >
+                                Descargar
+                            </button>
+                            <span className="text-gray-300" aria-hidden="true">
+                                |
+                            </span>
+                            <button
+                                type="button"
+                                onMouseDown={()=>{
+                                    bajarArchivo(auth?.usuario?.id!,m.expedienteId!,mapDoc,setMapDoc)
+                                }}
+                                className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Ver
+                            </button>
+                        </div>
+                        }
+
+                    {m.expedienteId===null &&
+                        <div className="ml-4 flex-shrink-0 flex space-x-4">
+                            <button
+                            type="button"
+                            onClick={()=>{
+
+                                fileName = m.nombre!
+                                expedienteId=null
+                                tipoDocumentoId=m.tipoDocumentoId!
+                                documentoId=m.id!
+                                document.getElementById('file-input')!.click()
+                            
+                            }}
+                            className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                            Subir
+                            </button>
+                            
+                        </div>
                     }
 
-                {m.expedienteId===null && 
-                    <div className="ml-4 flex-shrink-0 flex space-x-4">
-                        <button
-                        type="button"
-                        onClick={()=>{
-
-                            fileName = m.nombre!
-                            expedienteId=null
-                            tipoDocumentoId=m.tipoDocumentoId!
-                            documentoId=m.id!
-                            document.getElementById('file-input')!.click()
-                        
-                        }}
-                        className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                        Subir
-                        </button>
-                        
-                    </div>
-                }
-
-                </li>
+                    </li>
                 )
                 })}
 

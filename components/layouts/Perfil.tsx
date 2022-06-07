@@ -32,7 +32,7 @@ function classNames(...classes:any) {
 
 const WarningPass = () => {
   return <>
-    <KeyIcon className="h-5 w-5" />
+    <KeyIcon className="h-5 w-5 text-gray-400 group-hover:text-gray-500" />
     <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
   </>
 }
