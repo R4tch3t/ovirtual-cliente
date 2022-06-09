@@ -1,3 +1,4 @@
+import { Loading } from '@nextui-org/react';
 import type {NextPage} from 'next'
 import Link from 'next/link';
 import { useState } from 'react';
@@ -12,6 +13,7 @@ const Signup: NextPage = () => {
     const [modalE, setModalE] = useState(false)
     const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
     const {signup}:any = useAppContext()
+    const [registrando, setRegistrando] = useState(false)
     const [form, setForm] = useState({
         matricula:'',
         email:''
@@ -28,15 +30,18 @@ const Signup: NextPage = () => {
     const onSubmit = async (e:any) => {
         e.preventDefault();        
         
+        setRegistrando(true)
         const ok = await signup(form);
 
         if(ok!==true){
             setDataModal({title: "Error", txt: ok, btn1: {txt:"Regresar al registro", onClose:setModalE} })
             setModalE(true);
         } else {
-            setDataModal({title: "Éxito", txt: "El usuario se registró con éxito", btn1: {txt: "Regresar al registro", onClose:setModalE} })
+            setDataModal({title: "Éxito", txt: "El usuario se registró con éxito, verifique su correo para activar su cuenta...", btn1: {txt: "Regresar al registro", onClose:setModalE} })
             setModalS(true);
         }
+
+        setRegistrando(false)
         
     }
 
@@ -111,10 +116,11 @@ const Signup: NextPage = () => {
                 <div>
                 <button
                     type="submit"
-                    disabled={!todoOk()}
+                    disabled={!todoOk()||registrando}
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Registrar
+                    {registrando&&<Loading className="w-5 h-5" type="points-opacity" color="white" size="sm" />}
+                    {!registrando&&<>Registrar</>}
                 </button>
                 </div>
             </form>

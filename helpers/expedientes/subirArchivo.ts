@@ -6,6 +6,7 @@ export interface CatDocumentos extends TypeDocumento {
   validado?: number
   cargado?: number
   bajando?: number
+  enTramite?: number
 }
 
 export const subirArchivo = async (

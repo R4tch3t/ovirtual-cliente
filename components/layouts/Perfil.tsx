@@ -16,6 +16,10 @@ import { ModalSuccess } from '../ModalSucces';
 import { ModalError } from '../ModalError';
 import Link from 'next/link';
 import { retornarPrimerMat } from '../../helpers/retornarPrimerMat';
+import CambiarContraseña from '../settings/CambiarContraseña';
+import ListMatriculas from '../listMatriculas';
+import { ConfirmarMatricula } from '../../helpers/ConfirmarMatricula';
+import Info from '../Info';
 
 let subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: true },
@@ -39,17 +43,17 @@ const WarningPass = () => {
 
 
 const PerfilLayout = () => {
-  const {auth, vincularMatricula, updateUser,actualizadoContra}:any = useAppContext();
-  const [usuario, setUsuario] = useState({
-    id: auth.id, 
-    nombreUsuario: auth.usuario? auth.usuario.nombre:null,
-    name: auth.usuario ? auth.usuario.alumno.nomentalu:null,
-    apellidos: auth.usuario ? auth.usuario.alumno.apeentalu.split('*'):null,
+  const {auth, vincularMatricula, updateUser,actualizadoContra} = useAppContext();
+  const [usuario, setUsuario]:any = useState({
+    id: auth?.id!, 
+    nombreUsuario: auth?.usuario? auth?.usuario.nombre:null,
+    name: auth?.usuario ? auth?.usuario.alumno.nomentalu:null,
+    apellidos: auth?.usuario! ? auth?.usuario?.alumno?.apeentalu?.split('*'):null,
     apellido: null,
     apellido2: null,
-    email: auth.email,
-    newEmail: auth.email,
-    matricula: auth.usuario?retornarPrimerMat(auth?.usuario?.matricula!):null,
+    email: auth?.email,
+    newEmail: auth?.email,
+    matricula: auth?.usuario?retornarPrimerMat(auth?.usuario?.matricula!):null,
     password: '',
     role: 'Alumno(a)',
     imageUrl:
@@ -58,20 +62,37 @@ const PerfilLayout = () => {
   const [cargando, setCargando] = useState(false)
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
+  const [modalSMat, setModalSMat] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [inputs, setInputs]:any = useState({
     matricula: {color: 'secondary'},
     email: {color: 'primary'},
     password: {color: 'primary'}
   })
-  
+  const [advContra, setAdvContra] = useState(false)
+  const [clickEnviar, setClickEnviar] = useState(false)
+  const infoMsg = "Si usted cuenta con más de una matrícula deberá vincularla y las podrá reordenar para establecer una por defecto."  
+
   const validarMatricula = (value:string='') => {
-    const valida = value.match(/^[0-9]{8,8}$/i);
+    let valida:any = value.match(/^[0-9]{8,8}$/i);
+    const matriculas = JSON.parse(auth?.usuario?.matricula!)
+    let helper = 'Matrícula invalida'
+    const matElement:any = document.getElementById('matriculaPerfil')
+    if(matElement.value===value){
+      matriculas.map((m:any)=>{
+        if(m.matricula===value){
+          helper = 'La matrícula ya se ha vinculado'
+          valida=false;
+        }
+      })
+    }else{
+      valida=false
+    }
     const name='matricula'
     if(!valida){
       setInputs({...inputs,[name]:{
         color: 'error', 
-        helper: 'Matrícula invalida',
+        helper,
         statusColor: 'error'
       }})
     }
@@ -117,10 +138,10 @@ const PerfilLayout = () => {
         validarCorreo(value)
       break
       case 'apellido':
-        usuario.apellidos[0]=value
+        usuario.apellidos![0]=value
       break
       case 'apellido2':
-        usuario.apellidos[1]=value
+        usuario.apellidos![1]=value
       break
       case 'password':
         if(value){
@@ -141,7 +162,7 @@ const PerfilLayout = () => {
   
   }
 
-  const vincularM = async({currentTarget}:any) => {
+  const abrirModalMat = () =>{
     let {matricula} = usuario
     let valida = matricula?validarMatricula(matricula):validarMatricula()
     
@@ -149,13 +170,30 @@ const PerfilLayout = () => {
       return false
     }
 
+    setClickEnviar(true)
+
+  }
+
+  const vincularM = async() => {
+    
+
     setCargando(true)
-    const ok = await vincularMatricula(usuario)
+    const ok = await vincularMatricula(usuario! as any)
     
     if(ok!==true){
-      setDataModal({title: "Error", txt: ok, btn1: {txt:"Regresar al perfil", onClose:setModalE} })
+      setDataModal({title: "Error", txt: ok as any, btn1: {txt:"Regresar al perfil", onClose:setModalE} })
       setModalE(true);
+      setModalSMat(false);
+      setClickEnviar(false);
+    }else{
+      setDataModal({
+        title: "Éxito", txt: 'La matrícula se ha vinculado...', 
+        btn1: {txt:"Regresar al perfil", onClose:setModalSMat} 
+      })
+      setModalSMat(true);
     }
+
+    
 
     setCargando(false)
    
@@ -175,13 +213,13 @@ const PerfilLayout = () => {
 
     const newEmail = usuario.email
     usuario.newEmail=newEmail
-    usuario.email = auth.email
-    usuario.apellidos=usuario.apellidos.join('*');
+    usuario.email = auth?.email
+    usuario.apellidos=usuario.apellidos!.join('*');
 
     
     setCargando(true)
 
-    const resp = await updateUser(usuario,"login/update");
+    const resp = await updateUser!(usuario,"login/update");
     if(!resp){
         setDataModal({title: "Error", txt: "El usuario NO fue actualizado.", btn1: {txt:"Regresar al perfil", onClose:setModalE} })
         setModalE(true);
@@ -196,10 +234,12 @@ const PerfilLayout = () => {
   
   useEffect(()=>{
     //Comprobar si es necesario actualizar la contraseña
-    actualizadoContra(auth.id).then((r:any)=>{
+    actualizadoContra(auth?.id!).then((r:any)=>{
       
       if(r.respNecesarioCambiarPass===true){
         subNavigation[1].icon=WarningPass
+        setAdvContra(true)
+        
       }
 
     });
@@ -207,12 +247,14 @@ const PerfilLayout = () => {
   },[actualizadoContra])
 
   //si la matricula no esta vinculada a la cuenta de la sesion
-  if(auth.usuario&&auth.usuario.matactiva === 0){
+  if(auth?.usuario&&auth.usuario.matactiva === 0){
     subNavigation = [
       { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: true },
       { name: 'Notificaciones', href: '#', icon: BellIcon, current: false },
     ]
   }
+
+  //const matriculas = auth?.usuario?.matricula! ? JSON.parse(auth?.usuario?.matricula!):[]
 
     return (
         <main className="relative -mt-24">
@@ -220,6 +262,17 @@ const PerfilLayout = () => {
             txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
           <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
             txt={dataModal.txt} btn1={dataModal.btn1} />
+            
+          <ConfirmarMatricula onSubmit={vincularM} open={clickEnviar} setOpen={setClickEnviar} >
+            <ModalSuccess open={modalSMat} setOpen={()=>{
+                setModalSMat(false);
+                setClickEnviar(false);
+              }} 
+              title={dataModal.title} 
+              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
+        
+          </ConfirmarMatricula>
+
         <div className="max-w-screen-xl mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
@@ -263,6 +316,9 @@ const PerfilLayout = () => {
                       Tener cuidado con la información que se administrará a continuación
                     </p>
                   </div>
+
+                  <Spacer y={1} />
+                    {advContra && <CambiarContraseña />}
 
                   <div className="mt-6 flex flex-col lg:flex-row">
                     <div className="flex-grow space-y-6">
@@ -337,19 +393,40 @@ const PerfilLayout = () => {
                       </div>
                     </div>
                   </div>
+                  
                   <Spacer y={1} />
-                          {auth.usuario&&auth.usuario.matactiva === 0 && <VincularMatricula />}
-                          {auth.usuario&&auth.usuario.matactiva === 0.5 && <ActivarMatricula />}
-                  <Spacer y={1} />
+                          {auth?.usuario&&auth.usuario.matactiva === 0 && <VincularMatricula />}
+                          {auth?.usuario&&auth.usuario.matactiva === 0.5 && <ActivarMatricula />}
+                  
+                  <Spacer y={1} />                  
 
+                   <div className="mt-6 grid grid-cols-12 gap-6">
+                    <div  className="col-span-12 sm:col-span-6">
+                      
+                      <ListMatriculas 
+                        setDataModal={setDataModal}
+                        setModalE={setModalE}
+                        setModalS={setModalS}
+                      />
+                      <Spacer y={1} />
+                      <div>
+                        <Info msg={infoMsg} bandUpArr={true} />
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <Spacer y={1} />
+                  
                   <div className="mt-6 grid grid-cols-12 gap-6">
                     <div className="col-span-12 sm:col-span-6">
+                      
                       <Input id='matriculaPerfil' 
                         width={"100%"} 
                         name='matricula'
                         onChange={onChange}
-                        clearable bordered labelPlaceholder="Matrícula" 
-                        initialValue={usuario?.matricula!} 
+                        clearable bordered labelPlaceholder="Vincular otra Matrícula" 
+                        //initialValue={usuario?.matricula!} 
                         helperColor={inputs.matricula.color}
                         helperText={inputs.matricula.helper}
                         color={inputs.matricula.color} />
@@ -359,7 +436,7 @@ const PerfilLayout = () => {
                       id='vincularB'
                       name='matricula'
                       shadow color="secondary" 
-                      onMouseUp={vincularM}
+                      onMouseUp={abrirModalMat}
                       auto>
                         <div style={{width: 90}} >
                           {
@@ -420,7 +497,7 @@ const PerfilLayout = () => {
                     </div>
                   </div>
 
-                  {auth.usuario&&auth.usuario.matactiva === 1 && 
+                  {auth?.usuario&&auth.usuario.matactiva === 1 && 
                   <>
                     <Spacer y={1} />
                     <div className="mt-6 grid grid-cols-12 gap-6" >
@@ -450,11 +527,11 @@ const PerfilLayout = () => {
                       <Link
                         href={'/'}
                       >
-                        Cancel
+                        Cancelar
                       </Link>
                     </button>
 
-                    {auth.usuario&&auth.usuario.matactiva === 1 && 
+                    {auth?.usuario&&auth.usuario.matactiva === 1 && 
                       <button
                         type="button"
                         onMouseUp={onSubmit}

@@ -259,7 +259,7 @@ const PerfilContraseñaLayout = () => {
                       <Link
                         href={'/'}
                       >
-                        Cancel
+                        Cancelar
                       </Link>
                     </button>
 

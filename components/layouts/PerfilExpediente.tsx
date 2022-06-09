@@ -17,6 +17,7 @@ import { actualizarContraGQL } from '../../apollo-cliente/perfil/actualizarContr
 import Info from '../Info';
 import { CatDocumentos } from '../../helpers/expedientes';
 import { TableFile } from '../TableFile';
+import CambiarContraseña from '../settings/CambiarContraseña';
 
 const subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: false },
@@ -65,7 +66,7 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
-
+const [advContra, setAdvContra] = useState(false)
   const infoMsg = "Todos los documentos deberán ser Escaneados a color, legibles, completos, sin sombras, claros, y con masca de agua de algún producto utilizado para el escaneo. "
     +"No deberán ser imagenes o fotografias recortadas y convertidas a formato PDF, debes cuidar la calidad de los archivos ya que formarán parte de tu expediente personal, "
     +"y podran ser utilizados para trámites posteriores";  
@@ -98,7 +99,7 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
       
       if(r.respNecesarioCambiarPass){
         subNavigation[1].icon=WarningPass;
-        
+        setAdvContra(true)
       }
 
     });
@@ -157,6 +158,9 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
                       Expediente Electrónico Personal
                     </p>
                   </div>
+
+                  <Spacer y={1} />
+                    {advContra && <CambiarContraseña />}
                   
                   <Spacer y={1}  />
                   <div>
@@ -189,7 +193,7 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
                       <Link
                         href={'/'}
                       >
-                        Cancel
+                        Cancelar
                       </Link>
                     </button>
 

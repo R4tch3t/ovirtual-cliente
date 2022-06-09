@@ -1,10 +1,11 @@
-import { Fragment, useRef } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
+import { Loading } from "@nextui-org/react";
 
 export const ModalWarning=({open, setOpen, title, txt, txt2, btn1, btn2, children}:any)=>{
   const cancelButtonRef = useRef(null)
-    
+  const [btn2State, setBtn2State] = useState({...btn2, disabled:false})
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" style={{zIndex: 999}} initialFocus={cancelButtonRef} onClose={btn1.onClose} >
@@ -69,9 +70,17 @@ export const ModalWarning=({open, setOpen, title, txt, txt2, btn1, btn2, childre
                   ref={cancelButtonRef}
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-500 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-                  onClick={btn2.onClick}
+                  onClick={async()=>{
+                    setBtn2State({...btn2State,
+                      txt:<Loading className="w-8 h-5" type="points-opacity" color="white" size="sm" />,
+                      disabled:true
+                    })
+                    await btn2.onClick()
+                    setBtn2State({...btn2State,txt:'Aceptar',disabled:false})
+                  }}
+                  disabled={btn2State.disabled}
                 >
-                  {btn2.txt}
+                  {btn2State.txt}
                 </button>
               </div>
               }

@@ -1,6 +1,6 @@
 import React, { createContext, FC, useCallback, useState } from "react";
 import { useChatContext } from "../../context/chat/ChatContext";
-import { TypeAuthState, TypeContext, TypeLogin, TypeVincular, TypeResentemail, TypeSignup, TypeSignupO } from "../../interfaces";
+import { TypeAuthState, TypeContext, TypeLogin, TypeVincular, TypeResentemail, TypeSignup, TypeSignupO, TypeMatriculaPorDefecto, TypeActivarMatricula } from "../../interfaces";
 import {types} from "../../types/types"; 
 import Cookies from 'js-cookie';
 import { useSession, signOut } from "next-auth/react";
@@ -9,9 +9,11 @@ import { loginApollo } from './login'
 import { signOauthApollo } from './signOauth'
 import { vincularMatriculaApollo } from './vincularMatricula'
 import client, { loginGraphQL, newOuserGraphQL, newUserGraphQL, renovarTokenGraphQL } from "../../apollo-cliente";
-import { necesarioCambiarPassGQL, vincularMatriculaGQL, actualizarUsuarioGQL } from "../../apollo-cliente/perfil";
+import { necesarioCambiarPassGQL, vincularMatriculaGQL, actualizarUsuarioGQL, matriculaPorDefectoGQL, activarMatriculaGQL } from "../../apollo-cliente/perfil";
 import { reenviaremailGraphQL } from "../../apollo-cliente/login/reenviaremail";
 import { CuentaRegresiva, globalIsOpenRecount, globalRecount } from "../../helpers/cuentaRegresiva";
+import { matriculaPorDefectoApollo } from "./matriculaPorDefecto";
+import { activarMatriculaApollo } from "./activarMatricula";
 
 export const AuthContext = createContext({} as TypeContext);
 
@@ -54,7 +56,18 @@ export const AuthProvider: FC = ({ children }) => {
         });
     }
 
-    
+    const activarMatricula:TypeActivarMatricula = async (token:string) => {
+        const data = await activarMatriculaGQL({token});
+        const [resp, auth] = activarMatriculaApollo(data)
+        
+        if(resp.respLogin){
+            
+            setAuth(auth);
+            
+        }
+        return resp.respLogin
+    }
+
     const login:TypeLogin = async (email:string, password:string) => {
         const data = await loginGraphQL(email,password);
         const [resp, auth] = loginApollo(data)
@@ -172,6 +185,24 @@ export const AuthProvider: FC = ({ children }) => {
         
     }
 
+    const matriculaPorDefecto:TypeMatriculaPorDefecto = async (usuario:any) => {
+        const u = {
+            id: usuario.id!,
+            matricula: usuario?.matricula!
+        }
+    
+        const data = await matriculaPorDefectoGQL(u)
+        console.log('dataDefec: ',data)
+        const [resp,auth] = matriculaPorDefectoApollo(data)
+        if(resp.respMatriculaPorDefecto){
+            console.log("auth:defec ",auth)
+            setAuth(auth)
+            return resp.respMatriculaPorDefecto
+        }
+        return resp.msg
+        
+    }
+
     const updateUser = useCallback( async(user,endpoint)=>{
         const token = Cookies.get("token")
         if(!token){
@@ -245,11 +276,13 @@ export const AuthProvider: FC = ({ children }) => {
     return (
             <AuthContext.Provider  value={{
                 auth,
+                activarMatricula,
                 login,
                 signup,
                 signOauth,
                 verificaToken,
                 vincularMatricula,
+                matriculaPorDefecto,
                 updateUser,
                 logout,
                 resentemail,

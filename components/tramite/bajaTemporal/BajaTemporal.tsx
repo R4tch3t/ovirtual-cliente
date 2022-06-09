@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { guardarTramiteGQL, TramiteAlumnoInput } from '../../../apollo-cliente/tramites'
 import { useAppContext } from '../../../auth/authContext'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
@@ -12,7 +12,7 @@ import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
-
+let timeRef:any = null
 type Props = {
   tramiteId: number,
   mapDocInit: CatDocumentos[]
@@ -59,14 +59,27 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
       
     }
   }
-  
+
+  const loop = () =>{
+    timeRef = setTimeout(()=>{
+      clearTimeout(timeRef)
+      refetch()
+      loop()
+    },1500)
+  }
+
+  useEffect(()=>{
+    if(timeRef!==null){
+      clearTimeout(timeRef)
+    }
+    loop()
+  },[/*auth*/])
+
   return (
     <Fade in={true}>
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           
-          <ConfirmarTramite onSubmit={onSubmit} open={clickEnviar} setOpen={setClickEnviar} 
-            
-          >
+          <ConfirmarTramite onSubmit={onSubmit} open={clickEnviar} setOpen={setClickEnviar} >
             <ModalSuccess open={modalS} setOpen={()=>{
                 setModalS(false);
                 setClickEnviar(false);
@@ -83,7 +96,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
         </div>
 
         {data?.obtenerTramitesAlumno && 
-              <EstadoTramite />
+              <EstadoTramite estadoId={data.obtenerTramitesAlumno.estadoId} />
         }
 
         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">

@@ -1,29 +1,29 @@
 import client, { TipoUsuario } from "..";
 import { gql } from "@apollo/client";
+
 interface Mutation {
-    vincularMatricula: {
-        respVincularMatricula: boolean,
+    activarMatricula: {
+        respLogin: boolean|null,
+        respActivarMatricula: boolean,
         msg: string|null,
         usuario:TipoUsuario|null,
         token: string|null
     }
 }
 
-type TipoVincularMatricula = {
-    id: number;
-    matricula: string | null;
-    email: string | null;
-    name: string | null;
+type ActivarMatriculaInput = {
+    token: string;
 }
 
 
-export const vincularMatriculaGQL = async (user:TipoVincularMatricula) => {
+export const activarMatriculaGQL = async (user:ActivarMatriculaInput) => {
     const { data } = await client.mutate<Mutation>({
         variables:{user},
         mutation: gql`
-          mutation VincularMatricula($user: VincularUsuario) {
-            vincularMatricula(user: $user) {
-                respVincularMatricula
+          mutation ActivarMatricula($user: ActivarMatriculaInput) {
+            activarMatricula(user: $user) {
+                respLogin
+                respActivarMatricula
                 usuario {
                     id
                     uuid
@@ -67,5 +67,5 @@ export const vincularMatriculaGQL = async (user:TipoVincularMatricula) => {
         `,
       });
       
-      return data?.vincularMatricula
+      return data?.activarMatricula
 }

@@ -3,7 +3,8 @@ import { useAppContext } from "../../auth/authContext";
 import { useTramitesContext } from '../../context/tramites/TramitesContext';
 import IconUni from '../../public/iconUni.png'
 import { types } from '../../types/tramites'
-
+import { Spacer } from "@nextui-org/react";
+import Info from '../Info';
 const icon = <Image src={IconUni} width={60} height={60} />
     const colores = [
       {
@@ -40,6 +41,8 @@ export const SeleccionarPlan = () => {
     const {auth} = useAppContext();
     let c = -1
 
+    const infoMsg = "Atención, no se encontró registro de su plan ó planes de estudios porfavor diríjase a la DAE y pida que solucionen su caso. "; 
+
     const seleccionarPlan = (usuarioId:number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
       //Lo mas probable es que sea una función universal para todos los tramites
         dispatch({
@@ -56,8 +59,15 @@ export const SeleccionarPlan = () => {
           </div>
           
           <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+            {!auth?.usuario?.vwAlumnoConPlanes?.length!&&
+                <div>
+                  <Spacer y={1}  />
+                  <Info msg={infoMsg} />
+                </div>
+            }
             <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1">
             <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
+              
                 {auth?.usuario?.vwAlumnoConPlanes?.map((alup, alupId)=>{
                     c = colores.length-1 === c ? 0 : c+1
                      return(

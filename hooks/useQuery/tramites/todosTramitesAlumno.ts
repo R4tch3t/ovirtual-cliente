@@ -1,8 +1,9 @@
 
 import { useQuery, gql } from "@apollo/client";
+import client from "../../../apollo-cliente";
 import { TipoRequisitos } from "../../../apollo-cliente/tramites/obtenerRequisitos";
 
-interface TodosTramiteAlumnoInput {
+export interface TodosTramiteAlumnoInput {
     userAlumnoId: number
 }
 
@@ -59,6 +60,7 @@ const QUERY = gql`
 `;
 
 const useTodosTramitesAlumno = (alumnoTramite:TodosTramiteAlumnoInput) => {
+    
     return useQuery<Query>(QUERY,{variables:{alumnoTramite}});
 }
 

@@ -1,9 +1,13 @@
 import { PaperClipIcon } from "@heroicons/react/outline"
-import { FC, useState } from "react"
+import { FC, useState, useEffect } from "react"
 import { useAppContext } from "../auth/authContext"
 import { Grid, Progress } from "@nextui-org/react";
 import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
 import { bajarArchivo, CatDocumentos, eliminarExpediente, subirArchivo } from '../helpers/expedientes';
+import { useTramitesContext } from "../context/tramites/TramitesContext";
+import { TodosTramiteAlumnoInput, useTodosTramitesAlumno } from "../hooks/useQuery/tramites";
+
+
 
 
 type Props = {
@@ -12,6 +16,13 @@ type Props = {
 
 export const TableFile:FC<Props> = ({mapDocInit}) => {
     const {auth, verificaToken} = useAppContext();
+    const {tramitesState, dispatch} = useTramitesContext()
+    
+    const tramiteAlumno: TodosTramiteAlumnoInput = {
+        userAlumnoId: auth?.id!
+    }
+    const respTodosTramites = useTodosTramitesAlumno(tramiteAlumno)
+    
     const [mapDoc, setMapDoc] = useState(mapDocInit)
     type Base64 = (file: any) => Promise<unknown>
     let fileName = ''
@@ -45,7 +56,10 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
             setMapDoc,
             verificaToken,
             result as string)
-        };
+    };
+
+    useEffect(()=>{ respTodosTramites.refetch() },[])
+
     return (
         <div className="sm:col-span-2">
             <input id="file-input" type="file" onChange={selectFile}  name="avatar" style={{display: 'none'}} />
@@ -56,6 +70,15 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
 
                     const exp = auth?.usuario?.expediente?.find((d)=>{return d?.documentoId===m.id})
                     m.expedienteId = !exp?.id! ? null:exp?.id! as any
+
+                    //busqueda del expediente en cada tramite que ha enviado cada alumno
+                    const tramite = respTodosTramites?.data?.todosTramitesAlumno?.find((tramiteAlumno)=>{
+                        const {requisitos, estadoId} = tramiteAlumno
+                        const reqDoc = requisitos.find((r)=>{return r.documento.id===m.id})
+                        return reqDoc && estadoId!==2 && estadoId!==3
+                    })
+                    m.enTramite = tramite?.estadoId
+                    
 
                     return (
                         <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
@@ -170,8 +193,24 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                             >
                                 Ver
                             </button>
+
+                            {!m.enTramite || (exp?.validado===1 && m.enTramite !==2) &&
+                            <>
+                                <span className="text-gray-300" aria-hidden="true">
+                                    |
+                                </span>
+                                <button
+                                    type="button"
+                                    onMouseDown={()=>{eliminarExpediente(m.expedienteId!,verificaToken)}}
+                                    className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Eliminar
+                                </button>
+                            </>
+                            }
+
                         </div>
-                        }
+                    }
 
                     {m.expedienteId===null &&
                         <div className="ml-4 flex-shrink-0 flex space-x-4">

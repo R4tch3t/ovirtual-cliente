@@ -24,7 +24,7 @@ const login = async (email:string, password:string):Promise<[{ok:boolean},TypeAu
 export const loginApollo = (resp:any):[{respLogin:boolean},TypeAuthState] => {
           
     const json:TypeAuthState = {}
-    console.log(resp)
+    
     if(resp.respLogin){
         if(Cookies.get("expiresIn")==='1y'){
             Cookies.set("token",resp?.token!,{expires: 365}) 
