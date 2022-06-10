@@ -14,7 +14,9 @@ import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 import { BajaTemporal } from '../../../components/tramite/bajaTemporal';
 import { obtenerRequisitosGQL, TipoRequisitos } from '../../../apollo-cliente/tramites/obtenerRequisitos';
 import { CatDocumentos } from '../../../helpers/expedientes';
-
+import HeadSeleccionarPlanBajaTemporal from '../../../components/tramite/bajaTemporal/headSelecionarPlan';
+import HeadSeleccionarPlanHomologacion from '../../../components/tramite/homologacion/headSelecionarPlan';
+import { Homologacion } from '../../../components/tramite/homologacion';
 interface Props {
   id: string,
   tramite: TypeTramite,
@@ -27,12 +29,12 @@ interface Props {
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const {tramitesState,dispatch} = useTramitesContext()
-  const {preregistro} = tramitesState.procedimientos
+  const {preregistro, bajaTemporal, homologacion} = tramitesState.procedimientos
   
-  const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
+  /*const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
     cargarPreregistroDB(data!,dispatch)
-  },[data,dispatch])
+  },[data,dispatch])*/
 
   if(auth.checking){
     return( 
@@ -58,20 +60,35 @@ const TramiteHome:NextPage<Props> = (props) =>{
       <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
           <div className='relative bg-white p-6' >
 
-            {
-              props.id==="15" && <>
+            {/*
+              props.id==="2" && <>
                 {!preregistro && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} />}
 
                 {preregistro && <PasosPreregistro paises={props.paises} />}
-              </>
+              </>*/
             }
+            
 
             {
               props.id==="1" && 
               <>
-                {!tramitesState.procedimientos.bajaTemporal && <SeleccionarPlan />}
-                {tramitesState.procedimientos.bajaTemporal && <BajaTemporal tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
+                {!bajaTemporal && <HeadSeleccionarPlanBajaTemporal >
+                    <SeleccionarPlan nombreContextState='bajaTemporal' />
+                  </HeadSeleccionarPlanBajaTemporal>
+                }
+                {bajaTemporal && <BajaTemporal tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
 
+              </>
+            }
+
+            {
+              props.id==="15" && <>
+                {!homologacion && <HeadSeleccionarPlanHomologacion >
+                    <SeleccionarPlan nombreContextState='homologacion' />
+                  </HeadSeleccionarPlanHomologacion>
+                }
+
+              {homologacion && <Homologacion tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
               </>
             }
             

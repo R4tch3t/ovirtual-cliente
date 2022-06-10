@@ -7,46 +7,68 @@ import { ModalError } from '../../ModalError'
 import { ModalSuccess } from '../../ModalSucces';
 import EstadoTramite from '../estadoTramite'
 import { HeadTramite } from './'
-import { FormularioBajaTemporal } from './formulario'
+import { FormularioHomologacion } from './formulario'
 import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
+
 let timeRef:any = null
 type Props = {
   tramiteId: number,
   mapDocInit: CatDocumentos[]
 }
 
-export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
+export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
   const {auth} = useAppContext();
   const {tramitesState} = useTramitesContext();
+  const {homologacion} = tramitesState?.procedimientos!
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
     userAlumnoId: auth?.id!,
     tramiteId,
-    plesxurRef: tramitesState?.procedimientos?.bajaTemporal?.plesXur!
+    plesxurRef: homologacion?.plesXur!
   }
   const {data, refetch} = useObtenerTramitesAlumno(tramiteAlumno)
   const datosTramite = data?.obtenerTramitesAlumno?.datosTramite
-  const {periodoLectivo,causaBaja} = JSON.parse(datosTramite?datosTramite:'{}')
+  const {telefono,planIngresarId} = JSON.parse(datosTramite?datosTramite:'{}')
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
-  let btnDis:any = tramitesState?.procedimientos?.bajaTemporal?.validoParaTramitar!
-  mapDocInit.map(doc=>{
-    const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
+  let btnDis:any = homologacion?.validoParaTramitar!
+  const excludDocs = [44,48]
+  let mapDocInitExclud = [...mapDocInit]
+
+
+  mapDocInitExclud.map(doc=>{
+    const findDoc = auth?.usuario?.expediente?.find((e)=>{
+      return e.id===doc?.expedienteId!
+    })
     btnDis = findDoc && btnDis
+  });
+
+  mapDocInitExclud=mapDocInitExclud.sort((a,b)=>{
+    return a?.id!-b?.id! && 
+    (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
+  })
+  
+  mapDocInit = [...mapDocInitExclud]
+
+
+  mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
+    return !excludDocs.find((exc)=>{
+      return exc === doc.id
+    })
   });
 
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({
-      periodoLectivo: tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo!,
-      causaBaja: tramitesState?.procedimientos?.bajaTemporal?.causaBaja!
+      planIngresarId: homologacion?.planIngresarId!,
+      telefono: homologacion?.telefono!
     });
     const tramite: TramiteAlumnoInput = {
       tramiteId,
-      plesxurRef: tramitesState.procedimientos.bajaTemporal?.plesXur!,
+      plesxurRef: homologacion?.plesXur!,
       userAlumnoId: auth?.id!,
       matricula: retornarPrimerMat(auth?.usuario?.matricula!),
       datosTramite
@@ -91,26 +113,31 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
           </ConfirmarTramite>
 
         <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Baja temporal de estudios</h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">Permite a un estudiante estar fuera por un periodo de tiempo.</p>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">Homologación</h3>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">Me permito solicitar <b>HOMOLOGACIÓN DE ESTUDIOS</b>.</p>
         </div>
 
         {data?.obtenerTramitesAlumno && 
-              <EstadoTramite estadoId={data.obtenerTramitesAlumno.estadoId} />
+          <EstadoTramite estadoId={data.obtenerTramitesAlumno.estadoId} />
         }
 
         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
           <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             
             <HeadTramite />
-            <FormularioBajaTemporal mapDocInit={mapDocInit} periodoBajaVal={periodoLectivo} causaBajaVal={causaBaja} />
+            {data?.obtenerTramitesAlumno && 
+              <FormularioHomologacion mapDocInit={mapDocInit} telefono={telefono} planIngresarId={planIngresarId} />
+            }
+            {!data?.obtenerTramitesAlumno && 
+              <FormularioHomologacion mapDocInit={mapDocInitExclud} telefono={telefono} planIngresarId={planIngresarId} />
+            }
 
           </dl>
         </div>
 
 
 
-          {!data?.obtenerTramitesAlumno &&
+        {!data?.obtenerTramitesAlumno &&
           <div className="mt-4 py-4 px-4 flex justify-end sm:px-12">
               <button
                   type="button"
@@ -126,7 +153,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
                   }
               </button>
           </div>
-          }
+        }
           
       </div>
     </Fade>

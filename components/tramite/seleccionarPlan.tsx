@@ -5,6 +5,7 @@ import IconUni from '../../public/iconUni.png'
 import { types } from '../../types/tramites'
 import { Spacer } from "@nextui-org/react";
 import Info from '../Info';
+import { FC } from 'react';
 const icon = <Image src={IconUni} width={60} height={60} />
     const colores = [
       {
@@ -36,27 +37,27 @@ function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
 
-export const SeleccionarPlan = () => {
+type Props = {
+  nombreContextState: string
+}
+
+export const SeleccionarPlan:FC<Props> = ({nombreContextState}) => {
     const {dispatch}:any = useTramitesContext();
     const {auth} = useAppContext();
     let c = -1
 
     const infoMsg = "Atención, no se encontró registro de su plan ó planes de estudios porfavor diríjase a la DAE y pida que solucionen su caso. "; 
 
-    const seleccionarPlan = (usuarioId:number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
+    const seleccionarPlan = (usuarioId:number, plesXur: number, planElegido: string,  unidadAcademica:string, procedure:string) => {
       //Lo mas probable es que sea una función universal para todos los tramites
         dispatch({
-          type: types.seleccionarPlanBajaTemporal,
-          payload: {usuarioId, plesXur, planElegido, unidadAcademica}
+          type: types.seleccionarPlanProcedure,
+          payload: {usuarioId, plesXur, planElegido, unidadAcademica, procedure}
         });
     }
 
     return (
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Baja temporal de estudios</h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Permite a un estudiante estar fuera por un periodo de tiempo.</p>
-          </div>
+        
           
           <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
             {!auth?.usuario?.vwAlumnoConPlanes?.length!&&
@@ -75,7 +76,7 @@ export const SeleccionarPlan = () => {
                           key={alup.PLESXUR}
                           onMouseDown={()=>{
                             const {PLESXUR, PLANESTUDIOS, ESCUELA} = alup;
-                            seleccionarPlan(auth.id!, PLESXUR, PLANESTUDIOS,ESCUELA) 
+                            seleccionarPlan(auth.id!, PLESXUR, PLANESTUDIOS,ESCUELA,nombreContextState) 
                           }}
                           className={classNames(
                             alupId === 0 ? 'rounded-tl-lg rounded-tr-lg sm:rounded-tr-none' : '',
@@ -129,6 +130,6 @@ export const SeleccionarPlan = () => {
             </dl>
           </div>
     
-        </div>
+        
       )
 }

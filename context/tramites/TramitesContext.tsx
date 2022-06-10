@@ -20,7 +20,8 @@ const initialState:TypeTramitesState = {
     documentos: null,
     procedimientos: {
         preregistro: null,
-        bajaTemporal: null
+        bajaTemporal: null,
+        homologacion: null
     },
     tramiteAlumnoSeleccionado: null,
     nombreTramiteSeleccionado: null

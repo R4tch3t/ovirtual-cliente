@@ -61,10 +61,13 @@ const TablaInicial = () => {
     const {data} = useTodosTramitesAlumno({userAlumnoId: auth?.id!})
 
     const seleccionarTramite = (tramiteId: number, usuarioId: number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
+      //agregar mas nombres de tramite
+      const procedure = tramiteId===1?'bajaTemporal':
+        (tramiteId===15?'homologacion':'')
       //Lo mas probable es que sea una función universal para todos los tramites
         dispatch({
-          type: types.seleccionarPlanBajaTemporal,
-          payload: {usuarioId, plesXur, planElegido, unidadAcademica}
+          type: types.seleccionarPlanProcedure,
+          payload: {usuarioId, plesXur, planElegido, unidadAcademica, procedure}
         });
         dispatch({
           type: types.seleccionarTramiteAlumno,

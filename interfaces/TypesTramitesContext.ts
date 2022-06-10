@@ -53,13 +53,22 @@ export type TypePreregistro = {
     paso5: TypePaso5 | null
 }
 
-export type TypeBajaTemporal = {
+type HeadTramite = {
     usuarioId: number | null,
     plesXur: number,
     unidadAcademica: string,
     planElegido: string,
+}
+
+export interface TypeBajaTemporal extends HeadTramite {
     periodoLectivo: string | null,
     causaBaja: string | null,
+    validoParaTramitar: boolean,
+}
+
+export interface TypeHomologacion extends HeadTramite {
+    planIngresarId: number,
+    telefono: string | null,
     validoParaTramitar: boolean,
 }
 
@@ -74,7 +83,8 @@ export type TypeDocumento = {
 
 export type TypeProcedimiento = {
     preregistro: TypePreregistro | null,
-    bajaTemporal: TypeBajaTemporal | null
+    bajaTemporal: TypeBajaTemporal | null,
+    homologacion: TypeHomologacion | null,
 }
 
 

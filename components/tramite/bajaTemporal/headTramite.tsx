@@ -1,6 +1,6 @@
-import { useAppContext } from "../../auth/authContext"
-import { useTramitesContext } from "../../context/tramites/TramitesContext";
-import { retornarPrimerMat } from "../../helpers/retornarPrimerMat";
+import { useAppContext } from "../../../auth/authContext"
+import { useTramitesContext } from "../../../context/tramites/TramitesContext";
+import { retornarPrimerMat } from "../../../helpers/retornarPrimerMat";
 
 export const HeadTramite = () => {
     const {tramitesState} = useTramitesContext()

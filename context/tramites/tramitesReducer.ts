@@ -3,6 +3,7 @@ import {types} from "../../types/tramites";
 
 export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesAction):TypeTramitesState => {
     let usuarioId = null
+    let procedure = null
     let plesXur = null
     let aspiranteId = null
     let planID = null
@@ -96,18 +97,19 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                         }
                     }
                 }
-            case types.seleccionarPlanBajaTemporal:
+            case types.seleccionarPlanProcedure:
                 /// hacerla universal para cualquier tramite
                 usuarioId = action.payload.usuarioId
                 plesXur = action.payload.plesXur
                 planElegido = action.payload.planElegido
                 unidadAcademica = action.payload.unidadAcademica
-    
+                procedure = action.payload.procedure
+                
                 return {
                     ...state,
                     procedimientos: {
                         ...state.procedimientos,
-                        bajaTemporal: {
+                        [procedure]: {
                             usuarioId,
                             plesXur,
                             planElegido,
@@ -117,7 +119,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                             validoParaTramitar: false
                         }
                     },
-                    nombreTramiteSeleccionado: 'bajaTemporal'
+                    nombreTramiteSeleccionado: procedure
 
                 }    
             case types.cambiarEstado:

@@ -36,6 +36,8 @@ const TramiteHome:NextPage<Props> = (props) =>{
     Router.replace("/");
   }
 
+  //props.requisitos=props.requisitos.sort((a,b)=>{return a.id-b.id})
+
   props.requisitos.map((r)=>{
     table?.body?.push({
       'Documento': r.documento.nombre,
@@ -44,6 +46,8 @@ const TramiteHome:NextPage<Props> = (props) =>{
       'Requiere Original': r.requiereOriginal?'Si':'No',
     })
   });
+
+
 
   const {head, body}  = table
 
