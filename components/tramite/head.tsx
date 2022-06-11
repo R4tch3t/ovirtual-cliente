@@ -1,7 +1,10 @@
+import {useState} from 'react';
 import Router from 'next/router';
 import {FC} from 'react';
 import { useTramitesContext } from '../../context/tramites/TramitesContext';
 import { types } from '../../types/tramites';
+import { Loading } from '@nextui-org/react';
+
 
 type Head = {
     tramiteId: number;
@@ -17,7 +20,7 @@ const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChild
     txt: 'Iniciar trámite',
     href: `/tramite/${tramiteId}/iniciarTramite`,
     onClick: ()=>{
-      
+      setCargando(true)
       dispatch({
         type: types.ponerTramiteEnNulo,
         payload: null
@@ -29,11 +32,11 @@ const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChild
     bgColor1: 'bg-sky-700',
     bgColor2: 'bg-sky-800'
   };
-  
+  const [cargando, setCargando] = useState(false)
   if(linkChildren==='iniciarTramite'){
     btnState.txt='Cancelar'
     btnState.onClick=()=>{
-      
+      setCargando(true)
       Router.push(`/tramite/${tramiteId}`)
     }
     btnState.href=`/tramite/${tramiteId}`
@@ -52,10 +55,12 @@ const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChild
                 onClick={btnState.onClick}
                 style={{width: 150}}
                 className={`${btnState.bgColor1} mt-5 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:${btnState.bgColor2} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                disabled={cargando}
               >
-                {
+                {!cargando &&
                     btnState.txt
                 }
+                {cargando&&<Loading className="w-5 h-5" type="points-opacity" color="white" size="sm" />}
               </button>
             
 

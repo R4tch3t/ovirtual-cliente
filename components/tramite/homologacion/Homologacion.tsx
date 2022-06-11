@@ -36,7 +36,7 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
   let btnDis:any = homologacion?.validoParaTramitar!
-  const excludDocs = [44,48]
+  const excludDocs = [1,47]
   let mapDocInitExclud = [...mapDocInit]
 
 
@@ -44,7 +44,7 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
     const findDoc = auth?.usuario?.expediente?.find((e)=>{
       return e.id===doc?.expedienteId!
     })
-    btnDis = findDoc && btnDis
+    btnDis = findDoc?.validado!<3 && btnDis
   });
 
   mapDocInitExclud=mapDocInitExclud.sort((a,b)=>{
@@ -56,10 +56,20 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
 
 
   mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
-    return !excludDocs.find((exc)=>{
+    return excludDocs.find((exc)=>{
       return exc === doc.id
     })
   });
+
+  if(!data?.obtenerTramitesAlumno){
+    btnDis = homologacion?.validoParaTramitar!
+    mapDocInitExclud.map(doc=>{
+      const findDoc = auth?.usuario?.expediente?.find((e)=>{
+        return e.id===doc?.expedienteId!
+      })
+      btnDis = findDoc?.validado!<3 && btnDis
+    });
+  }
 
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({
@@ -83,11 +93,15 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
   }
 
   const loop = () =>{
-    timeRef = setTimeout(()=>{
-      clearTimeout(timeRef)
-      refetch()
-      loop()
-    },1500)
+    
+    if(data?.obtenerTramitesAlumno){
+      timeRef = setTimeout(()=>{
+        clearTimeout(timeRef)        
+        refetch()        
+        loop()        
+      },1500)
+    }
+    
   }
 
   useEffect(()=>{
@@ -95,7 +109,7 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
       clearTimeout(timeRef)
     }
     loop()
-  },[/*auth*/])
+  },[data?.obtenerTramitesAlumno])
 
   return (
     <Fade in={true}>

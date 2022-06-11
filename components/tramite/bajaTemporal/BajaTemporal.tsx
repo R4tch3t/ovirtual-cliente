@@ -36,7 +36,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
   let btnDis:any = tramitesState?.procedimientos?.bajaTemporal?.validoParaTramitar!
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
-    btnDis = findDoc && btnDis
+    btnDis = findDoc?.validado!<3 && btnDis
   });
 
   const onSubmit = async () => {
@@ -61,11 +61,15 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
   }
 
   const loop = () =>{
-    timeRef = setTimeout(()=>{
-      clearTimeout(timeRef)
-      refetch()
-      loop()
-    },1500)
+    
+    if(data?.obtenerTramitesAlumno){
+      timeRef = setTimeout(()=>{
+        clearTimeout(timeRef)        
+        refetch()        
+        loop()        
+      },1500)
+    }
+
   }
 
   useEffect(()=>{
@@ -73,7 +77,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
       clearTimeout(timeRef)
     }
     loop()
-  },[/*auth*/])
+  },[data?.obtenerTramitesAlumno])
 
   return (
     <Fade in={true}>

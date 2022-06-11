@@ -8,8 +8,6 @@ import { useTramitesContext } from "../context/tramites/TramitesContext";
 import { TodosTramiteAlumnoInput, useTodosTramitesAlumno } from "../hooks/useQuery/tramites";
 
 
-
-
 type Props = {
     mapDocInit: CatDocumentos[]
   }
@@ -42,8 +40,8 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
         file=file.files[0]
         const result= await toBase64(file).catch(e => e);
         if (result instanceof Error) {
-        console.log('Error: ', result.message);
-        return;
+            console.log('Error: ', result.message);
+            return;
         }
         
         subirArchivo(

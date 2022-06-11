@@ -1,5 +1,5 @@
 
-import { Component, Fragment, useState } from 'react'
+import { ChangeEvent, Component, Fragment, useState } from 'react'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import {
   BellIcon,
@@ -13,6 +13,7 @@ import { Resentemail } from '../helpers/Resentemail'
 import Link from 'next/link'
 import { NextPage } from 'next';
 import { VincularOauth } from '../helpers/VincularOauth'
+import Busqueda from '../components/Busqueda'
 
 
 const user = {
@@ -63,6 +64,13 @@ export const Home: NextPage<Props> = ({children, link}) => {
     }else{
       user.name=auth.name
       user.email=auth.email
+    }
+
+    const onSearch=(event:ChangeEvent)=>{
+      const target = event.currentTarget as any
+      if(link==="Tramites"){
+        console.log(target.value)
+      }
     }
 
     return (
@@ -154,27 +162,29 @@ export const Home: NextPage<Props> = ({children, link}) => {
                             </nav>
                           </div>
 
-                          {link!=="Perfil"&&link!=="Tramites"&&link!=="Signup"&&link!=="Login"&&
-                            <div className="px-12 lg:px-0">
-                            
-                            <div className="max-w-xs mx-auto w-full lg:max-w-md">
-                              <label htmlFor="search" className="sr-only">
-                                Search
-                              </label>
-                              <div className="relative text-white focus-within:text-gray-600">
-                                <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                                  <SearchIcon className="h-5 w-5" aria-hidden="true" />
+                          {link!=="Perfil"&&link!=="Signup"&&link!=="Login"&&
+                            <Busqueda />
+                            /*<div className="px-12 lg:px-0">                            
+                              <div className="max-w-xs mx-auto w-full lg:max-w-md">
+                                <label htmlFor="search" className="sr-only">
+                                  Search
+                                </label>
+                                <div className="relative text-white focus-within:text-gray-600">
+                                  <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+                                    <SearchIcon className="h-5 w-5" aria-hidden="true" />
+                                  </div>
+                                  <input
+                                    id="search"
+                                    onChange={onSearch}
+                                    className="block w-full text-white bg-white bg-opacity-20 py-2 pl-10 pr-3 border border-transparent rounded-md leading-5 focus:text-gray-900 placeholder-white focus:outline-none focus:bg-opacity-100 focus:border-transparent focus:placeholder-gray-500 focus:ring-0 sm:text-sm"
+                                    placeholder="Buscar"
+                                    type="search"
+                                    name="search"
+                                  />
                                 </div>
-                                <input
-                                  id="search"
-                                  className="block w-full text-white bg-white bg-opacity-20 py-2 pl-10 pr-3 border border-transparent rounded-md leading-5 focus:text-gray-900 placeholder-white focus:outline-none focus:bg-opacity-100 focus:border-transparent focus:placeholder-gray-500 focus:ring-0 sm:text-sm"
-                                  placeholder="Buscar"
-                                  type="search"
-                                  name="search"
-                                />
                               </div>
-                            </div>
-                          </div>}
+                            </div>*/
+                          }
 
                         </div>
                       </div>
