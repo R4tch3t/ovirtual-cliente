@@ -80,6 +80,7 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
       tramiteId,
       plesxurRef: homologacion?.plesXur!,
       userAlumnoId: auth?.id!,
+      email: auth?.email!,
       matricula: retornarPrimerMat(auth?.usuario?.matricula!),
       datosTramite
     }

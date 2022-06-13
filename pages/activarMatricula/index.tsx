@@ -21,7 +21,7 @@ const ActivarMatricula: NextPage = () => {
       title: "Éxito", txt: 'La cuenta se ha activado...', 
       btn1: {txt:"Ir al inicio", onClose:setModalS} 
     })
-    console.log('token ',token)
+    
     if(!token){
       return 
     }

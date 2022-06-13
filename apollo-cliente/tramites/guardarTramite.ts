@@ -9,6 +9,7 @@ export interface TramiteAlumnoInput{
     tramiteId: number;   
     plesxurRef: number;
     userAlumnoId: number;
+    email: string;
     matricula: string;
     datosTramite: string;
 }

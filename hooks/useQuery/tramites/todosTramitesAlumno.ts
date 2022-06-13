@@ -20,6 +20,7 @@ export interface TramiteAlumno {
     fechaEnvioRevision: Date,
     informacionAdicional:string|null,
     visto: number,
+    uuid:string,
     motivoRegresoValidacion:string|null,
     datosTramite:string,
     requisitos: TipoRequisitos[]
@@ -38,6 +39,7 @@ const QUERY = gql`
             fechaEnvioRevision
             informacionAdicional
             visto
+            uuid
             motivoRegresoValidacion
             datosTramite
             requisitos {

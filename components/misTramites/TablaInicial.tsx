@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
+import Router from 'next/router';
 import Image from 'next/image'
-import { Spacer } from "@nextui-org/react";
+import { Spacer, Loading } from '@nextui-org/react';
 import { useTramitesContext } from "../../context/tramites/TramitesContext";
 import { types } from "../../types/tramites";
 import { useAppContext } from '../../auth/authContext';
@@ -7,6 +9,8 @@ import { useTodosTramitesAlumno } from '../../hooks/useQuery/tramites/todosTrami
 import IconUni from '../../public/iconUni.png'
 import Fade from '@mui/material/Fade';
 import RetornarTramite from './RetornarTramite';
+
+
 
 const icon = <Image src={IconUni} width={60} height={60} />
 
@@ -58,7 +62,7 @@ const TablaInicial = () => {
     const {tramitesState, dispatch} = useTramitesContext();
     const {tramites} = tramitesState
     let c = -1
-    const {data} = useTodosTramitesAlumno({userAlumnoId: auth?.id!})
+    const {data, loading} = useTodosTramitesAlumno({userAlumnoId: auth?.id!})
 
     const seleccionarTramite = (tramiteId: number, usuarioId: number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
       //agregar mas nombres de tramite
@@ -76,10 +80,31 @@ const TablaInicial = () => {
 
     }
 
-    
+    useEffect(()=>{
+      const {t} = Router.query as {t:string}
+      const tramiteAlumno = data?.todosTramitesAlumno?.find((todos)=>{return todos.uuid===t})
+      if(tramiteAlumno){
+        const plexur = auth?.usuario?.vwAlumnoConPlanes?.find((alup)=>{return alup.PLESXUR===tramiteAlumno.plesxurRef})
+        const {PLESXUR, PLANESTUDIOS, ESCUELA} = plexur!;
+        seleccionarTramite(tramiteAlumno.tramiteId, auth?.id!, PLESXUR, PLANESTUDIOS,ESCUELA);
+      }
+    },[data?.todosTramitesAlumno])
 
     if(tramitesState.tramiteAlumnoSeleccionado!==null){
      return <RetornarTramite tramiteId={tramitesState.tramiteAlumnoSeleccionado} tramites={data?.todosTramitesAlumno!} />
+    }
+
+    if(loading){
+      return (
+        <div className='wMid mt-8' >
+          <Loading type="spinner" size="lg" />
+        </div>
+      )
+    }    
+
+    //No se econtró registro de algun tramite
+    if(!data?.todosTramitesAlumno){
+      return <></>
     }
 
     return (

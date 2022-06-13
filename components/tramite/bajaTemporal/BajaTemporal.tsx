@@ -48,6 +48,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
       tramiteId,
       plesxurRef: tramitesState.procedimientos.bajaTemporal?.plesXur!,
       userAlumnoId: auth?.id!,
+      email: auth?.email!,
       matricula: retornarPrimerMat(auth?.usuario?.matricula!),
       datosTramite
     }

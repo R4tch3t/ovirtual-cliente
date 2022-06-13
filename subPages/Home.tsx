@@ -1,5 +1,5 @@
 
-import { ChangeEvent, Component, Fragment, useState } from 'react'
+import { ChangeEvent, Component, Fragment, useEffect, useState } from 'react'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import {
   BellIcon,
@@ -35,6 +35,8 @@ interface Props {
 
 export const Home: NextPage<Props> = ({children, link}) => {
     const {auth,logout}:any = useAppContext();
+    const [isFixed, setIsFixed] = useState(false)
+
     let userNavigation = [
         { name: 'Ver perfil', href: '/perfil' },
         { name: 'Configuración', href: '' },
@@ -72,6 +74,22 @@ export const Home: NextPage<Props> = ({children, link}) => {
         console.log(target.value)
       }
     }
+
+    useEffect(()=>{
+      
+      const stickyDiv = document.getElementById('stickyDiv')
+      window!.onscroll=((event:Event)=>{
+
+       if((stickyDiv?.offsetTop!-20)<window.scrollY){
+          setIsFixed(true)
+        }
+
+        if((window.scrollY-80)<stickyDiv?.offsetTop!){
+          setIsFixed(false)
+        }
+      })
+
+    },[])
 
     return (
         <>
@@ -139,54 +157,110 @@ export const Home: NextPage<Props> = ({children, link}) => {
                       </div>
     
                       <div className="w-full py-5 lg:border-t lg:border-white lg:border-opacity-20">
-                        <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:items-center">
-                          
-                          <div className="hidden lg:block lg:col-span-2">
-                            <nav className="flex space-x-4">
-                              {navigation.map((item) => (
-                                <Link
-                                  key={item.name}
-                                  href={item.href}
-                                >
-                                  <a 
-                                    className={classNames(
-                                      item.current ? 'text-white' : 'text-cyan-100',
-                                      'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10'
-                                    )}
-                                    aria-current={item.current ? 'page' : undefined}
-                                  >
-                                    {item.name}
-                                  </a>
-                                </Link>
-                              ))}
-                            </nav>
+                        {isFixed && <div style={{height: 36}} />}
+                        <div className={`${isFixed?'fixed left-0 w-full py-10 fixed z-999 top-0 bg-gradient-to-r from-uagrojo to-uagrojo'
+                            :''}`} > 
+                        
+                        {isFixed && <div className="absolute right-10 bottom-7 hidden lg:ml-4 lg:flex lg:items-center">
+                        <button
+                          type="button"
+                          className="flex-shrink-0 p-1 text-cyan-200 rounded-full hover:text-white hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-white"
+                        >
+                          <span className="sr-only">View notifications</span>
+                          <BellIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                            
+                        <Menu as="div" className="ml-4 flex-shrink-0">
+                          <div>
+                            <Menu.Button className="bg-white rounded-full flex text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
+                              <span className="sr-only">Open user menu</span>
+                              <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            </Menu.Button>
                           </div>
-
-                          {link!=="Perfil"&&link!=="Signup"&&link!=="Login"&&
-                            <Busqueda />
-                            /*<div className="px-12 lg:px-0">                            
-                              <div className="max-w-xs mx-auto w-full lg:max-w-md">
-                                <label htmlFor="search" className="sr-only">
-                                  Search
-                                </label>
-                                <div className="relative text-white focus-within:text-gray-600">
-                                  <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                                    <SearchIcon className="h-5 w-5" aria-hidden="true" />
-                                  </div>
-                                  <input
-                                    id="search"
-                                    onChange={onSearch}
-                                    className="block w-full text-white bg-white bg-opacity-20 py-2 pl-10 pr-3 border border-transparent rounded-md leading-5 focus:text-gray-900 placeholder-white focus:outline-none focus:bg-opacity-100 focus:border-transparent focus:placeholder-gray-500 focus:ring-0 sm:text-sm"
-                                    placeholder="Buscar"
-                                    type="search"
-                                    name="search"
-                                  />
-                                </div>
-                              </div>
-                            </div>*/
-                          }
-
+                          <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="origin-top-right z-40 absolute -right-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              {userNavigation.map((item) => (
+                                <Menu.Item key={item.name}>
+                                  {({ active }) => (
+                                    <Link href={item.href} >
+                                      <a
+                                        
+                                        onMouseUp={item.onMouseUp}
+                                        className={classNames(
+                                          active ? 'bg-gray-100' : '',
+                                          'block px-4 py-2 text-sm text-gray-700'
+                                        )}
+                                      >
+                                        {item.name}
+                                      </a>
+                                    </Link>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      </div>
+                        }    
                         </div>
+
+                          <div id='stickyDiv' className={`
+                          ${isFixed?'fixed z-999 top-5 bg-gradient-to-r from-uagrojo to-uagrojo'
+                            :''} 
+                          lg:grid lg:grid-cols-3 lg:gap-8 lg:items-center`}>
+                            
+                            <div className="hidden lg:block lg:col-span-2">
+                              <nav className="flex space-x-4">
+                                {navigation.map((item) => (
+                                  <Link
+                                    key={item.name}
+                                    href={item.href}
+                                  >
+                                    <a 
+                                      className={classNames(
+                                        item.current ? 'text-white' : 'text-cyan-100',
+                                        'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10'
+                                      )}
+                                      aria-current={item.current ? 'page' : undefined}
+                                    >
+                                      {item.name}
+                                    </a>
+                                  </Link>
+                                ))}
+                              </nav>
+                            </div>
+
+                            {link!=="Perfil"&&link!=="Signup"&&link!=="Login"&&
+                              <Busqueda />
+                              /*<div className="px-12 lg:px-0">                            
+                                <div className="max-w-xs mx-auto w-full lg:max-w-md">
+                                  <label htmlFor="search" className="sr-only">
+                                    Search
+                                  </label>
+                                  <div className="relative text-white focus-within:text-gray-600">
+                                    <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+                                      <SearchIcon className="h-5 w-5" aria-hidden="true" />
+                                    </div>
+                                    <input
+                                      id="search"
+                                      onChange={onSearch}
+                                      className="block w-full text-white bg-white bg-opacity-20 py-2 pl-10 pr-3 border border-transparent rounded-md leading-5 focus:text-gray-900 placeholder-white focus:outline-none focus:bg-opacity-100 focus:border-transparent focus:placeholder-gray-500 focus:ring-0 sm:text-sm"
+                                      placeholder="Buscar"
+                                      type="search"
+                                      name="search"
+                                    />
+                                  </div>
+                                </div>
+                              </div>*/
+                            }
+
+                          </div>
+                        
                       </div>
                           
                       <div className="absolute right-0 flex-shrink-0 lg:hidden">
