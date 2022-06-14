@@ -79,7 +79,8 @@ const ListMatriculas:FC<Props> = ({
     const allowDropElement = (event: DragEvent) => {
         event.preventDefault()
         const {target}:any = event
-        
+        event.currentTarget.classList.add('cursor-move')
+        target.style.cursor='move'
         const onDragMat = parseInt(target.id)
         if(onDragMat>-1&&onDragMat!==currentDragElement){
             const auxM = matriculasState[onDragMat].matricula
@@ -96,7 +97,10 @@ const ListMatriculas:FC<Props> = ({
     
 
     return (
-      <ul onDrop={onDrop} role="list" className="space-y-3">
+      <ul onDrop={onDrop} 
+        onDragOver={(event)=>{event.preventDefault()}} 
+        onDragEnd={(event)=>{event.preventDefault()}}
+        role="list" className="space-y-3">
          
         {matriculasState.map((item,id) => (
             <li key={id} 
@@ -104,12 +108,13 @@ const ListMatriculas:FC<Props> = ({
                 draggable
                 onDragStart={onDragStart}
                 onDragOver={allowDropElement}  
-                onDragEnd={onDragEnd}        
-                className="bg-white shadow overflow-hidden rounded-md px-6 py-2"
+                onDragEnd={onDragEnd}     
+                onDrop={(event)=>{event.preventDefault()}}   
+                className="cursor-move bg-white shadow overflow-hidden rounded-md px-6 py-2"
                 style={{opacity: currentDragElement===id?opacityDrag:1, transition: 'all .3s'}}
             >
-                <div id={id+""} className='flex' >
-                    <ViewListIcon id={id+""} className="cursor-move h-5 w-5 mt-1 text-gray-400 group-hover:text-gray-500" /> 
+                <div id={id+""}  className='flex' >
+                    <ViewListIcon id={id+""} className="h-5 w-5 mt-1 text-gray-400 group-hover:text-gray-500" /> 
                         {item?.icon!}
                     <span id={id+""} className='w-full text-center' >{item.matricula} </span>
                 </div>
