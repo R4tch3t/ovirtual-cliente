@@ -1,5 +1,16 @@
-import { urlLogo, urlHeaderLogo, urlLogoDae } from "../variables/images"
+import { urlLogo, urlHeaderLogo, urlLogoDae, urlPDFLogo } from "../variables/images"
 import Image from 'next/image'
+
+export const PDFLogo = ({width,height}:any) => {
+  return (
+    <Image 
+      width={width}
+      height={height}
+      src={urlPDFLogo}
+      alt="headerLogo"
+    />
+  )
+}
 
 export const HeaderLogo = ({width,height}:any) => {
   return (

@@ -9,6 +9,7 @@ import { useTodosTramitesAlumno } from '../../hooks/useQuery/tramites/todosTrami
 import IconUni from '../../public/iconUni.png'
 import Fade from '@mui/material/Fade';
 import RetornarTramite from './RetornarTramite';
+import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 
 
 
@@ -107,6 +108,8 @@ const TablaInicial = () => {
       return <></>
     }
 
+    
+
     return (
       <Fade in={true}>
         <div className="px-4 sm:px-6 lg:px-8">
@@ -127,7 +130,7 @@ const TablaInicial = () => {
           <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
               {data?.todosTramitesAlumno?.map((tramiteAlumno, tramiteId)=>{
                   c = colores.length-1 === c ? 0 : c+1
-                  const tramite = tramites?.find((t)=>{return t.id===tramiteAlumno.tramiteId})
+                  const {tramite} = tramiteAlumno//tramites?.find((t)=>{return t.id===tramiteAlumno.tramiteId})
                   const plexur = auth?.usuario?.vwAlumnoConPlanes?.find((alup)=>{return alup.PLESXUR===tramiteAlumno.plesxurRef})
                     return(
                       <div
@@ -177,8 +180,24 @@ const TablaInicial = () => {
                           <p className="mt-2 text-sm text-gray-500">
                             <b>FECHA DE CREACIÓN: </b> {tramiteAlumno.fechaCreacion}
                           </p>
-                          <p className="mt-2 text-sm text-gray-500">
-                            <b>ESTADO: </b> {estadoTramite(tramiteAlumno.estadoId)}
+                          <p className={`mt-2 text-sm 
+                            ${
+                              tramiteAlumno.estadoId===5?'text-green-500':
+                              (tramiteAlumno.estadoId===4?'text-yellow-500':
+                              (tramiteAlumno.estadoId===7?'text-red-600':'text-gray-500'))
+                            } 
+                          `}>
+                            <b>ESTADO: </b> {estadoTramite(tramiteAlumno.estadoId)+' '}
+                            
+                            { (tramiteAlumno.estadoId===4) &&
+                              <ExclamationIcon className="inline h-5 w-5 text-yellow-500" aria-hidden="true" />
+                            }
+                            { (tramiteAlumno.estadoId===7) &&
+                              <ExclamationIcon className="inline h-5 w-5 text-red-600" aria-hidden="true" />
+                            }
+                            { tramiteAlumno.estadoId===5 &&
+                              <CheckCircleIcon className="inline h-5 w-5 text-green-400" aria-hidden="true" />
+                            }
                           </p>
                           <div style={{textAlign: 'center'}} >
                               <p className="mt-2 text-sm text-gray-500">

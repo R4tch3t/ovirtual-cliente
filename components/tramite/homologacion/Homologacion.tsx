@@ -60,7 +60,7 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
       return exc === doc.id
     })
   });
-
+  
   if(!data?.obtenerTramitesAlumno){
     btnDis = homologacion?.validoParaTramitar!
     mapDocInitExclud.map(doc=>{
@@ -70,7 +70,7 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
       btnDis = findDoc?.validado!<3 && btnDis
     });
   }
-
+  
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({
       planIngresarId: homologacion?.planIngresarId!,

@@ -15,7 +15,7 @@ const nextConfig = {
   },
   experimental: {
     outputStandalone: true,
-  }
+  },
   /*exportPathMap: async function (
     defaultPathMap,
     { dev, dir, outDir, distDir, buildId }
@@ -29,6 +29,9 @@ const nextConfig = {
     }
   },
   trailingSlash: true*/
+  
+   
+  
 }
 
 module.exports = nextConfig

@@ -12,6 +12,11 @@ import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
+import { PDFLogo } from '../../Logo'
+import RenderPDF from '../../renderPDF'
+import Link from 'next/link'
+
+
 let timeRef:any = null
 type Props = {
   tramiteId: number,
@@ -33,6 +38,7 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
   const [modalS, setModalS] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
+  const [verPDF, setVerPDF] = useState(false)
   let btnDis:any = tramitesState?.procedimientos?.bajaTemporal?.validoParaTramitar!
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
@@ -80,6 +86,8 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
     loop()
   },[data?.obtenerTramitesAlumno])
 
+  //const apellidos = auth?.usuario?.alumno?.apeentalu?.split('*')!
+
   return (
     <Fade in={true}>
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -113,7 +121,36 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
           </dl>
         </div>
 
+        {data?.obtenerTramitesAlumno?.estadoId! === 5 && 
+          <div 
+            className='chatDivCargando' >
+              <div
+                className='cursor-pointer text-center'
+                style={{width: 200}}
+                onMouseEnter={()=>{setVerPDF(false)}}
+                onMouseDown={()=>{setVerPDF(true)}}               
+              >
+                
+                  <PDFLogo width={50} height={50} />
+                  <p className="mt-1 text-sm text-gray-500">Ver Trámite en PDF.</p>
+                
+              </div>
+          </div>
+        }
 
+        {verPDF && 
+          <RenderPDF 
+              tramiteId={tramiteId}
+              titulo='Baja Temporal' 
+              matricula={retornarPrimerMat(auth?.usuario?.matricula!)} 
+              nombre={auth?.usuario?.alumno.nomentalu}
+              apellidos={auth?.usuario?.alumno?.apeentalu!}
+              fechaCreacion={data?.obtenerTramitesAlumno?.fechaCreacion}
+              unidadAcademica={tramitesState.procedimientos.bajaTemporal?.unidadAcademica}
+              planEstudios={tramitesState.procedimientos.bajaTemporal?.planElegido}
+              datosTramite={data?.obtenerTramitesAlumno?.datosTramite!}
+          />
+        }
 
           {!data?.obtenerTramitesAlumno &&
           <div className="mt-4 py-4 px-4 flex justify-end sm:px-12">

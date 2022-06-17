@@ -1,7 +1,7 @@
 
 import { useQuery, gql } from "@apollo/client";
-import client from "../../../apollo-cliente";
 import { TipoRequisitos } from "../../../apollo-cliente/tramites/obtenerRequisitos";
+import { TypeTramite } from "../../../interfaces";
 
 export interface TodosTramiteAlumnoInput {
     userAlumnoId: number
@@ -23,6 +23,7 @@ export interface TramiteAlumno {
     uuid:string,
     motivoRegresoValidacion:string|null,
     datosTramite:string,
+    tramite: TypeTramite,
     requisitos: TipoRequisitos[]
 }
 
@@ -42,6 +43,34 @@ const QUERY = gql`
             uuid
             motivoRegresoValidacion
             datosTramite
+            tramite {
+                nombre
+                nombreCorto
+                clave
+                beneficio
+                necesitaValidacion
+                fechaFinalValidacion
+                fechaInicialValidacion
+                requiereFirmaElectronica
+                publicoDirigido
+                fechaCreacion
+                fechaActualizacion
+                documentoObtiene
+                costo
+                descripcion
+                nivelAplica
+                unidadResponsableId
+                tiempoValidezDocumento
+                validado
+                procedimientoModulo
+                procedimientoEnlinea
+                tramitePublicado
+                tramiteGratis
+                website
+                fundamentoLegal
+                condiciones
+                tiempoRespuesta
+            }
             requisitos {
                 id
                 descripcion

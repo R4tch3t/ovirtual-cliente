@@ -33,8 +33,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
 
 
     const onChange = ({target}:any) => {
-        const {name, value} = target;
-        
+        const {name, value} = target;        
         const nombreTramite = 'bajaTemporal'
         let nombreValor = name
         let valor = value
@@ -108,7 +107,7 @@ export const FormularioBajaTemporal:FC<Props> = ({mapDocInit, periodoBajaVal, ca
                     
                 </dd>
             </div>
-
+            
             <TableFile mapDocInit={mapDocInit} /> 
 
         </>

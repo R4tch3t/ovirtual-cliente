@@ -82,6 +82,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                         <li key={m.nombre} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                         <div className="w-0 flex-1 flex items-center">
                         <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
+
                         { m.expedienteId!==null&&exp?.validado===2&&
                             <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
                         }
@@ -135,7 +136,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                         
                         </div>
 
-                        {(m.expedienteId !== null && exp?.validado === 3) && 
+                        {(m.expedienteId !== null && exp?.validado === 3)  && 
                         <div className="ml-4 flex-shrink-0 flex space-x-4">
                             <button
                             type="button"
@@ -192,7 +193,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                                 Ver
                             </button>
 
-                            {!m.enTramite || (exp?.validado===1 && m.enTramite !==2) &&
+                            {(!m.enTramite || (exp?.validado===1 && m.enTramite !==2)) &&
                             <>
                                 <span className="text-gray-300" aria-hidden="true">
                                     |
