@@ -180,7 +180,8 @@ a {
 #ape2Tramite,#celular,#telefono,#email,#confirmEmail,
 #calle,#numeroExt,#numeroInt,#colonia,#cp,
 #escuelaProcedencia,#matricula,#periodoBaja,
-#causaBaja{
+#causaBaja,#folioInscripcion,#curpInscripcion,
+#celularModalInscripcion,#correoModalInscripcion{
   @apply focus:ring-0;
 }
 

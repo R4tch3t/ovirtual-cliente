@@ -14,7 +14,6 @@ import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
 import { PDFLogo } from '../../Logo'
 import RenderPDF from '../../renderPDF'
-import Link from 'next/link'
 
 
 let timeRef:any = null

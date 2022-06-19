@@ -38,11 +38,14 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
     const selectFile = async () => {    
         let file = document.querySelector('#file-input') as any//!.files[0]
         file=file.files[0]
-        const result= await toBase64(file).catch(e => e);
+        let result:any = await toBase64(file).catch(e => e);
         if (result instanceof Error) {
             console.log('Error: ', result.message);
             return;
         }
+        
+        result = result.split('base64,')
+        result = result.pop() 
         
         subirArchivo(
             expedienteId!,
