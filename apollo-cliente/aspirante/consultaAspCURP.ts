@@ -25,17 +25,21 @@ export type TipoAspirante = {
 
 export type TipoResultadoAspRegistro = {
     ID: number;
-    ESTADO: string;
+    ASPIRANTE_ESTADO: number;
+    ESTADO: string
     CURP: string
-    NOMBRE: string
-    ID_PLAN: string
+    ID_PLAN: number
     UA: string
     PLANESTUDIOS: string
     CLAVE_UNICA_REGISTRO: string
     FOLIO_CENEVAL: number
     MATRICULA: string
     ID_REGISTRO: number
-    PERTENECEPUEBLOORIGINARIO: string
+    PERTENECE_PUEBLO_ORIGINARIO: string
+    TIENE_DISCAPACIDAD: string
+    AFRO_MEXICANO_GUERRERENSE: string
+    RESIDENTE_SIERRA_GUERRERO: string
+    HIJO_MIGRANTE_GUERRERENSE: string
     CALLE_ACTUAL: string
     NUM_EXTERIOR_ACTUAL: string
     NUM_INTERIOR_ACTUAL: string
@@ -63,6 +67,7 @@ export const consultaAspCURPGQL = async (registroCeneval:InputRegistroCeneval) =
                 respAspCurp
                 resultadoAspRegistro {
                     ID
+                    ASPIRANTE_ESTADO
                     ESTADO
                     CURP
                     NOMBRE
@@ -73,7 +78,11 @@ export const consultaAspCURPGQL = async (registroCeneval:InputRegistroCeneval) =
                     FOLIO_CENEVAL
                     MATRICULA
                     ID_REGISTRO
-                    PERTENECEPUEBLOORIGINARIO
+                    PERTENECE_PUEBLO_ORIGINARIO
+                    TIENE_DISCAPACIDAD
+                    AFRO_MEXICANO_GUERRERENSE
+                    RESIDENTE_SIERRA_GUERRERO
+                    HIJO_MIGRANTE_GUERRERENSE
                     CALLE_ACTUAL
                     NUM_EXTERIOR_ACTUAL
                     NUM_INTERIOR_ACTUAL
