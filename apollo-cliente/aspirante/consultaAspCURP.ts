@@ -27,6 +27,7 @@ export type TipoResultadoAspRegistro = {
     ID: number;
     ASPIRANTE_ESTADO: number;
     ESTADO: string
+    NOMBRE: string
     CURP: string
     ID_PLAN: number
     UA: string
