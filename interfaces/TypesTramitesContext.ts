@@ -13,16 +13,26 @@ export interface TypeTramite {
     nivelAplica: string|null,
     documentoObtiene: string|null,
     TipoTramites: [TipoTramites]|[]|null,
-    tramitesModuloAtencions: TypeModuloAtencion[]|[]|null,
+    //tramitesModuloAtencions: TypeModuloAtencion[]|[]|null,
+    //tramitesFormatoDescargables: TypeFormatoDescargable[]|[]|null,
+    //tramitesRequisitoAdicionals: TypeRequisitoAdicional[]|[]|null,
     nivelEstudio: string | null
 }
 
-export type TypeModuloAtencion = {
+
+/*export type TypeRequisitoAdicional = {
     id: number,
     nombre: string,
-    responsable: string,
-    telefono: string,
+    descripcion: string,
+   // documento: string,
 }
+
+export type TypeFormatoDescargable = {
+    id: number,
+    nombre: string,
+    descripcion: string,
+   // documento: string,
+}*/
 
 export type TipoTramites = {
     id: number,

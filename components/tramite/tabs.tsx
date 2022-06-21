@@ -27,7 +27,7 @@ const TramiteTabs: FC<Props> = ({tramite, tabID}) => {
       { name: 'Requisitos adicionales', href: `/tramite/${tramite.id}/reqAdicional`, current: tabID===3 },
       { name: 'Preguntas y respuestas', href: `/tramite/${tramite.id}/pregResp`, current: tabID===4 },
       { name: 'Costos', href: `/tramite/${tramite.id}/costos`, current: tabID===5 },
-      { name: 'Procedimiento presencial', href: `/tramite/${tramite.id}/procedimientoPrecencial`, current: tabID===6 },
+      { name: 'Procedimiento presencial', href: `/tramite/${tramite.id}/procedimientoPresencial`, current: tabID===6 },
       { name: 'Procedimiento en línea', href: `/tramite/${tramite.id}/procedimientoLinea`, current: tabID===7 },
     ]
     

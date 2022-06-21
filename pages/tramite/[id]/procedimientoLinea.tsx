@@ -13,22 +13,18 @@ import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 interface Props {
   id: string,
   tramite: TypeTramite,
-  unidadesAcademicas: TypeUnidadesAcademicas[],
-  paises: TypePais[]
+  //unidadesAcademicas: TypeUnidadesAcademicas[],
+//  paises: TypePais[]
 }
 
 
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const {dispatch} = useTramitesContext()
-  const [state, setState]:any = useState(
-    {
-        table: {
-            head: [ 'Nombre', 'Responsable', 'Telefono' ],
-            body: [] 
-        } 
-    }
-  );
+  const table:any = {
+    head: [ 'Nombre', 'Descripcion' ],
+    body: []
+  }
   const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
     cargarPreregistroDB(data!,dispatch)
@@ -48,14 +44,14 @@ const TramiteHome:NextPage<Props> = (props) =>{
   }
 
 
-  props.tramite.tramitesModuloAtencions?.map((modulo)=>{
+  /*props.tramite.tramitesModuloAtencions?.map((modulo)=>{
     
     state.table.body.push({
       'Nombre': modulo.nombre,
       'Responsable': modulo.responsable,
       'Telefono': modulo.telefono
     })
-  })
+  })*/
 
   return (
     <PaginaTramite tramite={props.tramite} >
@@ -88,8 +84,8 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {id} = params as {id: string} 
   const tramite:TypeTramite = await tramitePorId(parseInt(id))
-  const unidadesAcademicas = await planesOfertados(6)
-  const paises = await Paises()
+  //const unidadesAcademicas = await planesOfertados(6)
+  //const paises = await Paises()
   
   if(!tramite){
     return {
@@ -103,9 +99,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   return {
     props: {
       id,
-      tramite,
-      unidadesAcademicas,
-      paises
+      tramite
     },
     revalidate: 86400
   }

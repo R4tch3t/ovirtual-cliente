@@ -35,6 +35,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         folio: {color: 'success'},
         curp: {color: 'success'},
     });
+    const [cargandoFolio, setCargandoFolio] = useState(false)
     const [cargando, setCargando] = useState(false)
     const [folioValido, setFolioValido] = useState(false)
     const [curpValido, setCurpValido] = useState(false)
@@ -96,6 +97,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 let valido = value.match(/^[0-9]{9,9}$/i);
                 
                 if(valido){
+                    setCargandoFolio(true)
                     await client.clearStore()
                     
                     const consultaResultadoCeneval = await consultaResultadoCenevalGQL({folio: parseInt(value!),autorizado: 1})
@@ -118,6 +120,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                         curp:{
                             color: 'success', 
                         }})
+                        
 
                     }else{
                         valido = false
@@ -127,7 +130,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                             statusColor: 'error'
                         }})
                     }
-                    
+                    setCargandoFolio(false)
                 }else{
                     setInputs({...inputs,[name]:{
                         color: 'error', 
@@ -178,7 +181,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 GID_REGISTRO=ID_REGISTRO
                 setDataModal({
                     ...dataModal,
-                    txt2: (MATRICULA?`Matrícula: ${MATRICULA}.`:''),
+                    txt2: (MATRICULA?<>Matrícula: <b>{MATRICULA}</b></>:''),
                     txt3: (<>Nombre: <b>{`${NOMBRE}`}.</b></>),
                     txt4: (<>CURP: <b>{`${CURP}`}</b></>),
                     txt5: (<>Folio Ceneval: <b>{`${FOLIO_CENEVAL}`}</b></>),
@@ -265,7 +268,10 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                     }}
                     helperColor={inputs.folio.color}
                     helperText={inputs.folio.helper}
-                    color={inputs.folio.color} />
+                    color={inputs.folio.color} 
+                    contentRight={cargandoFolio&&<Loading size="xs" />}
+                    status={inputs.folio.color} 
+                    />
                 
                 <Spacer y={3} />
                 
@@ -283,8 +289,6 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                             }}
                             helperColor={inputs.curp.color}
                             helperText={inputs.curp.helper}
-                            
-                            
                             color={inputs.curp.color} />
                     
                         <Spacer y={2} />

@@ -5,12 +5,12 @@ import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
 import { TypeTramite } from '../../../interfaces';
 import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
-import { obtenerModuloAtencionsGQL, obtenerTramites, tramitePorId, TypeModuloAtencion } from '../../../apollo-cliente';
+import { obtenerRequisitosAdicionalsGQL, obtenerTramites, tramitePorId, TypeRequisitoAdicional } from '../../../apollo-cliente';
 
 interface Props {
   id: number,
   tramite: TypeTramite,
-  moduloAtencions: TypeModuloAtencion[]
+  requisitoAdicionals: TypeRequisitoAdicional[]
 }
 
 
@@ -18,7 +18,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
 
   const table:any = {
-    head: [ 'Nombre', 'Responsable', 'Telefono' ],
+    head: [ 'Nombre', 'Descripción' ],
     body: []
   }
 
@@ -35,13 +35,13 @@ const TramiteHome:NextPage<Props> = (props) =>{
     Router.replace("/");
   }
 
-  props.moduloAtencions?.map((modulo)=>{
+  props.requisitoAdicionals?.map((req)=>{
     
     table?.body?.push({
-      'Nombre': modulo.nombre,
-      'Responsable': modulo.responsable,
-      'Telefono': modulo.telefono
+      'Nombre': req.nombre,
+      'Responsable': req.descripcion
     })
+
   })
 
   const {head, body}  = table
@@ -50,7 +50,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
     <PaginaTramite tramite={props.tramite} >
       <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
             <div className='relative bg-white p-6' >
-              <TramiteTabs tramite={props.tramite} tabID={1} />
+              <TramiteTabs tramite={props.tramite} tabID={3} />
               <TableTramite head={head} body={body} />
 
             </div>
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   const {id} = params as {id: string} 
   const tramiteId = parseInt(id)
   const tramite:TypeTramite = await tramitePorId(tramiteId)
-  const moduloAtencions = await obtenerModuloAtencionsGQL(tramiteId)
+  const requisitoAdicionals = await obtenerRequisitosAdicionalsGQL(tramiteId)
 
   if(!tramite){
     return {
@@ -93,7 +93,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     props: {
       id,
       tramite,
-      moduloAtencions
+      requisitoAdicionals
     },
     revalidate: 86400
   }

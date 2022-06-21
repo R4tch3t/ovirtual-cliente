@@ -4,13 +4,12 @@ import Router from 'next/router';
 import { RedirecApp } from '../../../router/RedirecApp';
 import { Loading } from '@nextui-org/react';
 import { TypeTramite } from '../../../interfaces';
-import { TramiteTabs, PaginaTramite, TableTramite } from '../../../components/tramite';
-import { obtenerModuloAtencionsGQL, obtenerTramites, tramitePorId, TypeModuloAtencion } from '../../../apollo-cliente';
+import { TramiteTabs, PaginaTramite } from '../../../components/tramite';
+import {  obtenerTramites, tramitePorId } from '../../../apollo-cliente';
 
 interface Props {
   id: number,
   tramite: TypeTramite,
-  moduloAtencions: TypeModuloAtencion[]
 }
 
 
@@ -18,7 +17,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
 
   const table:any = {
-    head: [ 'Nombre', 'Responsable', 'Telefono' ],
+    head: [ 'Pregunta', 'Respuesta' ],
     body: []
   }
 
@@ -35,14 +34,14 @@ const TramiteHome:NextPage<Props> = (props) =>{
     Router.replace("/");
   }
 
-  props.moduloAtencions?.map((modulo)=>{
+  /*props.preguntaRespuestas?.map((pregResp)=>{
     
     table?.body?.push({
-      'Nombre': modulo.nombre,
-      'Responsable': modulo.responsable,
-      'Telefono': modulo.telefono
+      'Pregunta': pregResp.pregunta,
+      'Respuesta': pregResp.respuesta
     })
-  })
+
+  })*/
 
   const {head, body}  = table
 
@@ -50,8 +49,8 @@ const TramiteHome:NextPage<Props> = (props) =>{
     <PaginaTramite tramite={props.tramite} >
       <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
             <div className='relative bg-white p-6' >
-              <TramiteTabs tramite={props.tramite} tabID={1} />
-              <TableTramite head={head} body={body} />
+              <TramiteTabs tramite={props.tramite} tabID={5} />
+              {/*<TableTramite head={head} body={body} />*/}
 
             </div>
         </div>
@@ -78,8 +77,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   const {id} = params as {id: string} 
   const tramiteId = parseInt(id)
   const tramite:TypeTramite = await tramitePorId(tramiteId)
-  const moduloAtencions = await obtenerModuloAtencionsGQL(tramiteId)
-
+  //const preguntaRespuestas = await obtenerPreguntaRespuestasGQL(tramiteId)
+  
   if(!tramite){
     return {
       redirect: {
@@ -92,8 +91,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   return {
     props: {
       id,
-      tramite,
-      moduloAtencions
+      tramite
     },
     revalidate: 86400
   }
