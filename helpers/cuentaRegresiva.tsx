@@ -44,7 +44,6 @@ export const CuentaRegresiva = () => {
         logout!()
         setOpen(false)
         ultimoContador=null
-        console.log('closeSession?')
       }
       globalSetOpen=setOpen
       globalSetRecount=setRecount

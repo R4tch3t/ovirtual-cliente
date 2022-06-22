@@ -7,6 +7,7 @@ export interface CatDocumentos extends TypeDocumento {
   cargado?: number
   bajando?: number
   enTramite?: number
+  eliminando?: number
 }
 
 export const subirArchivo = async (
@@ -55,6 +56,8 @@ export const subirArchivo = async (
       mapDoc.map((d)=>{
         if(d.id===archivo.id){
           d.cargado=buffer/bufferLength*100
+          d.bajando=undefined
+          d.eliminando=undefined
         }
         newMap.push(d)
       });

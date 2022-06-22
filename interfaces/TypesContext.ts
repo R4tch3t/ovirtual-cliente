@@ -1,6 +1,7 @@
 import { TipoUsuario } from "../apollo-cliente";
 
 export type TypeLogin = (email:string,password:string) => Promise<boolean>;
+export type TypeEliminarExpediente = (id:number) => boolean;
 export type TypeActivarMatricula = (token:string) => Promise<boolean>;
 export type TypeSignup = (user:TypeUser) => Promise<boolean|string>;
 export type TypeSignupO = (user:TypeUserO) => Promise<boolean|string>;
@@ -47,5 +48,7 @@ export interface TypeContext {
     logout: TypeLogout | null,
     resentemail: TypeResentemail | null,
     loading: () => void,
-    actualizadoContra: (id: number) => Promise<any>
+    actualizadoContra: (id: number) => Promise<any>,
+    eliminarExpedienteAuth: TypeEliminarExpediente | null
+
 }

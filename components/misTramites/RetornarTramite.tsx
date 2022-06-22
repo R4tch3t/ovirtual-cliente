@@ -2,6 +2,7 @@ import { CatDocumentos } from '../../helpers/expedientes';
 import { TramiteAlumno } from '../../hooks/useQuery/tramites/todosTramitesAlumno';
 import { BajaTemporal } from '../tramite/bajaTemporal';
 import { Homologacion } from '../tramite/homologacion';
+import { Inscripcion } from '../tramite/inscripcion';
 
 type Props = {
     tramiteId: number
@@ -27,6 +28,21 @@ export default function RetornarTramite({tramiteId, tramites}:Props){
         return (
             <>
                 <BajaTemporal tramiteId={tramiteId} mapDocInit={mapDocInit} />
+            </>
+        )
+    }
+
+    if(tramiteId===5||tramiteId===40||
+        tramiteId===46||tramiteId===47||
+        tramiteId===48){
+        
+        return (
+            <>
+                <Inscripcion 
+                    tramiteId={tramiteId} 
+                    titulo={tramSelec?.tramite?.nombre!} 
+                    descripcion={tramSelec?.tramite?.descripcion!} 
+                    mapDocInit={mapDocInit} />
             </>
         )
     }

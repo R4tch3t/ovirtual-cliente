@@ -1,6 +1,6 @@
 import React, { createContext, FC, useCallback, useState } from "react";
 import { useChatContext } from "../../context/chat/ChatContext";
-import { TypeAuthState, TypeContext, TypeLogin, TypeVincular, TypeResentemail, TypeSignup, TypeSignupO, TypeMatriculaPorDefecto, TypeActivarMatricula } from "../../interfaces";
+import { TypeAuthState, TypeContext, TypeLogin, TypeVincular, TypeResentemail, TypeSignup, TypeSignupO, TypeMatriculaPorDefecto, TypeActivarMatricula, TypeEliminarExpediente } from "../../interfaces";
 import {types} from "../../types/types"; 
 import Cookies from 'js-cookie';
 import { useSession, signOut } from "next-auth/react";
@@ -192,10 +192,9 @@ export const AuthProvider: FC = ({ children }) => {
         }
     
         const data = await matriculaPorDefectoGQL(u)
-        console.log('dataDefec: ',data)
         const [resp,auth] = matriculaPorDefectoApollo(data)
         if(resp.respMatriculaPorDefecto){
-            console.log("auth:defec ",auth)
+            
             setAuth(auth)
             return resp.respMatriculaPorDefecto
         }
@@ -256,7 +255,9 @@ export const AuthProvider: FC = ({ children }) => {
         if(Cookies.get('expiresIn')==='3m'){
             Cookies.remove('expiresIn')
         }
-        await client.clearStore()
+        
+        await client.cache.reset()
+        
         dispatch({type: types.cerrarSesion});
 
         setAuth({
@@ -273,6 +274,21 @@ export const AuthProvider: FC = ({ children }) => {
         return resp
     }
     
+    const eliminarExpedienteAuth:TypeEliminarExpediente = (id) => {
+        
+            const {usuario} = auth! 
+            const filterExp = usuario?.expediente?.filter((e)=>{return e.id!==id})
+            setAuth({...auth,
+                usuario:{
+                    ...usuario!,
+                    expediente:filterExp!
+                }
+            });
+            
+        
+        return true
+    }
+
     return (
             <AuthContext.Provider  value={{
                 auth,
@@ -287,7 +303,8 @@ export const AuthProvider: FC = ({ children }) => {
                 logout,
                 resentemail,
                 loading,
-                actualizadoContra
+                actualizadoContra,
+                eliminarExpedienteAuth
             }} >
 
                     <div className="h-full" onMouseMove={()=>{

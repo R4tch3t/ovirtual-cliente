@@ -76,6 +76,10 @@ export interface TypeBajaTemporal extends HeadTramite {
     validoParaTramitar: boolean,
 }
 
+export interface TypeInscripcion extends HeadTramite {
+    validoParaTramitar: boolean,
+}
+
 export interface TypeHomologacion extends HeadTramite {
     planIngresarId: number,
     telefono: string | null,
@@ -94,6 +98,7 @@ export type TypeDocumento = {
 export type TypeProcedimiento = {
     preregistro: TypePreregistro | null,
     bajaTemporal: TypeBajaTemporal | null,
+    inscripcion: TypeInscripcion | null,
     homologacion: TypeHomologacion | null,
 }
 

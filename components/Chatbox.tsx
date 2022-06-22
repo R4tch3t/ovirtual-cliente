@@ -107,7 +107,7 @@ const handleReaded = async() => {
   const resp = await upReadGQL(id,auth.id)
 
   if(resp){
-    await client.resetStore()
+    await client.cache.reset()
     socket.emit("getUsuarios");
     
     socket.emit("recargarChat",{

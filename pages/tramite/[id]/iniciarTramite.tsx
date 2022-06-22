@@ -14,9 +14,11 @@ import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 import { BajaTemporal } from '../../../components/tramite/bajaTemporal';
 import { obtenerRequisitosGQL, TipoRequisitos } from '../../../apollo-cliente/tramites/obtenerRequisitos';
 import { CatDocumentos } from '../../../helpers/expedientes';
+import HeadSeleccionarInscripcion from '../../../components/tramite/inscripcion/headSelecionarPlan';
 import HeadSeleccionarPlanBajaTemporal from '../../../components/tramite/bajaTemporal/headSelecionarPlan';
 import HeadSeleccionarPlanHomologacion from '../../../components/tramite/homologacion/headSelecionarPlan';
 import { Homologacion } from '../../../components/tramite/homologacion';
+import { Inscripcion } from '../../../components/tramite/inscripcion';
 interface Props {
   id: string,
   tramite: TypeTramite,
@@ -29,7 +31,7 @@ interface Props {
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const {tramitesState,dispatch} = useTramitesContext()
-  const {preregistro, bajaTemporal, homologacion} = tramitesState.procedimientos
+  const {preregistro, bajaTemporal, inscripcion, homologacion} = tramitesState.procedimientos
   
   /*const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
@@ -77,6 +79,26 @@ const TramiteHome:NextPage<Props> = (props) =>{
                   </HeadSeleccionarPlanBajaTemporal>
                 }
                 {bajaTemporal && <BajaTemporal tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
+
+              </>
+            }
+
+            {
+              (props.id==="5"||props.id==="40"
+              ||props.id==="46"||props.id==="47"
+              ||props.id==="48") && 
+              <>
+                {!inscripcion && <HeadSeleccionarInscripcion 
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!} >
+                    <SeleccionarPlan nombreContextState='inscripcion' />
+                  </HeadSeleccionarInscripcion>
+                }
+                {inscripcion && <Inscripcion 
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                  tramiteId={parseInt(props.id)!} 
+                  mapDocInit={mapDocInit} />}
 
               </>
             }

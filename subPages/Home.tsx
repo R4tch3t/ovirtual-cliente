@@ -16,6 +16,7 @@ import { VincularOauth } from '../helpers/VincularOauth'
 import Busqueda from '../components/Busqueda'
 import { Slide } from '@mui/material'
 import FixedMenu from '../components/FixedMenu'
+import client from '../apollo-cliente'
 
 
 const user = {
@@ -36,7 +37,7 @@ interface Props {
 }
 
 export const Home: NextPage<Props> = ({children, link}) => {
-    const {auth,logout}:any = useAppContext();
+    const {auth,logout} = useAppContext();
     
 
     let userNavigation = [
@@ -51,7 +52,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
         { name: 'Trámites', href: '/tramites', current: link==="Tramites" },
     ];
 
-    if(!auth.logged){
+    if(!auth?.logged){
         userNavigation = [
             { name: 'Iniciar sesión', href: '/login' },
             { name: 'Registrarse', href: '/signup' },
@@ -65,23 +66,25 @@ export const Home: NextPage<Props> = ({children, link}) => {
         ];
         
     }else{
-      user.name=auth.name
-      user.email=auth.email
+      user.name=auth?.usuario?.nombre!
+      user.email=auth.email!
     }
 
     const onSearch=(event:ChangeEvent)=>{
       const target = event.currentTarget as any
       if(link==="Tramites"){
-        console.log(target.value)
+        
       }
     }
 
-    
-
     return (
         <>
-          <VincularOauth />          
-          <Resentemail />
+          {auth?.logged&&
+            <>
+              <VincularOauth />          
+              <Resentemail />
+            </>
+          }
           <div className="min-h-full">
             <Popover as="header" className="pb-24 bg-gradient-to-r from-uagrojo to-uagrojo">
               {({ open }) => (
@@ -127,7 +130,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
                                     <Link href={item.href} >
                                       <a
                                         
-                                        onMouseUp={item.onMouseUp}
+                                        onMouseUp={item.onMouseUp!}
                                         className={classNames(
                                           active ? 'bg-gray-100' : '',
                                           'block px-4 py-2 text-sm text-gray-700'
@@ -277,7 +280,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
                                     href={item.href}
                                   >
                                     <a
-                                      onMouseUp={item.onMouseUp}
+                                      onMouseUp={item.onMouseUp!}
                                       className="block rounded-md px-3 py-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800"
                                     >
                                       {item.name}

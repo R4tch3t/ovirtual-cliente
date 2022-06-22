@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react";
 import { Loading } from '@nextui-org/react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import client from '../apollo-cliente';
 
 type TypeBands = {'github':boolean,'google':boolean,'facebook':boolean, 'default':boolean}
 
@@ -50,6 +51,7 @@ const Login: NextPage = () => {
     }
     
       const ok = await login(form.email,form.password);
+      
     if(!ok){
       setDataModal({title: "Error", txt: "Verificar usuario y/o contraseña.", btn1: {txt:"Regresar al inicio", onClose:setModalE} })
       setModalE(true);

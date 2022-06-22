@@ -99,6 +99,7 @@ export const ModalError=({open, setOpen, title, txt, btn1, btn2, input1, childre
                   {!btn2?.loading!&&btn2.txt}
                   {btn2?.loading!&&<Loading type="spinner" color={'white'} size="md" />}
                 </button>
+                
               </div>
               }
 

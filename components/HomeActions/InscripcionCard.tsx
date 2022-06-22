@@ -98,7 +98,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 
                 if(valido){
                     setCargandoFolio(true)
-                    await client.clearStore()
+                    await client.cache.reset()
                     
                     const consultaResultadoCeneval = await consultaResultadoCenevalGQL({folio: parseInt(value!),autorizado: 1})
                     const {respResultadoCeneval} = consultaResultadoCeneval
@@ -164,7 +164,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
 
     const openModal = async() => {
         setCargando(true)
-        await client.clearStore()
+        await client.cache.reset()
         const campoFolio:any = document.getElementById('folioInscripcion')
         const campoCurp:any = document.getElementById('curpInscripcion')
         const consultaAspRegistro = await consultaAspCURPGQL({ folio: parseInt(campoFolio.value!),curp: campoCurp.value })
@@ -271,7 +271,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                     color={inputs.folio.color} 
                     contentRight={cargandoFolio&&<Loading size="xs" />}
                     status={inputs.folio.color} 
-                    />
+                />
                 
                 <Spacer y={3} />
                 

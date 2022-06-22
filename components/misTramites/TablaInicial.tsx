@@ -68,7 +68,9 @@ const TablaInicial = () => {
     const seleccionarTramite = (tramiteId: number, usuarioId: number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
       //agregar mas nombres de tramite
       const procedure = tramiteId===1?'bajaTemporal':
-        (tramiteId===15?'homologacion':'')
+        (tramiteId===5||tramiteId===40||tramiteId===46||tramiteId===47||tramiteId===48?'inscripcion':
+          (tramiteId===15?'homologacion':'')
+        )
       //Lo mas probable es que sea una función universal para todos los tramites
         dispatch({
           type: types.seleccionarPlanProcedure,
@@ -84,15 +86,16 @@ const TablaInicial = () => {
     useEffect(()=>{
       const {t} = Router.query as {t:string}
       const tramiteAlumno = data?.todosTramitesAlumno?.find((todos)=>{return todos.uuid===t})
+      
       if(tramiteAlumno){
         const plexur = auth?.usuario?.vwAlumnoConPlanes?.find((alup)=>{return alup.PLESXUR===tramiteAlumno.plesxurRef})
         const {PLESXUR, PLANESTUDIOS, ESCUELA} = plexur!;
         seleccionarTramite(tramiteAlumno.tramiteId, auth?.id!, PLESXUR, PLANESTUDIOS,ESCUELA);
       }
     },[data?.todosTramitesAlumno])
-
+    
     if(tramitesState.tramiteAlumnoSeleccionado!==null){
-     return <RetornarTramite tramiteId={tramitesState.tramiteAlumnoSeleccionado} tramites={data?.todosTramitesAlumno!} />
+      return <RetornarTramite tramiteId={tramitesState.tramiteAlumnoSeleccionado} tramites={data?.todosTramitesAlumno!} />
     }
 
     if(loading){

@@ -4,7 +4,7 @@ import { useAppContext } from "../auth/authContext"
 import { Grid, Progress } from "@nextui-org/react";
 import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
 import { bajarArchivo, CatDocumentos, eliminarExpediente, subirArchivo } from '../helpers/expedientes';
-import { useTramitesContext } from "../context/tramites/TramitesContext";
+//import { useTramitesContext } from "../context/tramites/TramitesContext";
 import { TodosTramiteAlumnoInput, useTodosTramitesAlumno } from "../hooks/useQuery/tramites";
 
 
@@ -12,21 +12,23 @@ type Props = {
     mapDocInit: CatDocumentos[]
   }
 
+let fileName = ''
+let expedienteId:any=null
+let documentoId:any=null
+let tipoDocumentoId = 0
+
 export const TableFile:FC<Props> = ({mapDocInit}) => {
-    const {auth, verificaToken} = useAppContext();
-    const {tramitesState, dispatch} = useTramitesContext()
+    const {auth, verificaToken, eliminarExpedienteAuth} = useAppContext();
+    //const {tramitesState, dispatch} = useTramitesContext()
     
     const tramiteAlumno: TodosTramiteAlumnoInput = {
         userAlumnoId: auth?.id!
     }
     const respTodosTramites = useTodosTramitesAlumno(tramiteAlumno)
-    
+    //const [eliminando, setEliminando] = useState(null)
     const [mapDoc, setMapDoc] = useState(mapDocInit)
     type Base64 = (file: any) => Promise<unknown>
-    let fileName = ''
-    let expedienteId:any=null
-    let documentoId:any=null
-    let tipoDocumentoId = 0
+    
 
     const toBase64:Base64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -36,13 +38,15 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
     });
 
     const selectFile = async () => {    
-        let file = document.querySelector('#file-input') as any//!.files[0]
-        file=file.files[0]
+        let fileIn = document.querySelector('#file-input') as any//!.files[0]
+        const file=fileIn.files[0]
         let result:any = await toBase64(file).catch(e => e);
         if (result instanceof Error) {
             console.log('Error: ', result.message);
             return;
         }
+        
+        fileIn.value=null
         
         result = result.split('base64,')
         result = result.pop() 
@@ -60,6 +64,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
     };
 
     useEffect(()=>{ respTodosTramites.refetch() },[])
+    
 
     return (
         <div className="sm:col-span-2">
@@ -115,14 +120,20 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                             </p>
                             
                             {m.cargado!>0&&
-                            <Grid>
-                                <Progress value={m.cargado} shadow color="primary" status="primary" />
-                            </Grid>
+                                <Grid>
+                                    <Progress value={m.cargado} shadow color="primary" status="primary" />
+                                </Grid>
                             }
                             {m.bajando!>0&&
-                            <Grid>
-                                <Progress value={m.bajando} shadow color="secondary" status="secondary" />
-                            </Grid>
+                                <Grid>
+                                    <Progress value={m.bajando} shadow color="secondary" status="secondary" />
+                                </Grid>
+                            }
+
+                            {m.eliminando!>0&&
+                                <Grid>
+                                    <Progress indeterminated value={50} shadow color="warning" status="warning" />
+                                </Grid>
                             }
 
                         </span>
@@ -161,7 +172,14 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                             </span>
                             <button
                                 type="button"
-                                onMouseDown={()=>{eliminarExpediente(m.expedienteId!,verificaToken)}}
+                                onMouseDown={async()=>{
+                                    eliminarExpediente(
+                                        m.expedienteId!, mapDoc,
+                                        setMapDoc, verificaToken,
+                                        eliminarExpedienteAuth
+                                    )
+                                   // await verificaToken!()
+                            }}
                                 className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 Eliminar
@@ -203,7 +221,14 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                                 </span>
                                 <button
                                     type="button"
-                                    onMouseDown={()=>{eliminarExpediente(m.expedienteId!,verificaToken)}}
+                                    onMouseDown={async ()=>{
+                                        eliminarExpediente(
+                                            m.expedienteId!, mapDoc,
+                                            setMapDoc, verificaToken,
+                                            eliminarExpedienteAuth
+                                        )
+                                       // await verificaToken!()
+                                    }}
                                     className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                     Eliminar
