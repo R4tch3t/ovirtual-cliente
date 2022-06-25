@@ -5,6 +5,7 @@ import { PropsCard } from ".";
 import client from "../../apollo-cliente";
 import { actualizarEstadoGQL, consultaAspCURPGQL, consultaResultadoCenevalGQL } from "../../apollo-cliente/aspirante";
 import { validarCURP } from "../../helpers/validarCURP";
+import { ModalError } from "../ModalError";
 import { ModalInscripcion } from "../ModalInscripcion";
 import { ModalSuccess } from "../ModalSucces";
 import { ModalWarning } from "../ModalWarning";
@@ -39,9 +40,15 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
     const [cargando, setCargando] = useState(false)
     const [folioValido, setFolioValido] = useState(false)
     const [curpValido, setCurpValido] = useState(false)
+    
     const [modalS, setModalS] = useState(false)
+    const [modalE, setModalE] = useState(false)
+    
     const [modalSR, setModalSR] = useState(false)
     const dataModalS = { title: 'Éxito', txt: "Los datos se actualizaron correctamente.", btn1: {txt:"Aceptar"} }
+    const dataModalE = { title: 'Error', txt: "Error al actualizar asegurese de que sus datos sean correctos y que el correo sea exclusivamente suyo ó contacte a algún administrador.",
+     btn1: {txt:"Aceptar", onClose: setModalE} 
+    }
     const dataModalSR = { title: 'Éxito', txt: "El aspirante ya ha sido registrado...", btn1: {txt:"Aceptar"} }
   
     const [dataModal, setDataModal]: [TipoDataModal,any] = useState({
@@ -68,8 +75,8 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         txt:'¿Está seguro de enviar el registro?.', 
         btn1:{txt:'Cancelar', onClose: ()=>{}},
         btn2: {txt:'Aceptar', 
-        onClick: async ()=>{
-            actualizarAspirante()
+        onClick: async ()=>{            
+            await actualizarAspirante()
         }}
     };
     const [open, setOpen] = useState(false)
@@ -86,6 +93,8 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         const resp = await actualizarEstadoGQL(user)
         if(resp?.respActualizarEstado){
             setModalS(true);
+        }else{
+            setModalE(true);
         }
         
     }
@@ -231,6 +240,10 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                             title={dataModalS.title} 
                             txt={dataModalS.txt} btnTxt={dataModalS.btn1.txt} 
                         />
+
+                        <ModalError open={modalE} setOpen={setModalE} title={dataModalE.title} 
+                            txt={dataModalE.txt} btn1={dataModalE.btn1} />
+
 
                     </ModalWarning>
                 </ModalInscripcion>

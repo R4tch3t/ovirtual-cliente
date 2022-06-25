@@ -6,6 +6,7 @@ import { ModalSuccess } from '../../components/ModalSucces';
 import { useAppContext } from '../../auth/authContext';
 import { ModalError } from '../../components/ModalError';
 import Cookies from 'js-cookie';
+import { Loading } from '@nextui-org/react';
 
 
 const ActivarMatricula: NextPage = () => {
@@ -14,9 +15,10 @@ const ActivarMatricula: NextPage = () => {
   const [modalE, setModalE] = useState(false)
   const [dataModal, setDataModal]:any = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalS}})
   const router = useRouter()
-
+  
   useEffect(()=>{
-    const {token} = router.query as {token:string}
+    const {token, tramiteId} = router.query as {token:string,tramiteId:string}
+    
     setDataModal({
       title: "Éxito", txt: 'La cuenta se ha activado...', 
       btn1: {txt:"Ir al inicio", onClose:setModalS} 
@@ -29,7 +31,7 @@ const ActivarMatricula: NextPage = () => {
       
       if(r){
         Cookies.set("expiresIn",'3m',{expires: 365});
-        setDataModal({title: "Éxito", txt: "La cuenta se ha activado...", btn1: {txt:"Ir al inicio", onClose:setModalS} })
+        setDataModal({title: "Éxito", txt: "La cuenta se ha activado...", btn1: {txt:`Ir al ${tramiteId?'trámite':'inicio'}`, onClose:setModalS} })
         setModalS(true)
       }else{
         setDataModal({
@@ -57,11 +59,20 @@ const ActivarMatricula: NextPage = () => {
   },[router])
     
     return <>
-      <ModalSuccess open={modalS} setOpen={()=>{
+      <ModalSuccess open={modalS} setOpen={async()=>{
+        const {tramiteId} = router.query as {tramiteId:string}
+        setDataModal({...dataModal, btn1:{
+          ...dataModal.btn1,
+          txt:<Loading className="w-8 h-5" type="points-opacity" color="white" size="sm" />
+        }})
         
-        
+        if(tramiteId){
+          await router.replace(`/tramite/${tramiteId}/iniciarTramite`)
+        }else{
+          await router.replace('/')
+        }
         setModalS(false)
-        router.replace('/')
+        //router.replace('/')
 
       }} 
       title={dataModal.title} 

@@ -23,6 +23,7 @@ export type TipoUsuario = {
     alumno: TipoAlumno;
     expediente: TipoExpediente[] | null;
     vwAlumnoConPlanes: TipoVwAlumnoConPlanes[] | null
+    vwAspirante: TipoVwAspirante[] | null
 }
 
 export type TipoExpediente = {
@@ -55,6 +56,17 @@ export type TipoVwAlumnoConPlanes = {
     PLANESTUDIOS: string,
     NIVEL: number,
     PERINIPLN: string
+}
+
+export type TipoVwAspirante = {
+    ID_PLAN: number,
+    CLAVE_UNIDAD_ACADEMICA: number,
+    CLAVE_PLAN_ESTUDIOS: number,
+    VERSION_PLAN_ESTUDIOS: number,
+    UA: string,
+    PLANESTUDIOS: string,
+   // NIVEL: number,
+   // PERINIPLN: string
 }
 
 export const loginGraphQL = async (email:string,password:string) => {
@@ -99,6 +111,14 @@ export const loginGraphQL = async (email:string,password:string) => {
                         PLANESTUDIOS
                         NIVEL
                         PERINIPLN
+                    }
+                    vwAspirante {
+                        ID_PLAN
+                        CLAVE_UNIDAD_ACADEMICA
+                        CLAVE_PLAN_ESTUDIOS
+                        VERSION_PLAN_ESTUDIOS
+                        UA
+                        PLANESTUDIOS
                     }
                 }
                 token

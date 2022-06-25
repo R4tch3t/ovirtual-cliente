@@ -87,7 +87,7 @@ const Login: NextPage = () => {
                 <form className="space-y-6" onSubmit={onSubmit} method="POST">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Correo
+                      Matrícula ó Correo
                     </label>
                     <div className="mt-1">
                       <input
@@ -95,7 +95,7 @@ const Login: NextPage = () => {
                         name="email"
                         value={form.email}
                         autoComplete="email"
-                        placeholder='08083206@gmail.mx ó ejemplo@ejemplo.com'
+                        placeholder='08083206 ó 08083206@gmail.mx'
                         onChange={onChange}
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

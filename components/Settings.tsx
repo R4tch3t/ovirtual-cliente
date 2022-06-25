@@ -14,7 +14,7 @@ export const Settings = ({auth}:any) => {
     
     const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
-    const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
+    const [dataModal, setDataModal]:any = useState({title: '', txt:'', btnTxt:''})
     const [tabs, setTabs]:any = useState([
         { name: 'General', href: '#', onMouseUp: () => changeTab('General'), current: true },
         { name: 'Contraseña', href: '#', onMouseUp: () => changeTab('Contraseña'), current: false },
@@ -53,10 +53,10 @@ export const Settings = ({auth}:any) => {
         const user = {id: auth.id, uuid: auth.uuid, nombre, email, newEmail}
         const resp = await updateUser(user,"login/update");
         if(!resp){
-            setDataModal({title: "Error", txt: "El usuario NO fue actualizado.", btnTxt: "Regresar al perfil" })
+            setDataModal({title: "Error", txt: "El usuario NO fue actualizado.", btn1: {txt: "Regresar al perfil", onClose:setModalE} })
             setModalE(true);
         }else{
-            setDataModal({title: 'Éxito', txt: "El usuario fue actualizado.", btnTxt: "Regresar al perfil" })
+            setDataModal({title: 'Éxito', txt: "El usuario fue actualizado.", btnTxt: "Regresar al perfil"})
             setModalS(true);
         }
     }
@@ -70,13 +70,13 @@ export const Settings = ({auth}:any) => {
         confirmPass=confirmPass.value
 
         if(!password||!newPass||!confirmPass){
-            setDataModal({title: "Error", txt: "Favor de rellenar todos los campos.", btnTxt: "Regresar al perfil" })
+            setDataModal({title: "Error", txt: "Favor de rellenar todos los campos.", btn1: {txt: "Regresar al perfil", onClose:setModalE} })
             setModalE(true);
             return
         }
 
         if(newPass!==confirmPass){
-            setDataModal({title: "Error", txt: "Favor de verificar que las contraseñas coincidan.", btnTxt: "Regresar al perfil" })
+            setDataModal({title: "Error", txt: "Favor de verificar que las contraseñas coincidan.", btn1: {txt: "Regresar al perfil", onClose:setModalE} })
             setModalE(true);
             return
         }
@@ -85,7 +85,7 @@ export const Settings = ({auth}:any) => {
         const user = {id: auth.id, uuid: auth.uuid, email, password, newPass}
         const resp = await updateUser(user,"login/updatePass");
         if(!resp){
-            setDataModal({title: "Error", txt: "El usuario NO fue actualizado.", btnTxt: "Regresar al perfil" })
+            setDataModal({title: "Error", txt: "El usuario NO fue actualizado.", btn1: {txt: "Regresar al perfil", onClose:setModalE} })
             setModalE(true);
         }else{
             setDataModal({title: 'Éxito', txt: "El usuario fue actualizado.", btnTxt: "Regresar al perfil" })

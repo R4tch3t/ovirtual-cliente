@@ -14,6 +14,7 @@ import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
 import { PDFLogo } from '../../Logo'
 import RenderPDF from '../../renderPDF'
+import { types } from '../../../types/tramites'
 
 
 let timeRef:any = null
@@ -26,7 +27,7 @@ type Props = {
 
 export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocInit}) => {
   const {auth} = useAppContext();
-  const {tramitesState} = useTramitesContext();
+  const {tramitesState, dispatch} = useTramitesContext();
   const {inscripcion} = tramitesState?.procedimientos!
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
     userAlumnoId: auth?.id!,
@@ -42,6 +43,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
   let btnDis:any = inscripcion?.validoParaTramitar!
+  
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
     btnDis = findDoc?.validado!<3 && btnDis
@@ -85,7 +87,30 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
     loop()
   },[data?.obtenerTramitesAlumno])
 
-  //const apellidos = auth?.usuario?.alumno?.apeentalu?.split('*')!
+  useEffect(()=>{
+    const vwAspirante = auth?.usuario?.vwAspirante![0]
+    if(vwAspirante&&!inscripcion){
+      const {ID_PLAN, PLANESTUDIOS, UA} = vwAspirante
+      dispatch({
+        type: types.seleccionarPlanProcedure,
+        payload: {
+          usuarioId: auth?.id!, 
+          plesXur: ID_PLAN, 
+          planElegido:PLANESTUDIOS, 
+          unidadAcademica: UA, 
+          procedure:'inscripcion'
+        }
+      });
+        const nombreTramite = 'inscripcion'
+        const nombreValor = 'validoParaTramitar'
+        const valor = true
+
+        dispatch({
+            type: types.cambiarEstado,
+            payload: {nombreTramite,nombreValor,valor}
+        });
+    }
+  },[])
 
   return (
     <Fade in={true}>
@@ -115,7 +140,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
           <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             
             <HeadTramite />
-            <FormularioInscripcion mapDocInit={mapDocInit} periodoBajaVal={periodoLectivo} causaBajaVal={causaBaja} />
+            <FormularioInscripcion mapDocInit={mapDocInit} />
 
           </dl>
         </div>

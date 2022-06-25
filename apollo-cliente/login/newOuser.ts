@@ -57,6 +57,14 @@ export const newOuserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                         NIVEL
                         PERINIPLN
                     }
+                    vwAspirante {
+                        ID_PLAN
+                        CLAVE_UNIDAD_ACADEMICA
+                        CLAVE_PLAN_ESTUDIOS
+                        VERSION_PLAN_ESTUDIOS
+                        UA
+                        PLANESTUDIOS
+                    }
                 }
                 token
                 msg

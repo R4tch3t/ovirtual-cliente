@@ -12,7 +12,6 @@ import RetornarTramite from './RetornarTramite';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
 
 
-
 const icon = <Image src={IconUni} width={60} height={60} />
 
 const estadoTramite = (n:number) => {
@@ -88,9 +87,24 @@ const TablaInicial = () => {
       const tramiteAlumno = data?.todosTramitesAlumno?.find((todos)=>{return todos.uuid===t})
       
       if(tramiteAlumno){
+        const plexurAsp = auth?.usuario?.vwAspirante?.find((aspp)=>{return aspp.ID_PLAN===tramiteAlumno.plesxurRef})
         const plexur = auth?.usuario?.vwAlumnoConPlanes?.find((alup)=>{return alup.PLESXUR===tramiteAlumno.plesxurRef})
-        const {PLESXUR, PLANESTUDIOS, ESCUELA} = plexur!;
+        let PLESXUR: number = -1
+        let PLANESTUDIOS: string = ''
+        let ESCUELA: string = ''
+
+        if(plexurAsp){
+          PLESXUR=plexurAsp!.ID_PLAN
+          PLANESTUDIOS=plexurAsp!.PLANESTUDIOS
+          ESCUELA=plexurAsp!.UA
+        } else if(plexur){
+          PLESXUR=plexur!.PLESXUR
+          PLANESTUDIOS=plexur!.PLANESTUDIOS
+          ESCUELA=plexur!.ESCUELA
+        }
+
         seleccionarTramite(tramiteAlumno.tramiteId, auth?.id!, PLESXUR, PLANESTUDIOS,ESCUELA);
+        
       }
     },[data?.todosTramitesAlumno])
     

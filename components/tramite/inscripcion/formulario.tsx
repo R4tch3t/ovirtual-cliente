@@ -8,11 +8,9 @@ import { TableFile } from "../../TableFile";
 
 type Props = {
     mapDocInit: CatDocumentos[],
-    periodoBajaVal: string,
-    causaBajaVal: string
 }
 
-export const FormularioInscripcion:FC<Props> = ({mapDocInit, periodoBajaVal, causaBajaVal}) => {
+export const FormularioInscripcion:FC<Props> = ({mapDocInit}) => {
     const {tramitesState, dispatch} = useTramitesContext()
     /*const [inputs, setInputs]:any = useState({
         periodoLectivo: {
@@ -31,7 +29,7 @@ export const FormularioInscripcion:FC<Props> = ({mapDocInit, periodoBajaVal, cau
     causaBajaVal = !tramitesState?.procedimientos?.bajaTemporal?.causaBaja! ? 
         causaBajaVal : tramitesState?.procedimientos?.bajaTemporal?.causaBaja!*/
 
-    useEffect(()=>{
+    /*useEffect(()=>{
         const nombreTramite = 'inscripcion'
         const nombreValor = 'validoParaTramitar'
         const valor = true
@@ -40,7 +38,7 @@ export const FormularioInscripcion:FC<Props> = ({mapDocInit, periodoBajaVal, cau
             type: types.cambiarEstado,
             payload: {nombreTramite,nombreValor,valor}
         });
-    },[])
+    },[])*/
     /*const onChange = ({target}:any) => {
         const {name, value} = target;        
         const nombreTramite = 'bajaTemporal'

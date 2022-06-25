@@ -23,7 +23,7 @@ const Resentemail = () => {
                         txt: <Loading className="w-8 h-5" type="points-opacity" color="white" size="sm" />
                     }
                 })
-                console.log(auth)
+                
                 await resentemail(auth)
                 
                 setDataModal({

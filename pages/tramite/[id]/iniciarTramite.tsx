@@ -88,17 +88,17 @@ const TramiteHome:NextPage<Props> = (props) =>{
               ||props.id==="46"||props.id==="47"
               ||props.id==="48") && 
               <>
-                {!inscripcion && <HeadSeleccionarInscripcion 
+                {/*!inscripcion && <HeadSeleccionarInscripcion 
                   titulo={props.tramite.nombre!} 
                   descripcion={props.tramite.descripcion!} >
                     <SeleccionarPlan nombreContextState='inscripcion' />
                   </HeadSeleccionarInscripcion>
-                }
-                {inscripcion && <Inscripcion 
+                */}
+                 <Inscripcion 
                   titulo={props.tramite.nombre!} 
                   descripcion={props.tramite.descripcion!}
                   tramiteId={parseInt(props.id)!} 
-                  mapDocInit={mapDocInit} />}
+                  mapDocInit={mapDocInit} />
 
               </>
             }
