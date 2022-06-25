@@ -72,6 +72,7 @@ export const SeleccionarPlan:FC<Props> = ({nombreContextState}) => {
                     c = colores.length-1 === c ? 0 : c+1
                      return (
                         <LayoutPlanes 
+                          key={alupId+"Asp"}
                           alup={{
                             PLESXUR: alup.ID_PLAN,
                             PLANESTUDIOS: alup.PLANESTUDIOS,
@@ -104,6 +105,7 @@ export const SeleccionarPlan:FC<Props> = ({nombreContextState}) => {
                     c = colores.length-1 === c ? 0 : c+1
                      return (
                         <LayoutPlanes 
+                          key={alupId+"Alu"}
                           alup={alup} 
                           userId={auth.id!}
                           seleccionarPlan={seleccionarPlan}
