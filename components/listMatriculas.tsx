@@ -2,6 +2,8 @@ import { FC, DragEvent, useState, useEffect } from 'react'
 import {ViewListIcon} from '@heroicons/react/outline'
 import { CheckCircleIcon } from '@heroicons/react/solid'
 import { useAppContext } from '../auth/authContext'
+import { Spacer } from '@nextui-org/react'
+import Info from './Info'
 
 
 const DefaultIcon = ()=> {
@@ -23,6 +25,12 @@ let currentDragElement:any = null
 
 const ListMatriculas:FC<Props> = ({
     setDataModal, setModalE, setModalS}) => {
+    
+    const [infoMsg, setInfoMsg] = useState({
+        txt: "Si usted cuenta con más de una matrícula deberá vincularlas y las podrá reordenar para establecer una por defecto.",
+        arrowUp: true,
+        arrowDown: false
+    })  
     const {auth, matriculaPorDefecto } = useAppContext();
 
     const [matriculasState, setMatriculasState] = useState(
@@ -35,6 +43,15 @@ const ListMatriculas:FC<Props> = ({
     useEffect(()=>{
         if(auth?.usuario?.matricula){
             setMatriculasState(JSON.parse(auth?.usuario?.matricula! as string) as TipoMatriculas[])
+            if(matriculasState.length===1){
+                if (!matriculasState[0].matricula) {
+                    setInfoMsg({
+                        txt: "Si ya cuenta con una matricula institucional deberá vincularla...",
+                        arrowUp: false,
+                        arrowDown: true
+                    })
+                }
+            }
         }
     },[auth?.usuario?.matricula]);
 
@@ -96,31 +113,44 @@ const ListMatriculas:FC<Props> = ({
 
     
 
-    return (
+    return (<>
       <ul onDrop={onDrop} 
         onDragOver={(event)=>{event.preventDefault()}} 
         onDragEnd={(event)=>{event.preventDefault()}}
         role="list" className="space-y-3">
          
-        {matriculasState.map((item,id) => (
-            <li key={id} 
-                id={id+""}
-                draggable
-                onDragStart={onDragStart}
-                onDragOver={allowDropElement}  
-                onDragEnd={onDragEnd}     
-                onDrop={(event)=>{event.preventDefault()}}   
-                className="cursor-move bg-white shadow overflow-hidden rounded-md px-6 py-2"
-                style={{opacity: currentDragElement===id?opacityDrag:1, transition: 'all .3s'}}
-            >
-                <div id={id+""}  className='flex' >
-                    <ViewListIcon id={id+""} className="h-5 w-5 mt-1 text-gray-400 group-hover:text-gray-500" /> 
-                        {item?.icon!}
-                    <span id={id+""} className='w-full text-center' >{item.matricula} </span>
-                </div>
-            </li>
-        ))}
+        {matriculasState.map((item,id) => {
+            if(!item?.matricula){
+                return <></>
+            }
+
+            return (
+                <li key={id} 
+                    id={id+""}
+                    draggable
+                    onDragStart={onDragStart}
+                    onDragOver={allowDropElement}  
+                    onDragEnd={onDragEnd}     
+                    onDrop={(event)=>{event.preventDefault()}}   
+                    className="cursor-move bg-white shadow overflow-hidden rounded-md px-6 py-2"
+                    style={{opacity: currentDragElement===id?opacityDrag:1, transition: 'all .3s'}}
+                >
+                    <div id={id+""}  className='flex' >
+                        <ViewListIcon id={id+""} className="h-5 w-5 mt-1 text-gray-400 group-hover:text-gray-500" /> 
+                            {item?.icon!}
+                        <span id={id+""} className='w-full text-center' >{item.matricula} </span>
+                    </div>
+                </li>
+            )
+        }
+        )}
       </ul>
+        <Spacer y={1} />
+                      
+        <div>
+            <Info msg={infoMsg.txt} bandUpArr={infoMsg.arrowUp} bandDownArr={infoMsg.arrowDown} />
+        </div>
+      </>
     )
 }
 

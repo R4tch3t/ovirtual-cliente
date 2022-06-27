@@ -71,7 +71,6 @@ const PerfilLayout = () => {
   })
   const [advContra, setAdvContra] = useState(false)
   const [clickEnviar, setClickEnviar] = useState(false)
-  const infoMsg = "Si usted cuenta con más de una matrícula deberá vincularla y las podrá reordenar para establecer una por defecto."  
 
   const validarMatricula = (value:string='') => {
     let valida:any = value.match(/^[0-9]{8,8}$/i);
@@ -407,11 +406,7 @@ const PerfilLayout = () => {
                         setDataModal={setDataModal}
                         setModalE={setModalE}
                         setModalS={setModalS}
-                      />
-                      <Spacer y={1} />
-                      <div>
-                        <Info msg={infoMsg} bandUpArr={true} />
-                      </div>
+                      />                      
 
                     </div>
                   </div>
