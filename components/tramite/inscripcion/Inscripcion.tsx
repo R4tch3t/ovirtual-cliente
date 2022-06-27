@@ -90,7 +90,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   useEffect(()=>{
     const vwAspirante = auth?.usuario?.vwAspirante![0]
     if(vwAspirante&&!inscripcion){
-      const {ID_PLAN, PLANESTUDIOS, UA} = vwAspirante
+      const {ID_PLAN, PLANESTUDIOS, UA} = vwAspirante!
       dispatch({
         type: types.seleccionarPlanProcedure,
         payload: {
@@ -101,15 +101,16 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
           procedure:'inscripcion'
         }
       });
-        const nombreTramite = 'inscripcion'
-        const nombreValor = 'validoParaTramitar'
-        const valor = true
-
-        dispatch({
-            type: types.cambiarEstado,
-            payload: {nombreTramite,nombreValor,valor}
-        });
     }
+      const nombreTramite = 'inscripcion'
+      const nombreValor = 'validoParaTramitar'
+      const valor = true
+
+      dispatch({
+          type: types.cambiarEstado,
+          payload: {nombreTramite,nombreValor,valor}
+      });
+    
   },[])
 
   return (
