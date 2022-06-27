@@ -102,14 +102,15 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
         }
       });
     }
-      const nombreTramite = 'inscripcion'
-      const nombreValor = 'validoParaTramitar'
-      const valor = true
+    
+    const nombreTramite = 'inscripcion'
+    const nombreValor = 'validoParaTramitar'
+    const valor = true
 
-      dispatch({
-          type: types.cambiarEstado,
-          payload: {nombreTramite,nombreValor,valor}
-      });
+    dispatch({
+        type: types.cambiarEstado,
+        payload: {nombreTramite,nombreValor,valor}
+    });
     
   },[])
 

@@ -10,7 +10,7 @@ import { TodosTramiteAlumnoInput, useTodosTramitesAlumno } from "../hooks/useQue
 
 type Props = {
     mapDocInit: CatDocumentos[]
-  }
+}
 
 let fileName = ''
 let expedienteId:any=null
@@ -118,6 +118,16 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                                     }
                                     </b>
                             </p>
+
+                            {exp?.validado!>2&&
+                                <p className="text-xs font-medium text-red-500"> 
+                                    <b>
+                                    {
+                                        exp?.observacionValidacion
+                                    }
+                                    </b>
+                                </p>
+                            }
                             
                             {m.cargado!>0&&
                                 <Grid>
