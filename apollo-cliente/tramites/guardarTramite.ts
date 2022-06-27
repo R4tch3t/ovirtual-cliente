@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 
 type Mutation = {
     guardarTramite: boolean
+    estadoRevision: boolean
 }
 
 export interface TramiteAlumnoInput{
@@ -25,4 +26,17 @@ export const guardarTramiteGQL = async (tramite:TramiteAlumnoInput) => {
       });
       
       return data?.guardarTramite
+}
+
+export const estadoRevisionGQL = async (tramiteId:number) => {
+    const { data } = await client.mutate<Mutation>({
+        variables:{tramiteId},
+        mutation: gql`
+            mutation EstadoRevision($tramiteId: Int!) {
+                estadoRevision(tramiteId: $tramiteId)
+            }
+        `,
+    });
+      
+      return data?.estadoRevision
 }

@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react'
-import { guardarTramiteGQL, TramiteAlumnoInput } from '../../../apollo-cliente/tramites'
+import { estadoRevisionGQL, guardarTramiteGQL, TramiteAlumnoInput } from '../../../apollo-cliente/tramites'
 import { useAppContext } from '../../../auth/authContext'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
 import { ObtenerTramiteAlumnoInput, useObtenerTramitesAlumno } from '../../../hooks/useQuery/tramites'
@@ -15,7 +15,8 @@ import { CatDocumentos } from '../../../helpers/expedientes'
 import { PDFLogo } from '../../Logo'
 import RenderPDF from '../../renderPDF'
 import { types } from '../../../types/tramites'
-
+import HeadSeleccionarInscripcion from './headSelecionarPlan'
+import { SeleccionarPlan } from '../seleccionarPlan'
 
 let timeRef:any = null
 type Props = {
@@ -42,12 +43,25 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
-  let btnDis:any = inscripcion?.validoParaTramitar!
+  const vwAspirante = auth?.usuario?.vwAspirante![0]
+  const vwAlumno = auth?.usuario?.vwAlumnoConPlanes![0]
+  let btnDis:any = true//inscripcion?.validoParaTramitar!
   
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
     btnDis = findDoc?.validado!<3 && btnDis
   });
+
+  useEffect(()=>{
+    if(btnDis){
+      if(data?.obtenerTramitesAlumno !== undefined){
+        if(data?.obtenerTramitesAlumno?.estadoId === 4){
+          estadoRevisionGQL(data?.obtenerTramitesAlumno?.id)
+        }
+      }
+    }
+  },[btnDis])
+  
 
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({});
@@ -88,7 +102,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   },[data?.obtenerTramitesAlumno])
 
   useEffect(()=>{
-    const vwAspirante = auth?.usuario?.vwAspirante![0]
+    
     if(vwAspirante&&!inscripcion){
       const {ID_PLAN, PLANESTUDIOS, UA} = vwAspirante!
       dispatch({
@@ -101,18 +115,29 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
           procedure:'inscripcion'
         }
       });
-    }
     
-    const nombreTramite = 'inscripcion'
-    const nombreValor = 'validoParaTramitar'
-    const valor = true
+    
+      const nombreTramite = 'inscripcion'
+      const nombreValor = 'validoParaTramitar'
+      const valor = true
 
-    dispatch({
-        type: types.cambiarEstado,
-        payload: {nombreTramite,nombreValor,valor}
-    });
-    
+      dispatch({
+          type: types.cambiarEstado,
+          payload: {nombreTramite,nombreValor,valor}
+      });
+    }
   },[])
+
+  if((vwAlumno&&!vwAspirante)&&!inscripcion){
+    return (
+      <HeadSeleccionarInscripcion 
+        titulo={titulo!} 
+        descripcion={descripcion!} >
+          <SeleccionarPlan nombreContextState='inscripcion' />
+      </HeadSeleccionarInscripcion>
+    )
+  }
+
 
   return (
     <Fade in={true}>
@@ -124,8 +149,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
                 setClickEnviar(false);
               }} 
               title={dataModal.title} 
-              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
-          
+              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />          
             
           </ConfirmarTramite>
 

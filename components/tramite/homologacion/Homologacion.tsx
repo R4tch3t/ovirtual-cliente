@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react'
-import { guardarTramiteGQL, TramiteAlumnoInput } from '../../../apollo-cliente/tramites'
+import { estadoRevisionGQL, guardarTramiteGQL, TramiteAlumnoInput } from '../../../apollo-cliente/tramites'
 import { useAppContext } from '../../../auth/authContext'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
 import { ObtenerTramiteAlumnoInput, useObtenerTramitesAlumno } from '../../../hooks/useQuery/tramites'
@@ -72,6 +72,16 @@ export const Homologacion: FC<Props> = ({tramiteId, mapDocInit}) => {
       btnDis = findDoc?.validado!<3 && btnDis
     });
   }
+
+  useEffect(()=>{
+    if(btnDis){
+      if(data?.obtenerTramitesAlumno !== undefined){
+        if(data?.obtenerTramitesAlumno?.estadoId === 4){
+          estadoRevisionGQL(data?.obtenerTramitesAlumno?.id)
+        }
+      }
+    }
+  },[btnDis])
   
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({

@@ -81,7 +81,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                     const tramite = respTodosTramites?.data?.todosTramitesAlumno?.find((tramiteAlumno)=>{
                         const {requisitos, estadoId} = tramiteAlumno
                         const reqDoc = requisitos.find((r)=>{return r.documento.id===m.id})
-                        return reqDoc && estadoId!==2 && estadoId!==3
+                        return reqDoc /*&& estadoId!==2 && estadoId!==3*/
                     })
                     m.enTramite = tramite?.estadoId
                     
@@ -224,7 +224,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                                 Ver
                             </button>
 
-                            {(!m.enTramite || (exp?.validado===1 && m.enTramite !==2)) &&
+                            {(!m.enTramite || (exp?.validado===1 && m.enTramite !==2 && m.enTramite !==3)) &&
                             <>
                                 <span className="text-gray-300" aria-hidden="true">
                                     |
