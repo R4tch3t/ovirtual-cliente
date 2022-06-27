@@ -46,8 +46,11 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
     
     const [modalSR, setModalSR] = useState(false)
     const dataModalS = { title: 'Éxito', txt: "Los datos se actualizaron correctamente.", btn1: {txt:"Aceptar"} }
-    const dataModalE = { title: 'Error', txt: "Error al actualizar asegurese de que sus datos sean correctos y que el correo sea exclusivamente suyo ó contacte a algún administrador.",
-     btn1: {txt:"Aceptar", onClose: setModalE} 
+    const dataModalE = { 
+        title: 'Error', 
+        txt: "Error al actualizar asegurese de que sus datos sean correctos y que el correo sea exclusivamente suyo ó contacte a algún administrador.",
+        txt2: "Error al hacer la busqueda, aseguresé que la CURP seá suya...",
+        btn1: {txt:"Aceptar", onClose: setModalE} 
     }
     const dataModalSR = { title: 'Éxito', txt: "El aspirante ya ha sido registrado...", btn1: {txt:"Aceptar"} }
   
@@ -204,6 +207,9 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 setModalSR(true);
             }
             
+        }else{
+            setCargando(false)
+            setModalE(true)
         }
 
     }
@@ -217,6 +223,9 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
             }} 
                 title={dataModalSR.title} 
                 txt={dataModalSR.txt} btnTxt={dataModalSR.btn1.txt} />
+
+            <ModalError open={modalE} setOpen={setModalE} title={dataModalE.title} 
+                            txt={dataModalE.txt2} btn1={dataModalE.btn1} />
                 
                 <ModalInscripcion open={open} 
                     setOpen={()=>{
