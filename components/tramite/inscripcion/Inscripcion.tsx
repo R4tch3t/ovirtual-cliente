@@ -45,12 +45,20 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   const [verPDF, setVerPDF] = useState(false)
   const vwAspirante = auth?.usuario?.vwAspirante![0]
   const vwAlumno = auth?.usuario?.vwAlumnoConPlanes![0]
-  let btnDis:any = true//inscripcion?.validoParaTramitar!
+  const [btnDis, setBtnDis]:any = useState(false)//inscripcion?.validoParaTramitar!
   
-  mapDocInit.map(doc=>{
-    const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
-    btnDis = findDoc?.validado!<3 && btnDis
-  });
+  useEffect(()=>{
+    let bandEffect = true // | inscripcion?.validoParaTramitar!
+      mapDocInit.map(doc=>{
+
+        const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
+        bandEffect = findDoc?.validado!<3 && bandEffect 
+        setBtnDis(bandEffect)
+        
+      });
+    
+  },[auth?.usuario?.expediente, inscripcion])
+  
 
   useEffect(()=>{
     if(btnDis){
@@ -126,6 +134,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
           payload: {nombreTramite,nombreValor,valor}
       });
     }
+    
   },[])
 
   if((vwAlumno&&!vwAspirante)&&!inscripcion){

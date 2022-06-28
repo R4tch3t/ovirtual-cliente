@@ -94,7 +94,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
                     <SeleccionarPlan nombreContextState='inscripcion' />
                   </HeadSeleccionarInscripcion>
                 */}
-                 <Inscripcion 
+                <Inscripcion 
                   titulo={props.tramite.nombre!} 
                   descripcion={props.tramite.descripcion!}
                   tramiteId={parseInt(props.id)!} 
