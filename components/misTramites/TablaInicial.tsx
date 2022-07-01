@@ -148,10 +148,23 @@ const TablaInicial = () => {
               {data?.todosTramitesAlumno?.map((tramiteAlumno, tramiteId)=>{
                   c = colores.length-1 === c ? 0 : c+1
                   const {tramite} = tramiteAlumno//tramites?.find((t)=>{return t.id===tramiteAlumno.tramiteId})
-                  const plexur = auth?.usuario?.vwAlumnoConPlanes?.find((alup)=>{return alup.PLESXUR===tramiteAlumno.plesxurRef})
-                    return(
+                  let plexur = auth?.usuario?.vwAlumnoConPlanes?.find((alup)=>{return alup.PLESXUR===tramiteAlumno.plesxurRef})
+                    if(!plexur){
+                     const plexurAsp = auth?.usuario?.vwAspirante?.find((alup)=>{return alup.ID_PLAN===tramiteAlumno.plesxurRef})
+                     plexur={
+                        CVEENTESC:plexurAsp?.CLAVE_UNIDAD_ACADEMICA!,
+                        CVEPLNEST:plexurAsp?.CLAVE_PLAN_ESTUDIOS!,
+                        VRSPLNEST: plexurAsp?.VERSION_PLAN_ESTUDIOS!,
+                        NIVEL: 0,
+                        PERINIPLN: '',
+                        PLESXUR:plexurAsp?.ID_PLAN!,
+                        PLANESTUDIOS: plexurAsp?.PLANESTUDIOS!,
+                        ESCUELA: plexurAsp?.UA!
+                     }
+                    }
+                  return(
                       <div
-                        key={tramiteAlumno.id}
+                        key={tramiteAlumno.id+'misTramites'}
                         onMouseDown={()=>{
                           const {PLESXUR, PLANESTUDIOS, ESCUELA} = plexur!;
                           seleccionarTramite(tramiteAlumno.tramiteId, auth?.id!, PLESXUR, PLANESTUDIOS,ESCUELA);

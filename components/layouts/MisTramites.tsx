@@ -16,9 +16,9 @@ const Home = () => {
     
  
       const stats = [
-        { label: 'Vacation days left', value: 12 },
-        { label: 'Sick days left', value: 4 },
-        { label: 'Personal days left', value: 2 },
+        { label: /*'Vacation days left'*/'', value: /*0*/'' },
+        { label: '', value: '' },
+        { label: '', value: '' },
       ]
      
 
@@ -74,8 +74,8 @@ const Home = () => {
                           </div>
                         </div>
                         <div className="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
-                          {stats.map((stat) => (
-                            <div key={stat.label} className="px-6 py-5 text-sm font-medium text-center">
+                          {stats.map((stat,i) => (
+                            <div key={i+"stats"} className="px-6 py-5 text-sm font-medium text-center">
                               <span className="text-gray-900">{stat.value}</span>{' '}
                               <span className="text-gray-600">{stat.label}</span>
                             </div>
