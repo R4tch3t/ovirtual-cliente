@@ -383,7 +383,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                     </div>
                 </Slide>
                 {tramitesState?.procesoConfirmacionCompleto?.bandera! &&
-                    <Info msg={<>Los datos se actualizaron, el siguiente paso es revisar su correo ó el <a target={'_blank'} className="underline" href={tramitesState?.procesoConfirmacionCompleto?.urlPDF} >PDF</a> generado y seguir las instrucciones...</>} />
+                    <Info msg={<>Los datos se actualizaron, el siguiente paso es revisar su correo ó el <a target={'_blank'} rel="noreferrer" className="underline" href={tramitesState?.procesoConfirmacionCompleto?.urlPDF} >PDF</a> generado y seguir las instrucciones...</>} />
                 }
                 {showPDF&& <RenderPDF 
                         aspiranteId = {aspPDF.aspiranteId}
