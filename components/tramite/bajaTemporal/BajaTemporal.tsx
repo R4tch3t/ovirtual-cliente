@@ -13,7 +13,9 @@ import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
 import { PDFLogo } from '../../Logo'
-import RenderPDF from '../../renderPDF'
+import RenderPDF from '../../../helpers/renderPDF/formatoTramite'
+import Link from 'next/link'
+import Router from 'next/router'
 
 
 let timeRef:any = null
@@ -133,17 +135,23 @@ export const BajaTemporal: FC<Props> = ({tramiteId, mapDocInit}) => {
         {data?.obtenerTramitesAlumno?.estadoId! === 5 && 
           <div 
             className='chatDivCargando' >
-              <div
-                className='cursor-pointer text-center'
-                style={{width: 200}}
-                onMouseEnter={()=>{setVerPDF(false)}}
-                onMouseDown={()=>{setVerPDF(true)}}               
-              >
-                
-                  <PDFLogo width={50} height={50} />
-                  <p className="mt-1 text-sm text-gray-500">Ver Trámite en PDF.</p>
-                
-              </div>
+                <div
+                  className='cursor-pointer text-center'
+                  style={{width: 200}}
+                  onMouseEnter={()=>{
+                    setVerPDF(false)
+                  }}
+                  onMouseDown={async()=>{
+                                        
+                    setVerPDF(true)
+                    
+                  }}               
+                >
+                  
+                    <PDFLogo width={50} height={50} />
+                    <p className="mt-1 text-sm text-gray-500">Ver Trámite en PDF.</p>
+                  
+                </div>
           </div>
         }
 

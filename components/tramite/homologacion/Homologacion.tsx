@@ -12,7 +12,7 @@ import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
-import RenderPDF from '../../renderPDF'
+import RenderPDF from '../../../helpers/renderPDF/formatoTramite'
 
 let timeRef:any = null
 type Props = {

@@ -8,5 +8,6 @@ export const types = {
     seleccionarPlanProcedure: "[Tramite.Tramites] Seleccionando plan",
     cambiarEstado: "[Tramite.Tramites] Cambiar estado",
     seleccionarTramiteAlumno: "[Tramite.Tramites] Seleccionar tramite alumno",
-    ponerTramiteEnNulo: "[Tramite.Tramites] Poner tramite en nulo"
+    ponerTramiteEnNulo: "[Tramite.Tramites] Poner tramite en nulo",
+    confirmacionCompleta: "[Inscripcion.confirmacion] Confirmacion de inscripcion",
 }

@@ -8,7 +8,8 @@ import {
   Font,
   StyleSheet,
   View,
-  Image
+  Image,
+  renderToFile
 } from "@react-pdf/renderer";
 const LogoH = "/headTramite.jpg";
 const LogoF = "/footTramite.jpg";
@@ -19,7 +20,8 @@ const RobB = "/Typography/Roboto-Bold.ttf";
 const RobBI = "/Typography/Roboto-Bold.ttf";
 
    
- Font.register({
+Font.register
+({
   family: 'Roboto',
   format: "truetype",
   fonts: [{
@@ -36,11 +38,9 @@ const RobBI = "/Typography/Roboto-Bold.ttf";
     src: RobBI,
     fontStyle: 'italic',
     fontWeight: 'bold'
- 
   }]
-  
-});
 
+});
 
 interface Props {
   tramiteId?: number,
@@ -57,6 +57,7 @@ interface State extends Props{
   url: string | null,
   d: Date | null
 }
+
 const meses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
 const nombreCampos:any = {
   'periodoLectivo':'Periodo Lectivo de la Baja:',
@@ -139,6 +140,7 @@ const ReturnTable:FC<Props> = ({tramiteId, matricula,nombre,apellidos,unidadAcad
     }
 
   });
+
   return <>
       <View style={styles.columnDirection} >
                         
@@ -314,6 +316,7 @@ class RenderPDF extends React.Component<Props> {
   onRender = async ({ blob }:any) => {
     const {titulo} = this.state!
     this.setState({ url: URL.createObjectURL(blob) });
+    console.log(blob)
     let pdfWindow = window!.open(this.state.url!)!;
 
     const downloadLink = document.createElement("a");
@@ -321,6 +324,7 @@ class RenderPDF extends React.Component<Props> {
     downloadLink.href = this.state.url!;
     downloadLink.download = titulo!+'.pdf';
     downloadLink.click();
+
   };
  
   styles = StyleSheet.create({
@@ -396,6 +400,8 @@ class RenderPDF extends React.Component<Props> {
     }
   });
 
+  
+
   render() {
     const {
       tramiteId,
@@ -409,7 +415,6 @@ class RenderPDF extends React.Component<Props> {
     const d = this.state.d?.toLocaleDateString()
     
     return (
-      
                  <div> 
 
                   <PDFViewer style={{ width: 0, height: 0 }}  >

@@ -17,6 +17,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
     let paso3 = null
     let paso4 = null
     let paso5 = null
+
     switch(action.type){
         case types.cargarTramites:
             return {
@@ -151,6 +152,25 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                     procedimientos: {
                         ...state.procedimientos,
                         [state.nombreTramiteSeleccionado!]: null
+                    }
+                }
+            case types.confirmacionCompleta:
+                if(action?.payload?.bandera!){
+                    return {
+                        ...state,
+                        procesoConfirmacionCompleto: {
+                            ...state.procesoConfirmacionCompleto,
+                            bandera: true
+                        }                    
+                    }
+                }else if(action?.payload?.urlPDF!){
+                    const {urlPDF} = action.payload
+                    return {
+                        ...state,
+                        procesoConfirmacionCompleto: {
+                            ...state.procesoConfirmacionCompleto,
+                            urlPDF
+                        }                    
                     }
                 }
         default: 

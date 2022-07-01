@@ -13,6 +13,7 @@ const catTramites =
 ]
 
 const initialState:TypeTramitesState = {
+    procesoConfirmacionCompleto: null,
     tramites: null,
     catTramites,
     catSeleccionado: catTramites[0],

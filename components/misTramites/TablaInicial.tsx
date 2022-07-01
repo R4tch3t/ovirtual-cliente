@@ -153,7 +153,6 @@ const TablaInicial = () => {
                       <div
                         key={tramiteAlumno.id}
                         onMouseDown={()=>{
-
                           const {PLESXUR, PLANESTUDIOS, ESCUELA} = plexur!;
                           seleccionarTramite(tramiteAlumno.tramiteId, auth?.id!, PLESXUR, PLANESTUDIOS,ESCUELA);
 

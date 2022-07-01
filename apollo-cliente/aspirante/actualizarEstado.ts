@@ -5,6 +5,10 @@ interface Mutation {
     actualizarEstado: {
         respActualizarEstado: boolean,
         msg: string|null,
+        urlActivar: string|null,
+        linkGenerarPago: string|null,
+        urlTramite: string|null,
+        password: string|null,
     }
 }
 
@@ -23,6 +27,10 @@ export const actualizarEstadoGQL = async (user:AspiranteInscripcion) => {
             actualizarEstado(user: $user) {
                 respActualizarEstado
                 msg
+                urlActivar
+                linkGenerarPago
+                urlTramite
+                password
             }
         }
         `,

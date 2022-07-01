@@ -16,7 +16,8 @@ export interface TypeTramite {
     //tramitesModuloAtencions: TypeModuloAtencion[]|[]|null,
     //tramitesFormatoDescargables: TypeFormatoDescargable[]|[]|null,
     //tramitesRequisitoAdicionals: TypeRequisitoAdicional[]|[]|null,
-    nivelEstudio: string | null
+    nivelEstudio: string | null,
+
 }
 
 
@@ -102,8 +103,12 @@ export type TypeProcedimiento = {
     homologacion: TypeHomologacion | null,
 }
 
-
+type ProcesoConfirmacion = {
+    bandera?: boolean,
+    urlPDF?: string
+}
 export interface TypeTramitesState {
+    procesoConfirmacionCompleto: ProcesoConfirmacion|null,
     tramites: TypeTramite[]|null,
     catTramites: TypeCatTramite[]|null,
     catSeleccionado: TypeCatTramite,

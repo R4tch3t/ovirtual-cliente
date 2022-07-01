@@ -4,7 +4,11 @@ import { FC, useState } from "react";
 import { PropsCard } from ".";
 import client from "../../apollo-cliente";
 import { actualizarEstadoGQL, consultaAspCURPGQL, consultaResultadoCenevalGQL } from "../../apollo-cliente/aspirante";
+import { useTramitesContext } from "../../context/tramites/TramitesContext";
+import RenderPDF from "../../helpers/renderPDF/instruccionesCuenta";
 import { validarCURP } from "../../helpers/validarCURP";
+import { types } from "../../types/tramites";
+import Info from "../Info";
 import { ModalError } from "../ModalError";
 import { ModalInscripcion } from "../ModalInscripcion";
 import { ModalSuccess } from "../ModalSucces";
@@ -31,7 +35,7 @@ interface TipoDataModal {
 
 let GID_REGISTRO:any = null
 export const InscripcionCard:FC<PropsCard> = ({action}) => {
-    
+    const {dispatch, tramitesState} = useTramitesContext()
     const [inputs, setInputs]:any = useState({
         folio: {color: 'success'},
         curp: {color: 'success'},
@@ -84,8 +88,27 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
     };
     const [open, setOpen] = useState(false)
     const [openW, setOpenW] = useState(false)
+    const [aspPDF, setAspPDF] = useState({
+        aspiranteId: -1,
+        nombre: '',
+        matricula: '',
+        unidadAcademica: '',
+        planEstudios: '',
+        correo: '',
+        celular: '',
+        urlActivar: '',
+        linkGenerarPago: '',
+        urlTramite: '',
+        password: ''
+    })
+    const [showPDF, setShowPDF] = useState(false)
       //cambiar a estado 3
-    const actualizarAspirante = async()=>{
+    const actualizarAspirante = async() => {
+        /*dispatch({
+            type: types.confirmacionCompleta,
+            payload: {bandera: false}
+        });*/
+        setShowPDF(false);
         const celular:any = document.getElementById('celularModalInscripcion')
         const correo:any = document.getElementById('correoModalInscripcion')
         const user = {
@@ -95,7 +118,18 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         }
         const resp = await actualizarEstadoGQL(user)
         if(resp?.respActualizarEstado){
+            
+            setAspPDF({...aspPDF,
+                correo: correo.value,
+                celular: celular.value,
+                urlActivar:resp.urlActivar!,
+                linkGenerarPago:resp.linkGenerarPago!,
+                urlTramite:resp.urlTramite!,
+                password: resp.password!
+            })
+            setShowPDF(true)
             setModalS(true);
+
         }else{
             setModalE(true);
         }
@@ -175,6 +209,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
     }
 
     const openModal = async() => {
+        
         setCargando(true)
         await client.cache.reset()
         const campoFolio:any = document.getElementById('folioInscripcion')
@@ -186,14 +221,14 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         if(respAspCurp){
             const {resultadoAspRegistro} = consultaAspRegistro
             //const {matricula} = resultadoAspRegistro!
-            const {MATRICULA, NOMBRE, CURP, FOLIO_CENEVAL, UA, PLANESTUDIOS, TELEFONO_CELULAR, CORREO_ELECTRONICO, ESTADO, ID_REGISTRO} = resultadoAspRegistro!
+            const {ID,MATRICULA, NOMBRE, CURP, FOLIO_CENEVAL, UA, PLANESTUDIOS, TELEFONO_CELULAR, CORREO_ELECTRONICO, ESTADO, ID_REGISTRO} = resultadoAspRegistro!
             
             
-            if(ESTADO!=='Aceptado'){
+            //if(ESTADO!=='Aceptado'){
                 GID_REGISTRO=ID_REGISTRO
                 setDataModal({
                     ...dataModal,
-                    txt2: (MATRICULA?<>Matrícula: <b>{MATRICULA}</b></>:''),
+                    //txt2: (MATRICULA?<>Matrícula: <b>{MATRICULA}</b></>:''),
                     txt3: (<>Nombre: <b>{`${NOMBRE}`}.</b></>),
                     txt4: (<>CURP: <b>{`${CURP}`}</b></>),
                     txt5: (<>Folio Ceneval: <b>{`${FOLIO_CENEVAL}`}</b></>),
@@ -203,9 +238,16 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                     correo: CORREO_ELECTRONICO
                 })
                 setOpen(true)
-            }else{
+                setAspPDF({...aspPDF,
+                    aspiranteId: ID,
+                    nombre: NOMBRE,
+                    matricula: MATRICULA,
+                    unidadAcademica: UA,
+                    planEstudios: PLANESTUDIOS,
+                })
+            /*}else{
                 setModalSR(true);
-            }
+            }*/
             
         }else{
             setCargando(false)
@@ -244,7 +286,16 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                             setOpenW(false)
                             setOpen(false)
                             setCargando(false)
+                            setFolioValido(false)
+                            const campoFolio:any = document.getElementById('folioInscripcion')
+                            const campoCurp:any = document.getElementById('curpInscripcion')
+                            campoFolio.value=''
+                            campoCurp.value=''
                             GID_REGISTRO=null
+                            dispatch({
+                                type: types.confirmacionCompleta,
+                                payload: {bandera: true}
+                            });                            
                         }} 
                             title={dataModalS.title} 
                             txt={dataModalS.txt} btnTxt={dataModalS.btn1.txt} 
@@ -304,7 +355,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                             width={"100%"} 
                             name='curp'
                             onChange={onChange}
-                            clearable bordered labelPlaceholder="Ingresa tú CURP para completar la busqueda..." 
+                            clearable bordered labelPlaceholder="Ingresa tú CURP para continuar..." 
                             css={{
                                 '.nextui-input-helper-text':{fontSize: '$xs'},
                                 '.nextui-input-helper-text-container':{top:40}
@@ -325,13 +376,29 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                                 cargando ? 
                                     <Loading className="w-8 h-5" type="points-opacity" color="white" size="sm" />
                                     :
-                                    'Finalizar busqueda'
+                                    'Siguiente'
                             }
                         </button>
 
                     </div>
                 </Slide>
-                
+                {tramitesState?.procesoConfirmacionCompleto?.bandera! &&
+                    <Info msg={<>Los datos se actualizaron, el siguiente paso es revisar su correo ó el <a target={'_blank'} className="underline" href={tramitesState?.procesoConfirmacionCompleto?.urlPDF} >PDF</a> generado y seguir las instrucciones...</>} />
+                }
+                {showPDF&& <RenderPDF 
+                        aspiranteId = {aspPDF.aspiranteId}
+                        nombre = {aspPDF.nombre}
+                        matricula = {aspPDF.matricula}
+                        unidadAcademica = {aspPDF.unidadAcademica}
+                        planEstudios = {aspPDF.planEstudios}
+                        correo = {aspPDF.correo}
+                        celular = {aspPDF.celular}
+                        urlActivar = {aspPDF.urlActivar}
+                        linkGenerarPago = {aspPDF.linkGenerarPago}
+                        urlTramite = {aspPDF.urlTramite}
+                        password={aspPDF.password}
+                        dispatch={dispatch}
+                    />}
             </div>
         </>)
 }
