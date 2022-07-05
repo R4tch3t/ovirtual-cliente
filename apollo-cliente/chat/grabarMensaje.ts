@@ -21,7 +21,7 @@ export type TipoNuevoMsj = {
 
 
 export const grabarMensajeGQL = async (nuevoMsj: TipoNuevoMsj) => {
-    await client?.resetStore()
+    await client.cache.reset()
     const { data } = await client.mutate<Mutation>({
         variables:{nuevoMsj},
         mutation: gql`

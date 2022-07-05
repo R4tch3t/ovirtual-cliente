@@ -71,17 +71,17 @@ const ActivarMatricula: NextPage = () => {
         }else{
           await router.replace('/')
         }
-        setModalS(false)
+        //setModalS(false)
         //router.replace('/')
 
       }} 
       title={dataModal.title} 
       txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
       <ModalError open={modalE} 
-        setOpen={()=>{
+        setOpen={async ()=>{
           
-          setModalE(false)
-          router.replace('/')
+          //setModalE(false)
+          await router.replace('/')
 
         }} 
         title={dataModal.title} input1={dataModal.input1}

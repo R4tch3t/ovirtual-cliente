@@ -4,6 +4,7 @@ import {FC} from 'react';
 import { useTramitesContext } from '../../context/tramites/TramitesContext';
 import { types } from '../../types/tramites';
 import { Loading } from '@nextui-org/react';
+import { useAppContext } from '../../auth/authContext';
 
 
 type Head = {
@@ -15,6 +16,7 @@ type Head = {
 }
 
 const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChildren}) => {
+  const {auth} = useAppContext();
   const {dispatch}:any = useTramitesContext();
   let btnState = {
     txt: 'Iniciar trámite',
@@ -50,18 +52,20 @@ const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChild
             <h3 className="text-lg leading-6 font-medium text-gray-900">NOMBRE DEL TRÁMITE:</h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">{nombre}</p>
             
-              <button
-                type="button"
-                onClick={btnState.onClick}
-                style={{width: 150}}
-                className={`${btnState.bgColor1} mt-5 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:${btnState.bgColor2} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
-                disabled={cargando}
-              >
-                {!cargando &&
-                    btnState.txt
-                }
-                {cargando&&<Loading className="w-5 h-5" type="points-opacity" color="white" size="sm" />}
-              </button>
+              {auth?.logged! &&
+                <button
+                  type="button"
+                  onClick={btnState.onClick}
+                  style={{width: 150}}
+                  className={`${btnState.bgColor1} mt-5 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:${btnState.bgColor2} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                  disabled={cargando}
+                >
+                  {!cargando &&
+                      btnState.txt
+                  }
+                  {cargando&&<Loading className="w-5 h-5" type="points-opacity" color="white" size="sm" />}
+                </button>
+              }
             
 
           </div>

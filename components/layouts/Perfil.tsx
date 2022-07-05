@@ -20,6 +20,9 @@ import CambiarContraseña from '../settings/CambiarContraseña';
 import ListMatriculas from '../listMatriculas';
 import { ConfirmarMatricula } from '../../helpers/ConfirmarMatricula';
 import Info from '../Info';
+import ImageNext from 'next/image';
+import { setAvatarGQL } from '../../apollo-cliente/login/setAvatar';
+import client from '../../apollo-cliente';
 
 let subNavigation = [
   { name: 'Perfil', href: '/perfil', icon: UserCircleIcon, current: true },
@@ -43,7 +46,7 @@ const WarningPass = () => {
 
 
 const PerfilLayout = () => {
-  const {auth, vincularMatricula, updateUser,actualizadoContra} = useAppContext();
+  const {auth, vincularMatricula, updateUser,actualizadoContra, verificaToken} = useAppContext();
   const [usuario, setUsuario]:any = useState({
     id: auth?.id!, 
     nombreUsuario: auth?.usuario? auth?.usuario.nombre:null,
@@ -56,9 +59,13 @@ const PerfilLayout = () => {
     matricula: auth?.usuario?retornarPrimerMat(auth?.usuario?.matricula!):null,
     password: '',
     role: 'Alumno(a)',
-    imageUrl:
-    "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
+    imageUrl:'',
   });
+  
+  const localFoto = localStorage.getItem('fotoPerfil') 
+  usuario.imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
+      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+
   const [cargando, setCargando] = useState(false)
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
@@ -71,6 +78,7 @@ const PerfilLayout = () => {
   })
   const [advContra, setAdvContra] = useState(false)
   const [clickEnviar, setClickEnviar] = useState(false)
+  const [cargandoFoto, setCargandoFoto] = useState(false)
 
   const validarMatricula = (value:string='') => {
     let valida:any = value.match(/^[0-9]{8,8}$/i);
@@ -237,8 +245,7 @@ const PerfilLayout = () => {
       
       if(r.respNecesarioCambiarPass===true){
         subNavigation[1].icon=WarningPass
-        setAdvContra(true)
-        
+        setAdvContra(true)        
       }
 
     });
@@ -253,6 +260,131 @@ const PerfilLayout = () => {
     ]
   }
 
+  type Base64 = (file: any) => Promise<unknown>
+    
+
+    const toBase64:Base64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = (readerEvent) => {
+          let image = new Image();
+          
+          image.onload = (imageEvent) => {
+            // Resize the image
+            var canvas = document.createElement('canvas'),
+            max_size = 544,// TODO : pull max size from a site config
+            width = image.width,
+            height = image.height;
+            if (width > height) {
+                if (width > max_size) {
+                    height *= max_size / width;
+                    width = max_size;
+                }
+            } else {
+                if (height > max_size) {
+                    width *= max_size / height;
+                    height = max_size;
+                }
+            }
+            canvas.style.background='transparent'
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d')?.drawImage(image, 0, 0, width, height);
+            let imgData=canvas.getContext('2d')?.getImageData(0,0,canvas.width,canvas.height);
+            let data=imgData?.data!;
+            for(let i=0;i<data.length;i+=4){
+                if(data[i+3]<255){
+                    data[i]=255;
+                    data[i+1]=255;
+                    data[i+2]=255;
+                    data[i+3]=255;
+                }
+            }   
+            canvas.getContext('2d')?.putImageData(imgData!,0,0)
+            let dataUrl = canvas.toDataURL('image/jpeg');        
+            resolve(dataUrl)
+          }
+          image.src = readerEvent?.target?.result! as string;          
+        };
+        reader.readAsDataURL(file);
+        reader.onerror = error => reject(error);
+    });
+
+    const selectFile = async () => {    
+        let fileIn = document.querySelector('#file-input') as any//!.files[0]
+        let file=fileIn.files[0]
+        if(!file){
+          fileIn = document.querySelector('#file-input2') as any
+          file=fileIn.files[0]
+        }
+        
+        if(!file.type.match(/image.*/)) {
+          return 
+        }
+
+        console.log('pass')
+
+        let result:any = await toBase64(file).catch(e => e);
+        if (result instanceof Error) {
+            console.log('Error: ', result.message);
+            return;
+        }
+        
+        fileIn.value=null
+        
+        result = result.split('base64,')
+        result = result.pop() 
+        
+        await subirAvatar(
+          auth?.usuario?.id!,
+          result as string
+        )
+        
+    };
+
+    const subirAvatar = async (userId:number,base64:string) => {
+      setCargandoFoto(true)
+      const bufferMax = 1024 * 64
+      let buffer = 0
+      let bufferLength = base64.length
+      let part64 = ''
+      const descripcion = ''
+      let actualizar = true
+      const alumno = {
+        id: userId!
+      }
+      const archivo = {
+        actualizar,
+        base64: part64//: result! as string  
+      } 
+      
+
+      while(buffer<bufferMax&&buffer<bufferLength){
+        part64 += base64[buffer++]
+      }
+
+      archivo.base64=part64
+
+      const respDoc = await setAvatarGQL(alumno,archivo)
+            
+      archivo.actualizar=false!
+
+      while(buffer<bufferLength){
+        const nextBuffer = buffer + bufferMax
+        part64 = ''
+        while(buffer<nextBuffer&&buffer<bufferLength){
+          part64 += base64[buffer++]
+        }
+        
+        archivo.base64 = part64
+        await setAvatarGQL(alumno,archivo)
+
+      }
+      await client.cache.reset()
+      await verificaToken!()
+      setCargandoFoto(false)
+    }
+ 
   //const matriculas = auth?.usuario?.matricula! ? JSON.parse(auth?.usuario?.matricula!):[]
 
     return (
@@ -352,7 +484,16 @@ const PerfilLayout = () => {
                             className="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12"
                             aria-hidden="true"
                           >
-                            <img className="rounded-full h-full w-full" src={usuario.imageUrl} alt="" />
+                            <div className="flex items-center rounded-full h-full w-full" >
+                              <ImageNext 
+                                className="flex items-center rounded-full h-full w-full"
+                                width={'100%'}
+                                height={'100%'}
+                                placeholder='blur' 
+                                blurDataURL={usuario.imageUrl} 
+                                src={usuario.imageUrl} alt="" 
+                              />
+                            </div>
                           </div>
                           <div className="ml-5 rounded-md shadow-sm">
                             <div className="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500">
@@ -364,10 +505,12 @@ const PerfilLayout = () => {
                                 <span className="sr-only"> Foto de usuario</span>
                               </label>
                               <input
-                                id="mobile-user-photo"
+                                id="file-input"
                                 name="user-photo"
                                 type="file"
+                                accept="image/*"
                                 className="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"
+                                onChange={selectFile}
                               />
                             </div>
                           </div>
@@ -375,20 +518,44 @@ const PerfilLayout = () => {
                       </div>
 
                       <div className="hidden relative rounded-full overflow-hidden lg:block">
-                        <img className="relative rounded-full w-40 h-40" src={usuario.imageUrl} alt="" />
-                        <label
-                          htmlFor="desktop-user-photo"
-                          className="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100"
-                        >
-                          <span>Cambiar</span>
-                          <span className="sr-only"> Foto de usuario</span>
-                          <input
-                            type="file"
-                            id="desktop-user-photo"
-                            name="user-photo"
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"
-                          />
-                        </label>
+                        
+                        <div className="rounded-full w-40 h-40" style={{filter: (cargandoFoto?"blur(4px)":'')}} >
+                          
+                            <ImageNext 
+                              
+                              layout="fill" 
+                              placeholder='blur' 
+                              
+                              blurDataURL={usuario.imageUrl} 
+                              src={usuario.imageUrl} alt="" 
+                            />
+                          
+                        </div>
+
+                        {cargandoFoto &&
+                          <div className="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium" >
+                            <Loading type="spinner" color='white' size="lg" />
+                          </div>
+                        }
+
+                        {!cargandoFoto &&
+                          <label
+                            htmlFor="desktop-user-photo"
+                            className="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100"
+                          >
+                            <span>Cambiar</span>
+                            <span className="sr-only"> Foto de usuario</span>
+                            <input
+                              type="file"
+                              id="file-input2"
+                              name="user-photo"
+                              accept="image/*"
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"
+                              onChange={selectFile}
+                            />
+                          </label>
+                        }
+
                       </div>
                     </div>
                   </div>

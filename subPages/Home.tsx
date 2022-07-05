@@ -17,15 +17,10 @@ import Busqueda from '../components/Busqueda'
 import { Slide } from '@mui/material'
 import FixedMenu from '../components/FixedMenu'
 import client from '../apollo-cliente'
+import Image from 'next/image'
 
 
-const user = {
-  name: 'Chelsea Hagon',
-  email: 'chelsea.hagon@example.com',
-  role: 'Alumno',
-  imageUrl:
-  "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
-}
+
 
 
 function classNames(...classes:any) {
@@ -37,7 +32,20 @@ interface Props {
 }
 
 export const Home: NextPage<Props> = ({children, link}) => {
-    const {auth,logout} = useAppContext();
+  const {auth,logout} = useAppContext();
+  
+  const user = {
+    name: '',
+    email: '',
+    role: 'Alumno',
+    imageUrl:"",
+  }
+
+  const localFoto = localStorage.getItem('fotoPerfil') 
+  user.imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
+      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+    
+
     
 
     let userNavigation = [
@@ -67,7 +75,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
         
     }else{
       user.name=auth?.usuario?.nombre!
-      user.email=auth.email!
+      user.email=auth.email!      
     }
 
     const onSearch=(event:ChangeEvent)=>{
@@ -114,7 +122,15 @@ export const Home: NextPage<Props> = ({children, link}) => {
                           <div>
                             <Menu.Button className="bg-white rounded-full flex text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                               <span className="sr-only">Open user menu</span>
-                              <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                              <div className="h-8 w-8 rounded-full" >
+                                <Image 
+                                  className="h-8 w-8 rounded-full"
+                                  width={'100%'}
+                                  height={'100%'} 
+                                  placeholder='blur' 
+                                  blurDataURL={user.imageUrl} 
+                                  src={user.imageUrl} alt="" />
+                              </div>
                             </Menu.Button>
                           </div>
                           <Transition
@@ -228,11 +244,15 @@ export const Home: NextPage<Props> = ({children, link}) => {
                             <div className="pt-3 pb-2">
                               <div className="flex items-center justify-between px-4">
                                 <div>
-                                  <img
-                                    className="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/workflow-mark-cyan-600.svg"
-                                    alt="Workflow"
-                                  />
+                                  <div className="h-8 w-auto" >
+                                    <Logo width={50} height={50} />
+                                    {/*<Image
+                                      width={'100%'}
+                                      height={'100%'}
+                                      src={Logo}
+                                      alt="Workflow"
+                                    />*/}
+                                  </div>
                                 </div>
                                 <div className="-mr-2">
                                   <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500">
@@ -259,7 +279,15 @@ export const Home: NextPage<Props> = ({children, link}) => {
                             <div className="pt-4 pb-2">
                               <div className="flex items-center px-5">
                                 <div className="flex-shrink-0">
-                                  <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                                  <div className="h-10 w-10 rounded-full" >
+                                    <Image 
+                                      className="h-10 w-10 rounded-full"
+                                      width={'100%'}
+                                      height={'100%'}
+                                      placeholder='blur' 
+                                      blurDataURL={user.imageUrl}
+                                      src={user.imageUrl} alt="" />
+                                  </div>
                                 </div>
                                 <div className="ml-3 min-w-0 flex-1">
                                   <div className="text-base font-medium text-gray-800 truncate">{user.name}</div>
@@ -303,8 +331,8 @@ export const Home: NextPage<Props> = ({children, link}) => {
             <footer>
               <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl">
                 <div className="border-t border-gray-200 py-8 text-sm text-gray-500 text-center sm:text-left">
-                  <span className="block sm:inline">&copy; 2021 Tailwind Labs Inc.</span>{' '}
-                  <span className="block sm:inline">All rights reserved.</span>
+                  <span className="block sm:inline">&copy; 2022 DAE UAGro.</span>{' '}
+                  <span className="block sm:inline">Todos los derechos reservados.</span>
                 </div>
               </div>
             </footer>

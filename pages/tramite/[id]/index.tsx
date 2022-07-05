@@ -23,7 +23,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
             body: []
   }
   
-  if(auth.checking){
+  if(auth?.checking!){
     return( 
       <div className='loadingDiv' > 
         <Loading> Cargando... </Loading>
@@ -31,8 +31,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
     )
   }
 
-  if(!auth.logged||(auth.usuario&&auth.usuario.matactiva === 0)){
-   
+  if((auth?.usuario!&&auth?.usuario?.matactiva! === 0)){   
     Router.replace("/");
   }
 

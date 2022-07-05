@@ -11,6 +11,7 @@ export type TypeMatriculaPorDefecto = (user:TypeUserO) => Promise<boolean|string
 export type TypeUpdateUser = (user:TypeUser,endpoint:string) => Promise<boolean>;
 export type TypeLogout = () => Promise<void>
 export type TypeResentemail = (user:TypeUser) => Promise<any>
+export type TypeGetAvatar = (idUser:number) => Promise<boolean>;
 
 export interface TypeUser {
     matricula: string,
@@ -50,5 +51,6 @@ export interface TypeContext {
     loading: () => void,
     actualizadoContra: (id: number) => Promise<any>,
     eliminarExpedienteAuth: TypeEliminarExpediente | null
+    getAvatar: TypeGetAvatar | null
 
 }

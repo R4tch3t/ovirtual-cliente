@@ -1,7 +1,9 @@
 import { FC } from "react";
 import Image from 'next/image'
 import IconUni from '../../../public/iconUni.png'
-const icon = <Image src={IconUni} width={60} height={60} />
+const icon = <Image
+    placeholder='blur' 
+    blurDataURL={IconUni.blurDataURL} src={IconUni} width={60} height={60} alt='' />
 
 interface Alup {
     PLESXUR: number,

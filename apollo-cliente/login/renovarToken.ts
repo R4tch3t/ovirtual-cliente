@@ -65,6 +65,7 @@ export const renovarTokenGraphQL = async (tokenAnterior:string) => {
                         VERSION_PLAN_ESTUDIOS
                         UA
                         PLANESTUDIOS
+                        NIVEL_INGRESAR
                     }
                 }
                 uuid

@@ -1,25 +1,27 @@
-import type {NextPage} from 'next'
-import { useAppContext } from '../auth/authContext';
-import { useChatContext } from '../context/chat/ChatContext';
-import { scrollToBottom } from '../helpers/scrollToBottom';
-import { diffDate } from '../helpers/spellDate';
-import {types} from '../types/types';
-import {useEffect} from 'react';
-import { Loading } from '@nextui-org/react';
-import { obtenerChatGQL } from '../apollo-cliente/chat';
+import { FC, useEffect, useState } from "react"
+import { useChatContext } from "../../context/chat/ChatContext"
+import { diffDate } from '../../helpers/spellDate';
+import {types} from '../../types/types';
+import { obtenerChatGQL } from '../../apollo-cliente/chat';
+import { scrollToBottom } from '../../helpers/scrollToBottom';
+import { useAppContext } from "../../auth/authContext";
+import { getAvatarApollo } from '../../auth/provider/getAvatar';
+import Image from 'next/image';
 
-export const Feed: NextPage = () => {
+type Props = {
+    user:any
+}
+export const FeedItem:FC<Props> = ({user}) => {
     const {chatState, dispatch} = useChatContext()
-    const {auth}:any = useAppContext()
-    const imageUrl='https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg';
-    
-
+    const {auth} = useAppContext()
+    const [avatar, setAvatar] = useState('https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png')
     const onClick = async ({currentTarget}:any,user:any) => {
+
         dispatch({
             type: types.activarChat,
             payload: user
         });
-        const resp = await obtenerChatGQL(auth.id,user.id,0,30)
+        const resp = await obtenerChatGQL(auth?.id!,user.id,0,30)
         dispatch({
             type: types.cargarMensajes,
             payload: resp.mensajes
@@ -27,35 +29,30 @@ export const Feed: NextPage = () => {
         
         scrollToBottom('chatBox');
     }
-    
+
     useEffect(()=>{
-        scrollToBottom('chatBox');
-    },[]);
+        getAvatarApollo(user.id).then((avatar)=>{            
+            setAvatar(avatar)
+        })
+    },[user.id])
 
-    if(chatState.usuarios.length===0){
-        return (
-        <div className='h-full wMid' >
-            <h2 className='rightH2' >Lista de usuarios</h2>
-            <Loading type="spinner" size="lg" />
-        </div>)
-    }
-
-    if(chatState.usuarios.length>0){
-        return (
-            <div>
-                <h2 className='rightH2' >Lista de usuarios</h2>
-                <ul role="list" className="divide-y divide-gray-200">
-                    {chatState.usuarios
-                    .filter((user:any)=>user.id!==auth.id)
-                    .map((user: any) => (
-                    <li key={user.id} className="py-4">
+    return (
+        <li className="py-4">
                         <div 
                             className={`border-2 border-gray-200 border-dashed rounded-lg select-feed relative${user.id===chatState.chatActivo.id?' selected-feed':''}`}
                             onMouseEnter={(e)=>{}}  onMouseUp={(e)=>{onClick(e,user)}} 
                             style={{height: 50}}
                         >
-                        <div className="flex space-x-3">
-                        <img className="h-6 w-6 rounded-full" src={imageUrl} alt="" />
+                        <div className="flex space-x-3">                            
+                        <div className="h-6 w-6 rounded-full" >
+                            <Image 
+                                className="h-6 w-6 rounded-full"
+                                width={'100%'}
+                                height={'100%'} 
+                                placeholder='blur' 
+                                blurDataURL={avatar!}
+                                src={avatar!} alt="" />
+                        </div>
                         <div className="flex-1 space-y-1">
                             <div className="flex items-center justify-between">
                             <h3 className="text-sm font-medium">{user.alumno?user.alumno.nomentalu:user.nombre}</h3>
@@ -68,7 +65,7 @@ export const Feed: NextPage = () => {
                                     <p className="text-sm text-gray-500">{diffDate(user.lastConn,new Date())}</p>
                                 </>}
                             </div>
-                            {user.lastMsg && user.lastMsg.para === auth.id && <p className="text-sm text-blue-500">                            
+                            {user.lastMsg && user.lastMsg.para === auth?.id && <p className="text-sm text-blue-500">                            
                             {user.lastMsg.mensaje}
                                 <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-blue-400" />
                             </p>
@@ -85,11 +82,5 @@ export const Feed: NextPage = () => {
                         
                         </div>
                     </li>
-                ))}
-            </ul>
-            </div>
-        )
-    }else{
-        return <></>
-    }
+    )
 }

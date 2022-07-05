@@ -6,6 +6,8 @@ export const PDFLogo = ({width,height}:any) => {
     <Image 
       width={width}
       height={height}
+      placeholder='blur' 
+      blurDataURL={urlPDFLogo}
       src={urlPDFLogo}
       alt="headerLogo"
     />
@@ -17,6 +19,8 @@ export const HeaderLogo = ({width,height}:any) => {
     <Image 
       width={width}
       height={height}
+      placeholder='blur' 
+      blurDataURL={urlHeaderLogo}
       src={urlHeaderLogo}
       alt="headerLogo"
     />
@@ -29,6 +33,8 @@ export const LogoDae = ({width,height}:any) => {
       <Image 
         width={width}
         height={height}
+        placeholder='blur' 
+        blurDataURL={urlLogoDae}
         src={urlLogoDae}
         alt="headerLogo"
       />
@@ -41,7 +47,9 @@ const Logo = ({width,height}:any) => {
         <div className="logoUAG">
               <Image
                 width={width}
-                height={height}
+                height={height}              
+                placeholder='blur' 
+                blurDataURL={urlLogo}
                 src={urlLogo}
                 alt="UAGro."
               />

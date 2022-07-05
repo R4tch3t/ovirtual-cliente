@@ -10,9 +10,12 @@ import IconUni from '../../public/iconUni.png'
 import Fade from '@mui/material/Fade';
 import RetornarTramite from './RetornarTramite';
 import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/solid';
+import Info from '../Info';
 
 
-const icon = <Image src={IconUni} width={60} height={60} />
+const icon = <Image 
+  placeholder='blur' 
+  blurDataURL={IconUni.blurDataURL} src={IconUni} width={60} height={60} />
 
 const estadoTramite = (n:number) => {
   switch(n){
@@ -145,6 +148,7 @@ const TablaInicial = () => {
           <div className="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
             
           <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
+          {!data?.todosTramitesAlumno?.length && <Info msg='No se encontraron trámites en proceso...' />}
               {data?.todosTramitesAlumno?.map((tramiteAlumno, tramiteId)=>{
                   c = colores.length-1 === c ? 0 : c+1
                   const {tramite} = tramiteAlumno//tramites?.find((t)=>{return t.id===tramiteAlumno.tramiteId})

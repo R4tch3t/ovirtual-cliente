@@ -66,6 +66,7 @@ export const activarMatriculaGQL = async (user:ActivarMatriculaInput) => {
                         VERSION_PLAN_ESTUDIOS
                         UA
                         PLANESTUDIOS
+                        NIVEL_INGRESAR
                     }
                 }
                 token

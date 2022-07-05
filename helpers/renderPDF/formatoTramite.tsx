@@ -420,7 +420,7 @@ class RenderPDF extends React.Component<Props> {
                   <PDFViewer style={{ width: 0, height: 0 }}  >
                   <Document  onRender={this.onRender} title={`${titulo}.pdf`} >
                     <Page size="LETTER" wrap>
-                    <Image src={LogoH}  style={this.styles.logoH} />
+                    <Image  src={LogoH}  style={this.styles.logoH} />
                       {/*
                       <Image src={LogoD} style={this.styles.logoD} />*/}
                       <View style={this.styles.headV} >

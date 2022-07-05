@@ -10,21 +10,27 @@ import Login from '../Login';
 import Signup from '../Signup';
 import {LogoDae} from '../Logo'
 import HomeActions from '../HomeActions';
+import Image from 'next/image';
   
 function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
 const Home = () => {
-    const {auth}:any = useAppContext();
+    const {auth} = useAppContext();
     const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '/perfil'}]});
     const user = {
-        name: auth.usuario?auth.usuario.alumno.nomentalu:null,
-        email: auth.email,
+        name: auth?.usuario?auth.usuario.alumno.nomentalu:null,
+        email: auth?.email,
         role: 'Alumno(a)',
         imageUrl:
-        "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
+        "",
     }
-    const actionsOne = [
+
+    const localFoto = localStorage.getItem('fotoPerfil') 
+    user.imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
+      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+    
+      const actionsOne = [
       {
         icon: AcademicCapIcon,
         name: 'Proceso de Inscripción 2022 - 2023',
@@ -69,7 +75,7 @@ const Home = () => {
         });
       }
       
-      if(!auth.email){
+      if(!auth?.email){
         state.btnHome = [{
             html: state.logBand?'Registrar cuenta':'Iniciar sesión',
             onMouseUp: ShowGridLog,
@@ -99,7 +105,15 @@ const Home = () => {
                           <div className="sm:flex sm:items-center sm:justify-between">
                             <div className="sm:flex sm:space-x-5">
                               <div className="flex-shrink-0">
-                                <img className="mx-auto h-20 w-20 rounded-full" src={user.imageUrl} alt="" />
+                                <div className="mx-auto h-20 w-20 rounded-full" >
+                                  <Image 
+                                    className="mx-auto h-20 w-20 rounded-full"
+                                    width={'100%'}
+                                    height={'100%'}
+                                    placeholder='blur' 
+                                    blurDataURL={user.imageUrl}
+                                    src={user.imageUrl} alt="" />
+                                </div>
                               </div>
                               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                                 <p className="text-sm font-medium text-gray-600">Bienvenido(a),</p>
@@ -143,8 +157,13 @@ const Home = () => {
                     </section>
     
                     <section aria-labelledby="quick-links-title">
-                    
-                      <HomeActions card='inscripciones' nCol={1} actions={actionsOne} />
+                      
+                      {!auth?.logged &&
+                        <HomeActions card='inscripciones' nCol={1} actions={actionsOne} />
+                      }
+                      {auth?.usuario?.vwAspirante?.length! > 0 &&
+                        <HomeActions card='tramiteAspInscripcion' nCol={1} actions={actionsOne} />
+                      }
                       <HomeActions nCol={2} actions={actions} />
                    
                     </section>
@@ -157,9 +176,9 @@ const Home = () => {
                         <div className="p-6">
                           
                           <div className="flow-root mt-6">                                                
-                            {!auth.logged&&logBand&&<Login />}
-                            {!auth.logged&&!logBand&&<Signup />}
-                            {auth.logged&&<LogoDae width={400} height={400} />}
+                            {!auth?.logged&&logBand&&<Login />}
+                            {!auth?.logged&&!logBand&&<Signup />}
+                            {auth?.logged&&<LogoDae width={400} height={400} />}
                           </div>
 
                         </div>

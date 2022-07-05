@@ -4,6 +4,7 @@ import Link from "next/link"
 import { FC, useState } from "react"
 import { InscripcionCard } from "./InscripcionCard"
 import { NormalCard } from "./NormalCard"
+import { TramiteAspInscripcion } from "./tramiteAspInscripcion"
 /*import client from "../../apollo-cliente"
 import { actualizarEstadoGQL, consultaAspCURPGQL, consultaResultadoCenevalGQL} from "../../apollo-cliente/aspirante"
 import { validarCURP } from "../helpers/validarCURP"
@@ -60,11 +61,14 @@ const HomeActions:FC<Props> = ({nCol,card, actions}) => {
 
                             {!card && <NormalCard action={action} />}
                             {card === 'inscripciones' && <InscripcionCard action={action} />}
+                            {card === 'tramiteAspInscripcion' && <TramiteAspInscripcion action={action} /> }
 
                           </div>
                         ))}
                       </div>
     )
+
+    
 }
 
 export default HomeActions

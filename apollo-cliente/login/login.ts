@@ -13,6 +13,7 @@ export type TipoUsuario = {
     id: number;
     uuid: string | null;
     matricula: string | null;
+    avatar?: string | null;
     nombre: string | null;
     email: string;
     password: string;
@@ -65,7 +66,7 @@ export type TipoVwAspirante = {
     VERSION_PLAN_ESTUDIOS: number,
     UA: string,
     PLANESTUDIOS: string,
-   // NIVEL: number,
+    NIVEL_INGRESAR: number,
    // PERINIPLN: string
 }
 
@@ -119,6 +120,7 @@ export const loginGraphQL = async (email:string,password:string) => {
                         VERSION_PLAN_ESTUDIOS
                         UA
                         PLANESTUDIOS
+                        NIVEL_INGRESAR
                     }
                 }
                 token

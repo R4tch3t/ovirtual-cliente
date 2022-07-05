@@ -58,9 +58,8 @@ const PerfilExpedienteLayout:FC<Props> = ({mapDocInit}) => {
     passwordC: '',
     password: '',
     role: 'Alumno(a)',
-    imageUrl:
-    "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
   });
+  
   
   const [cargando, setCargando] = useState(false)
   const [modalE, setModalE] = useState(false)

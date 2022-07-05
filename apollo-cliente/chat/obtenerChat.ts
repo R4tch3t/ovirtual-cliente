@@ -20,7 +20,7 @@ export type TipoMensaje = {
 
 
 export const obtenerChatGQL = async (id:number,de:number,skip:number,take:number) => {
-    await client?.resetStore()
+    await client.cache.reset()
     const { data } = await client.query<Query>({
         variables:{id,de,skip,take},
         query: gql`

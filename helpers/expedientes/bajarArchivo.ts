@@ -10,7 +10,7 @@ let signatures:any = {
   "/9j/": "image/jpg"
 };
 
-const detectMimeType=(b64:string) => {
+export const detectMimeType=(b64:string) => {
   for (let s in signatures) {
     if (b64.indexOf(s) === 0) {
       return signatures[s];

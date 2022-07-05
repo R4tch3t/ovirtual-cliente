@@ -1,6 +1,6 @@
 import React, { createContext, FC, useCallback, useState } from "react";
 import { useChatContext } from "../../context/chat/ChatContext";
-import { TypeAuthState, TypeContext, TypeLogin, TypeVincular, TypeResentemail, TypeSignup, TypeSignupO, TypeMatriculaPorDefecto, TypeActivarMatricula, TypeEliminarExpediente } from "../../interfaces";
+import { TypeAuthState, TypeContext, TypeLogin, TypeVincular, TypeResentemail, TypeSignup, TypeSignupO, TypeMatriculaPorDefecto, TypeActivarMatricula, TypeEliminarExpediente, TypeGetAvatar } from "../../interfaces";
 import {types} from "../../types/types"; 
 import Cookies from 'js-cookie';
 import { useSession, signOut } from "next-auth/react";
@@ -14,6 +14,7 @@ import { reenviaremailGraphQL } from "../../apollo-cliente/login/reenviaremail";
 import { CuentaRegresiva, globalIsOpenRecount, globalRecount } from "../../helpers/cuentaRegresiva";
 import { matriculaPorDefectoApollo } from "./matriculaPorDefecto";
 import { activarMatriculaApollo } from "./activarMatricula";
+import { getAvatarApollo } from "./getAvatar";
 
 export const AuthContext = createContext({} as TypeContext);
 
@@ -48,6 +49,12 @@ export const AuthProvider: FC = ({ children }) => {
         }
     },[status, data]);
 
+    useEffect(()=>{
+        if(auth?.usuario?.id!>0&&!auth?.usuario?.avatar!){
+            getAvatar(auth?.usuario?.id!)
+        }
+    },[auth?.usuario?.id!,auth?.usuario?.avatar!])
+
     const loading = () => {
         setAuth({
             checking: true,
@@ -75,6 +82,7 @@ export const AuthProvider: FC = ({ children }) => {
         if(resp.respLogin){
             
             setAuth(auth);
+            
             
         }
         return resp.respLogin
@@ -255,7 +263,7 @@ export const AuthProvider: FC = ({ children }) => {
         if(Cookies.get('expiresIn')==='3m'){
             Cookies.remove('expiresIn')
         }
-        
+        localStorage.removeItem('fotoPerfil')
         await client.cache.reset()
         
         dispatch({type: types.cerrarSesion});
@@ -289,6 +297,21 @@ export const AuthProvider: FC = ({ children }) => {
         return true
     }
 
+    const getAvatar:TypeGetAvatar = async(idUser) => {
+        
+        const {usuario} = auth! 
+        getAvatarApollo(idUser)!.then((avatar)=>{
+            setAuth({...auth,
+                usuario:{
+                    ...usuario!,
+                    avatar
+                }
+            });
+        })
+    
+        return true
+    }
+
     return (
             <AuthContext.Provider  value={{
                 auth,
@@ -304,7 +327,8 @@ export const AuthProvider: FC = ({ children }) => {
                 resentemail,
                 loading,
                 actualizadoContra,
-                eliminarExpedienteAuth
+                eliminarExpedienteAuth,
+                getAvatar
             }} >
 
                     <div className="h-full" onMouseMove={()=>{

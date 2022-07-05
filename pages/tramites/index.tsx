@@ -26,15 +26,15 @@ const TramitesHome:NextPage<Props> = (props) =>{
     tramitesState.tramites=fTramites
   }
   
-  if(auth.checking){
+  if(auth?.checking!){
     return( 
       <div className='loadingDiv' > 
         <Loading> Cargando... </Loading>
       </div>
     )
   }
-
-  if(!auth.logged||(auth.usuario&&auth.usuario.matactiva === 0)){
+  
+  if((auth?.usuario!&&auth?.usuario?.matactiva! === 0)){
     Router.replace("/");
   }
   

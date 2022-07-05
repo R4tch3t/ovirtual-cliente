@@ -1,19 +1,43 @@
 import Slide from "@mui/material/Slide"
+import Image from "next/image";
 import spellDate from "../helpers/spellDate";
+import { useEffect, useState } from "react";
+import { useAppContext } from '../auth/authContext';
+import { getAvatarApollo } from "../auth/provider/getAvatar";
+import { useChatContext } from '../context/chat/ChatContext';
 
-const MensajeBase = ({name,txt,time,readed}:any) => {
+
+const MensajeBase = ({de,para,name,txt,time,readed}:any) => {
+    const {auth} = useAppContext()
+    const {chatState} = useChatContext()
     const date = spellDate(time);
+      
+    const localFoto = localStorage.getItem('fotoPerfil') 
+    const imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
+      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+      
+    const [avatar,setAvatar] = useState("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+
+    useEffect(()=>{
+        getAvatarApollo(chatState?.chatActivo?.id!).then((avatar)=>{          
+            setAvatar(avatar)
+        })
+    },[chatState?.chatActivo?.id])  
     return (
         <div className='chatDivPara' >
             <div className="sm:flex msjPara relative">
                 <div className="mb-4 flex-shrink-0 sm:mb-0 sm:mr-4">
-                    
-                    <img
-                        className="inline-block h-9 w-9 rounded-full"
-                        src="https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg"
-                        alt=""
-                    />
-
+                    <div className="inline-block h-9 w-9 rounded-full" >                    
+                        <Image
+                            className="inline-block h-9 w-9 rounded-full"
+                            width={'100%'}
+                            height={'100%'}
+                            placeholder='blur' 
+                            blurDataURL={imageUrl}
+                            src={imageUrl}
+                            alt=""
+                        />
+                    </div>
                 </div>
                 <div >
                     <h4 className="text-lg font-bold titlePara">{name}</h4>
@@ -25,12 +49,18 @@ const MensajeBase = ({name,txt,time,readed}:any) => {
                 {readed==='N'&&<span className="absolute top-0 right-0 block h-4 w-4 rounded-full ring-2 ring-white bg-blue-400" />}
                 {readed==='S'&&
                 
-                <Slide direction="down" in={true} mountOnEnter unmountOnExit>                    
-                    <img
-                        className="absolute top-0 right-0 block h-4 w-4 rounded-full ring-2 ring-green-400 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                    />
+                <Slide direction="down" in={true} mountOnEnter unmountOnExit>   
+                    <div className="absolute top-0 right-0 block h-4 w-4 rounded-full ring-2 ring-green-400 rounded-full" >                 
+                        <Image
+                            width={'100%'}
+                            height={'100%'}
+                            placeholder='blur' 
+                            blurDataURL={avatar}
+                            className="absolute top-0 right-0 block h-4 w-4 rounded-full ring-2 ring-green-400 rounded-full"
+                            src={avatar}
+                            alt=""
+                        />
+                    </div>
                 </Slide>    
                 
                 }
@@ -42,11 +72,11 @@ const MensajeBase = ({name,txt,time,readed}:any) => {
         )
 }
 
-export const MensajePara = ({ultimo,name,txt,time,readed}:any) =>{
+export const MensajePara = ({de, para, ultimo,name,txt,time,readed}:any) =>{
     return (<>
             <Slide direction="up" in={true} mountOnEnter unmountOnExit>    
                 <div>
-                    <MensajeBase name={name} txt={txt} time={time} readed={readed} />
+                    <MensajeBase de={de} para={para} name={name} txt={txt} time={time} readed={readed} />
                 </div>
             </Slide>
         </>

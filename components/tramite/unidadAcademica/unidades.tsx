@@ -10,7 +10,9 @@ type Props = {
   unidadesAcademicas: TypeUnidadesAcademicas[]
 }
 
-const icon = <Image src={IconUni} width={60} height={60} />
+const icon = <Image
+  placeholder='blur' 
+  blurDataURL={IconUni.blurDataURL} src={IconUni} width={60} height={60} />
 const colores = [
   {
       iconForeground: 'text-teal-700',

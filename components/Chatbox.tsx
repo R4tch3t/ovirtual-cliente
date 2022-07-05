@@ -23,6 +23,7 @@ import Fade from "@mui/material/Fade";
 import { MensajeCargando } from './MensajesCargando'
 import { grabarMensajeGQL, obtenerChatGQL, TipoNuevoMsj, upReadGQL } from '../apollo-cliente/chat'
 import client from '../apollo-cliente'
+import Image from 'next/image'
 const moods = [
     { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
     { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-white', bgColor: 'bg-pink-400' },
@@ -45,7 +46,10 @@ const [selected, setSelected] = useState(moods[5]);
 const [mensaje, setMensaje] = useState('');
 const [cargandoMsjs, setCargandoMsjs] = useState(false);
 const {socket}:any = useSocketContext();
-const {auth}:any = useAppContext();
+const {auth} = useAppContext();
+const localFoto = localStorage.getItem('fotoPerfil') 
+const imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
+      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
 
 const onChange = ({target}:any) => {
   bandChange=true
@@ -64,7 +68,7 @@ const keyUp = () => {
   if(bandChange) return;
   socket.emit('writingUp',
   {
-    de:auth.id,
+    de:auth?.id!,
     para:chatState.chatActivo.id,
     usuarios: chatState.usuarios
   }
@@ -74,7 +78,7 @@ const keyUp = () => {
 const keyDown = () => {
   socket.emit('writingDown',
   {
-    de:auth.id,
+    de:auth?.id!,
     para:chatState.chatActivo.id,
     usuarios: chatState.usuarios
   }
@@ -88,7 +92,7 @@ const onSubmit=async(e:any)=>{
 
   let nuevoMsj: TipoNuevoMsj = 
   {
-    de:auth.id!,
+    de:auth?.id!,
     para:chatState.chatActivo.id!,
     readed: false!,
     mensaje:mensaje!
@@ -104,14 +108,14 @@ const onSubmit=async(e:any)=>{
 
 const handleReaded = async() => {  
   const {id} = chatActivo
-  const resp = await upReadGQL(id,auth.id)
+  const resp = await upReadGQL(id,auth?.id!)
 
   if(resp){
     await client.cache.reset()
     socket.emit("getUsuarios");
     
     socket.emit("recargarChat",{
-      de:auth.id,
+      de:auth?.id!,
       para:chatState.chatActivo.id,
     });
         
@@ -130,7 +134,7 @@ const onScroll:TypeScroll = async (event)=>{
     setCargandoMsjs(!chatState.topeMsjs);
     
     event.preventDefault();
-    const resp = await obtenerChatGQL(auth.id,chatState.chatActivo.id,skip,take)
+    const resp = await obtenerChatGQL(auth?.id!,chatState.chatActivo.id,skip,take)
     setCargandoMsjs(false);
     dispatch({
         type: types.paginarMensajes,
@@ -150,7 +154,7 @@ if(!chatActivo.id){
   );
 }else{
   const nombreDe = chatState.chatActivo.alumno ? chatState.chatActivo.alumno.nomentalu : chatState.chatActivo.nombre
-  const nombrePara = auth.usuario?(auth.usuario.alumno?auth.usuario.alumno.nomentalu:auth.usuario.nombre):null 
+  const nombrePara = auth?.usuario?(auth.usuario.alumno?auth.usuario.alumno.nomentalu:auth.usuario.nombre):null 
   return (<>
     <div className='h-full chatBoxMain' onMouseUp={handleReaded} >
       {!chatState.mensajes.length && !chatState.cargando &&
@@ -168,9 +172,9 @@ if(!chatActivo.id){
         <div id='chatBox' className='h-full w-full chatBox mainFlow' onScroll={onScroll}  >
           
           {chatState.mensajes.map((msj:any,i:any)=>{
-            return(((msj.para===auth.id) ?
-                <MensajeDe key={msj.id} ultimo={i===0} name={nombreDe} txt={msj.mensaje} time={msj.time} />: 
-                <MensajePara key={msj.id} ultimo={i===0} name={nombrePara} txt={msj.mensaje} time={msj.time} 
+            return(((msj.para===auth?.id!) ?
+                <MensajeDe key={msj.id} de={msj.id} ultimo={i===0} name={nombreDe} txt={msj.mensaje} time={msj.time} />: 
+                <MensajePara key={msj.id} de={msj.id} para={msj.para} ultimo={i===0} name={nombrePara} txt={msj.mensaje} time={msj.time} 
                   readed={(0===i&&msj.readed)?'S':(!msj.readed?'N':null)} 
                 />)) 
           })}
@@ -180,11 +184,16 @@ if(!chatActivo.id){
         
     <div className="flex items-start space-x-4 w-full"  >
       <div className="flex-shrink-0">
-        <img
-          className="inline-block h-10 w-10 rounded-full"
-          src="https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg"
-          alt=""
-        />
+        <div className="inline-block h-10 w-10 rounded-full" >
+          <Image
+            className="inline-block h-10 w-10 rounded-full"
+            width={'100%'} height={'100%'}  
+            placeholder='blur' 
+            blurDataURL={imageUrl}
+            src={imageUrl}
+            alt=""
+          />
+        </div>
       </div>
       <div className="min-w-0 flex-1" >
       <form  className="relative" onSubmit={onSubmit} >

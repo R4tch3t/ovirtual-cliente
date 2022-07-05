@@ -167,6 +167,7 @@ const Login: NextPage = () => {
                   </div>
                 </form>
     
+                {/*ocultar durante inscripcion
                 <div className="mt-6">
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -236,7 +237,8 @@ const Login: NextPage = () => {
                     </div>
 
                   </div>
-                </div>
+                </div>*/}
+
               </div>
             </div>
           </div>}

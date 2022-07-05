@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 import { useAppContext } from '../../auth/authContext'; 
@@ -9,10 +10,12 @@ const Home:FC = ({children}) => {
         name: auth.usuario?auth.usuario.alumno.nomentalu:null,
         email: auth.email,
         role: 'Alumno(a)',
-        imageUrl:
-        "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
+        imageUrl:'',
     }
     
+    const localFoto = localStorage.getItem('fotoPerfil') 
+    user.imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
+      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
     
       const stats = [
         { label: 'Vacation days left', value: 12 },
@@ -40,7 +43,15 @@ const Home:FC = ({children}) => {
                           <div className="sm:flex sm:items-center sm:justify-between">
                             <div className="sm:flex sm:space-x-5">
                               <div className="flex-shrink-0">
-                                <img className="mx-auto h-20 w-20 rounded-full" src={user.imageUrl} alt="" />
+                                <div className="mx-auto h-20 w-20 rounded-full" >
+                                  <Image 
+                                    className="mx-auto h-20 w-20 rounded-full"
+                                    width={'100%'}
+                                    height={'100%'}
+                                    placeholder='blur' 
+                                    blurDataURL={user.imageUrl}
+                                    src={user.imageUrl} alt="" />
+                                </div>
                               </div>
                               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                                 <p className="text-sm font-medium text-gray-600">Bienvenido(a),</p>
