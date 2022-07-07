@@ -16,7 +16,7 @@ const Home = () => {
 
     const localFoto = localStorage.getItem('fotoPerfil') 
     user.imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
-      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+      (localFoto?localFoto:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKxYfvIZ4RJ4x79EtaIcgNs8EgQTx2C3eG-w&usqp=CAU")
  
       const stats = [
         { label: /*'Vacation days left'*/'', value: /*0*/'' },

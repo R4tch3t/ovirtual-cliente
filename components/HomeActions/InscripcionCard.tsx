@@ -1,6 +1,6 @@
 import { Slide } from "@mui/material";
-import { Input, Loading, Spacer } from "@nextui-org/react";
-import { FC, useState } from "react";
+import { FormElement, Input, Loading, Spacer } from "@nextui-org/react";
+import { FC, KeyboardEventHandler, useState } from "react";
 import { PropsCard } from ".";
 import client from "../../apollo-cliente";
 import { actualizarEstadoGQL, consultaAspCURPGQL, consultaResultadoCenevalGQL } from "../../apollo-cliente/aspirante";
@@ -136,6 +136,17 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         
     }
 
+    const onKeyUp:KeyboardEventHandler<FormElement> = ({currentTarget}) => {
+        const {name} = currentTarget;
+        switch(name){
+            case 'curp':
+                currentTarget.value=currentTarget.value.toUpperCase()
+            break
+        }
+        
+    
+    }
+
     const onChange = async ({target}:any) =>{
         const {name, value} = target;
         switch(name){
@@ -187,7 +198,8 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 setFolioValido(valido?true:false)
             break;
             case 'curp':
-                valido = validarCURP(value)
+                
+                valido = validarCURP(value.toUpperCase())
 
                 if(valido){
                     setInputs({...inputs,[name]:{
@@ -354,8 +366,10 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                         <Input id='curpInscripcion' 
                             width={"100%"} 
                             name='curp'
+                           // onKeyUp={onKeyUp}
                             onChange={onChange}
                             clearable bordered labelPlaceholder="Ingresa tú CURP para continuar..." 
+                            style={{textTransform:'uppercase'}}
                             css={{
                                 '.nextui-input-helper-text':{fontSize: '$xs'},
                                 '.nextui-input-helper-text-container':{top:40}

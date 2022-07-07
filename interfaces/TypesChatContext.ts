@@ -17,7 +17,11 @@ export interface TypeChatState {
     usuarios: any[],
     mensajes: any[],
     cargando: boolean,
-    topeMsjs: boolean
+    topeMsjs: boolean,
+    skipUsuarios: number,
+    takeUsuarios: number,
+    totalUsuarios: number,
+    totalOnline: number
 }
 
 export interface TypeChatContext {

@@ -16,7 +16,7 @@ const nextConfig = {
     ];
   },*/
   images: {
-    domains: ['upload.wikimedia.org','ovirtual.uagro.mx'],
+    domains: ['upload.wikimedia.org','ovirtual.uagro.mx','encrypted-tbn0.gstatic.com'],
   },
   experimental: {
     outputStandalone: true,

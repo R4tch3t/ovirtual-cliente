@@ -1,11 +1,12 @@
 import { PaperClipIcon } from "@heroicons/react/outline"
 import { FC, useState, useEffect } from "react"
 import { useAppContext } from "../auth/authContext"
-import { Grid, Progress } from "@nextui-org/react";
+import { Grid, Progress, Spacer } from "@nextui-org/react";
 import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
 import { bajarArchivo, CatDocumentos, eliminarExpediente, subirArchivo } from '../helpers/expedientes';
 //import { useTramitesContext } from "../context/tramites/TramitesContext";
 import { TodosTramiteAlumnoInput, useTodosTramitesAlumno } from "../hooks/useQuery/tramites";
+import Warning from "./Warning";
 
 
 type Props = {
@@ -32,8 +33,16 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
 
     const toBase64:Base64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
+        console.log(file.size)
+        console.log('mb: ',(file.size/1000000))
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
+        reader.onload = () => {
+            if((file.size/1049000)<2.1){
+                resolve(reader.result);
+            }else{
+                resolve(false)
+            }
+        }
         reader.onerror = error => reject(error);
     });
 
@@ -43,6 +52,11 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
         let result:any = await toBase64(file).catch(e => e);
         if (result instanceof Error) {
             console.log('Error: ', result.message);
+            return;
+        }
+
+        if(!result){
+            console.log('Archivo no permitido')
             return;
         }
         
@@ -68,6 +82,13 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
 
     return (
         <div className="sm:col-span-2">
+
+            <Spacer y={1} />
+            <Warning msg="* No subas documentos en blanco, evita que tu trámite sea cancelado."/>
+            <Spacer y={0.7} />
+            <Warning msg="* El archivo es máximo de 2 MB y en formato PDF." />
+            <Spacer y={2} />
+            
             <input id="file-input" type="file" onChange={selectFile}  name="avatar" style={{display: 'none'}} />
             <dt className="text-sm font-medium text-gray-500">Documentos</dt>
             <dd className="mt-1 text-sm text-gray-900">

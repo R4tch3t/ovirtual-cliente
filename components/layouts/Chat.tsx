@@ -21,19 +21,17 @@ const Home = () => {
     
     const localFoto = localStorage.getItem('fotoPerfil') 
     user.imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
-      (localFoto?localFoto:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+      (localFoto?localFoto:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKxYfvIZ4RJ4x79EtaIcgNs8EgQTx2C3eG-w&usqp=CAU")
 
-    const {chatState}:any = useChatContext();
-    let onlineU = 0;
-    let listaU = chatState.usuarios.length;
-    listaU = listaU===0?0:listaU-1;
-    chatState.usuarios.filter((user:any)=>user.id!==auth.id).map((v:any)=>{
-      onlineU+=v.online??1
-    });
-    const offlineU=listaU-onlineU
+    const {chatState} = useChatContext();
+    const {totalUsuarios, totalOnline} = chatState
+    //let onlineU = totalConectados;
+    //let listaU = chatState.totalUsuarios;
+    
+    const offlineU=totalUsuarios-totalOnline
     const stats = [
-      { label: (listaU===1?'Usuario':'Usuarios')+' en lista', value: listaU },
-      { label: (onlineU === 1? 'Usuario conectado' : 'Usuarios conectados'), value: onlineU },
+      { label: (totalUsuarios===1?'Usuario':'Usuarios')+' en lista', value: totalUsuarios },
+      { label: (totalOnline === 1? 'Usuario conectado' : 'Usuarios conectados'), value: totalOnline },
       { label: (offlineU === 1? 'Usuario desconectado':'Usuarios desconectados'), value: offlineU },
     ]
 

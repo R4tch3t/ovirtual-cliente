@@ -14,7 +14,7 @@ type Props = {
 export const FeedItem:FC<Props> = ({user}) => {
     const {chatState, dispatch} = useChatContext()
     const {auth} = useAppContext()
-    const [avatar, setAvatar] = useState('https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png')
+    const [avatar, setAvatar] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKxYfvIZ4RJ4x79EtaIcgNs8EgQTx2C3eG-w&usqp=CAU')
     const onClick = async ({currentTarget}:any,user:any) => {
 
         dispatch({

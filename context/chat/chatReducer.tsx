@@ -11,12 +11,18 @@ export const chatReducer = (state:TypeChatState,action:TypeChatAction):TypeChatS
                     usuarios: [],
                     mensajes: [],
                     cargando: true,
-                    topeMsjs: false
+                    topeMsjs: false,
+                    skipUsuarios: 0,
+                    takeUsuarios: 30,
+                    totalUsuarios: 0,
+                    totalOnline: 0
                 }
             case types.usuariosCargados:
                 return {
                     ...state,
-                    usuarios: action.payload
+                    usuarios: action.payload.usuarios,
+                    totalUsuarios: action.payload.total,
+                    totalOnline: action.payload.totalConectados
                 }
             case types.activarChat:
                 if(state.chatActivo.id===action.payload.id){
@@ -65,6 +71,13 @@ export const chatReducer = (state:TypeChatState,action:TypeChatAction):TypeChatS
                 }else{
                     return {...state,topeMsjs:true}
                 }
+            case types.cambiarEstado:{
+                const {nombreVariable, valor} = action.payload
+                return {
+                    ...state,
+                    [nombreVariable]: valor
+                }
+            }
                             
             default: 
                 return state;

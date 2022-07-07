@@ -9,7 +9,7 @@ import { useChatContext } from "../context/chat/ChatContext";
 const MensajeBase = ({de,name,txt,time}:any)=>{
   const {chatState} = useChatContext()
   const date = spellDate(time);
-  const [avatar,setAvatar] = useState("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Avatar_icon_green.svg/480px-Avatar_icon_green.svg.png")
+  const [avatar,setAvatar] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKxYfvIZ4RJ4x79EtaIcgNs8EgQTx2C3eG-w&usqp=CAU")
   useEffect(()=>{
       getAvatarApollo(chatState?.chatActivo?.id!).then((avatar)=>{          
           setAvatar(avatar)

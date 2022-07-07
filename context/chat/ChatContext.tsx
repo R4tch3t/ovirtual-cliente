@@ -10,7 +10,11 @@ const initialState:TypeChatState = {
     usuarios: [],
     mensajes: [],
     cargando: true, 
-    topeMsjs: false//chat seleccionaado
+    topeMsjs: false,
+    skipUsuarios: 0,
+    takeUsuarios: 30,
+    totalUsuarios: 0,
+    totalOnline: 0//chat seleccionaado
 }
 
 const ChatProvider:FC = ({children})=>{

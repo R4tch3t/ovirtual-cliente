@@ -16,7 +16,7 @@ const SocketProvider = ({ children }:any) => {
 
     const { socket, online, conectarSocket, desconectarSocket } = useSocket(urlSocket);
     const {auth,logout} = useAppContext();
-    const {dispatch}:any = useChatContext();
+    const {chatState, dispatch} = useChatContext();
 
     useEffect(()=>{
         if(auth?.logged){
@@ -34,10 +34,10 @@ const SocketProvider = ({ children }:any) => {
 
     useEffect(()=>{
         socket?.on("getUsuarios",async ()=>{
-            const usuarios = await obtenerUsuariosGQL()
+            const {usuarios, total, totalConectados} = await obtenerUsuariosGQL(chatState.skipUsuarios,chatState.takeUsuarios)
             dispatch({
                 type: types.usuariosCargados,
-                payload: usuarios
+                payload: {usuarios,total,totalConectados}
             })
         })
     },[socket,dispatch]);

@@ -6,5 +6,6 @@ export const types = {
     cargarMensajes: "[Chat] Cargar mensajes",
     cerrarSesion: "[Chat] Cerrar sesion",
     animacion: "[Chat] Disparar animacion",
-    paginarMensajes: "[Chat] Paginar mensajes"
+    paginarMensajes: "[Chat] Paginar mensajes",
+    cambiarEstado: "[Chat] Cambiar variables del estado"
 }
