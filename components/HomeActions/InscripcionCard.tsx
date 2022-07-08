@@ -289,6 +289,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
 
     return (
         <>
+        
             <div>
             <ModalSuccess open={modalSR} setOpen={()=>{
                 setModalSR(false);
@@ -349,7 +350,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 </span>
             </div>
             <div className="mt-8">
-                <Info msg='Si accedes con android te recomendamos activar el modo "Sitio de escritorio" en tu navegador Web...' />
+                
                 <Spacer y={2} />
                 <h3 className="text-lg font-medium">
                 {/*<Link href={action.href} >*/}

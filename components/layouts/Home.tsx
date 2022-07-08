@@ -11,6 +11,8 @@ import Signup from '../Signup';
 import {LogoDae} from '../Logo'
 import HomeActions from '../HomeActions';
 import Image from 'next/image';
+import Info from '../Info';
+import { Spacer } from '@nextui-org/react';
   
 function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
@@ -157,7 +159,8 @@ const Home = () => {
                     </section>
     
                     <section aria-labelledby="quick-links-title">
-                      
+                    <Info msg='Si accedes con android te recomendamos activar el modo "Sitio de escritorio" en tu navegador Web...' />
+                    <Spacer y={1} />
                       {!auth?.logged &&
                         <HomeActions card='inscripciones' nCol={1} actions={actionsOne} />
                       }
