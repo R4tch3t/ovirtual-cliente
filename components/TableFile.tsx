@@ -33,8 +33,6 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
 
     const toBase64:Base64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
-        console.log(file.size)
-        console.log('mb: ',(file.size/1000000))
         reader.readAsDataURL(file);
         reader.onload = () => {
             if((file.size/1049000)<2.1){

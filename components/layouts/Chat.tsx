@@ -32,7 +32,7 @@ const Home = () => {
     const stats = [
       { label: (totalUsuarios===1?'Usuario':'Usuarios')+' en lista', value: totalUsuarios },
       { label: (totalOnline === 1? 'Usuario conectado' : 'Usuarios conectados'), value: totalOnline },
-      { label: (offlineU === 1? 'Usuario desconectado':'Usuarios desconectados'), value: offlineU },
+      { label: (offlineU === 1? 'Usuario desconectado':'Usuarios desconectados'), value: offlineU?offlineU:0 },
     ]
 
     const {logBand, btnHome} = state 

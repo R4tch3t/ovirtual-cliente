@@ -322,8 +322,6 @@ const PerfilLayout = () => {
           return 
         }
 
-        console.log('pass')
-
         let result:any = await toBase64(file).catch(e => e);
         if (result instanceof Error) {
             console.log('Error: ', result.message);

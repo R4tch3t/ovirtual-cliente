@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createContext } from 'react';
 import {useSocket} from '../hooks/useSocket'
 import { useAppContext } from '../auth/authContext';
@@ -8,6 +8,7 @@ import writingState from '../helpers/writingState';
 import { urlSocket } from '../variables/url';
 import { obtenerUsuariosGQL } from '../apollo-cliente/chat/obtenerUsuarios';
 import { obtenerChatGQL } from '../apollo-cliente/chat';
+import client from '../apollo-cliente';
 
 const SocketContext = createContext({});
 
@@ -16,7 +17,10 @@ const SocketProvider = ({ children }:any) => {
 
     const { socket, online, conectarSocket, desconectarSocket } = useSocket(urlSocket);
     const {auth,logout} = useAppContext();
-    const {chatState, dispatch} = useChatContext();
+    const {chatState,dispatch} = useChatContext();
+    const [changeDown, setChangeDown] = useState({band: false, de: 0})
+    const [changeUp, setChangeUp] = useState({band: false, de: 0})
+    const [changeUsersWithMsg, setChangeUsersWithMsg] = useState({band: false})
 
     useEffect(()=>{
         if(auth?.logged){
@@ -33,14 +37,32 @@ const SocketProvider = ({ children }:any) => {
     //Escuchar los cambios en los usuarios conectados
 
     useEffect(()=>{
+
         socket?.on("getUsuarios",async ()=>{
-            const {usuarios, total, totalConectados} = await obtenerUsuariosGQL(chatState.skipUsuarios,chatState.takeUsuarios)
-            dispatch({
-                type: types.usuariosCargados,
-                payload: {usuarios,total,totalConectados}
-            })
+            
+                setChangeUsersWithMsg({band: true})
+
         })
-    },[socket,dispatch]);
+    },[socket/*,dispatch*/]);
+
+    useEffect(()=>{
+        const {band} = changeUsersWithMsg
+        if(band){
+            //const {usuarios, total, totalConectados} = await obtenerUsuariosGQL(0,30)
+            setChangeUsersWithMsg({band: false})
+            const {skipUsuarios, takeUsuarios} = chatState
+            client.cache.reset().then(()=>{
+            obtenerUsuariosGQL(skipUsuarios,takeUsuarios)
+                .then(({usuarios, total, totalConectados})=>{                    
+                    dispatch({
+                        type: types.usuariosCargados,
+                        payload: {usuarios,total,totalConectados}
+                    })
+                })
+            })
+        }
+
+    },  [changeUsersWithMsg, chatState])
 
     //recargar mensajes del chat
     useEffect(()=>{
@@ -70,38 +92,57 @@ const SocketProvider = ({ children }:any) => {
             
         });
     },[socket,dispatch])
-
+    
     useEffect(()=>{
         
         socket?.on('writingDown',(payload:any)=>{
-            
-            let {usuarios} = payload;
-            usuarios = writingState(usuarios,payload.de,true);
-            dispatch({
-                type: types.usuariosCargados,
-                payload: usuarios
-            });
-            
+            setChangeDown({band: true, de: payload.de})
         });
 
-    },[socket,dispatch])
+    },[socket])
+
+    useEffect(()=>{
+        if(changeDown.band){
+            
+            let usuarios: any = []
+            const {de} = changeDown
+            setChangeDown({band: false, de: 0})
+
+            //usuarios = writingState(usuarios,de,true);            
+            usuarios = writingState(chatState!.usuarios,de,true);
+            dispatch({
+                type: types.usuariosCargados,
+                payload: {usuarios}
+            });
+
+        }
+    },[changeDown, chatState])
 
     useEffect(()=>{
         
         socket?.on('writingUp',(payload:any)=>{
-            
-            let {usuarios} = payload;
-            usuarios = writingState(usuarios,payload.de,false);
-            dispatch({
-                type: types.usuariosCargados,
-                payload: usuarios
-            });
-           
+            setChangeUp({band: true, de: payload.de})           
         });
         
-    },[socket,dispatch])
+    },[socket/*,dispatch*/])
 
-    
+    useEffect(()=>{
+        if(changeUp.band){
+            
+            let usuarios: any = []
+            
+            const {de} = changeUp
+            setChangeUp({band: false, de: 0})
+
+            usuarios = writingState(chatState!.usuarios,de,false);            
+
+            dispatch({
+                type: types.usuariosCargados,
+                payload: {usuarios}
+            });
+
+        }
+    },[changeUp, chatState])
 
     return (
         <SocketContext.Provider value={{ socket, online }}>

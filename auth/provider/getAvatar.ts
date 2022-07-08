@@ -8,17 +8,17 @@ export const getAvatarApollo = async (idUser:number) => {
       idUser,
       buffer: 0!
     }
-
+    
     let respDoc = await getAvatarGQL(user)
-    base64 += respDoc?.avatar.part64
+    base64 += respDoc?.avatar?.part64!
 
     const tipo = detectMimeType(base64)
     base64 = `data:${tipo};base64,${base64}`
-
+    
     while(!respDoc?.finalizado){
-        user.buffer=respDoc?.avatar.buffer!
+        user.buffer=respDoc?.avatar?.buffer!
         respDoc = await getAvatarGQL(user)
-        base64 += respDoc?.avatar.part64
+        base64 += respDoc?.avatar?.part64!
     }
 
     if(localStorage.getItem('fotoPerfil') !== base64){

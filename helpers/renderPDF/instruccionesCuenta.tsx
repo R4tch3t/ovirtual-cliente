@@ -95,7 +95,7 @@ class RenderPDF extends React.Component<Props> {
     const {dispatch} = this.state
     const titulo = `Instrucciones para activar cuenta - ${this.state!.nombre}`
     this.setState({ url: URL.createObjectURL(blob) });
-    console.log(blob)
+    
     let pdfWindow = window!.open(this.state.url!)!;
 
     const downloadLink = document.createElement("a");

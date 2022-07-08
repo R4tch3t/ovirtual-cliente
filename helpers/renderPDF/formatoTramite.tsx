@@ -316,7 +316,6 @@ class RenderPDF extends React.Component<Props> {
   onRender = async ({ blob }:any) => {
     const {titulo} = this.state!
     this.setState({ url: URL.createObjectURL(blob) });
-    console.log(blob)
     let pdfWindow = window!.open(this.state.url!)!;
 
     const downloadLink = document.createElement("a");

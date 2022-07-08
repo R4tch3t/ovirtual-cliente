@@ -53,9 +53,10 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
     const dataModalE = { 
         title: 'Error', 
         txt: "Error al actualizar asegurese de que sus datos sean correctos y que el correo sea exclusivamente suyo ó contacte a algún administrador.",
-        txt2: "Error al hacer la busqueda, aseguresé que la CURP seá suya...",
+        //txt2: "Error al hacer la busqueda, aseguresé que la CURP seá suya...",
         btn1: {txt:"Aceptar", onClose: setModalE} 
     }
+    const [txt2, setTxt2] = useState("Error al hacer la busqueda, aseguresé que la CURP seá suya...")
     const dataModalSR = { title: 'Éxito', txt: "El aspirante ya ha sido registrado...", btn1: {txt:"Aceptar"} }
   
     const [dataModal, setDataModal]: [TipoDataModal,any] = useState({
@@ -180,12 +181,19 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                         
 
                     }else{
+                        const {msg} = consultaResultadoCeneval
                         valido = false
                         setInputs({...inputs,[name]:{
                             color: 'error', 
                             helper: 'Folio Ceneval no autorizado...',
                             statusColor: 'error'
-                        }})
+                        }});
+                        if(msg==="El PLAN ID no coincide"){
+                            setTxt2(`Acude al departamento de administración escolar, 
+                                debido a que el Plan de Estudio en el que fuiste aceptado es 
+                                diferente con el Plan de Estudio al que te registraste...`)
+                            setModalE(true)
+                        }
                     }
                     setCargandoFolio(false)
                 }else{
@@ -263,6 +271,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
             
         }else{
             setCargando(false)
+            setTxt2("Error al hacer la busqueda, aseguresé que la CURP seá suya...")
             setModalE(true)
         }
 
@@ -279,7 +288,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 txt={dataModalSR.txt} btnTxt={dataModalSR.btn1.txt} />
 
             <ModalError open={modalE} setOpen={setModalE} title={dataModalE.title} 
-                            txt={dataModalE.txt2} btn1={dataModalE.btn1} />
+                            txt={txt2} btn1={dataModalE.btn1} />
                 
                 <ModalInscripcion open={open} 
                     setOpen={()=>{

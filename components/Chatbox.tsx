@@ -24,6 +24,7 @@ import { MensajeCargando } from './MensajesCargando'
 import { grabarMensajeGQL, obtenerChatGQL, TipoNuevoMsj, upReadGQL } from '../apollo-cliente/chat'
 import client from '../apollo-cliente'
 import Image from 'next/image'
+import useEffect from 'react';
 const moods = [
     { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
     { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-white', bgColor: 'bg-pink-400' },
@@ -51,6 +52,8 @@ const localFoto = localStorage.getItem('fotoPerfil')
 const imageUrl=auth?.usuario?.avatar! ? auth?.usuario?.avatar! : 
       (localFoto?localFoto:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKxYfvIZ4RJ4x79EtaIcgNs8EgQTx2C3eG-w&usqp=CAU")
 
+
+
 const onChange = ({target}:any) => {
   bandChange=true
   keyDown()
@@ -66,11 +69,11 @@ const changeBand = () => {
 
 const keyUp = () => {
   if(bandChange) return;
+
   socket.emit('writingUp',
   {
     de:auth?.id!,
     para:chatState.chatActivo.id,
-    usuarios: chatState.usuarios
   }
   );
 }
@@ -79,8 +82,7 @@ const keyDown = () => {
   socket.emit('writingDown',
   {
     de:auth?.id!,
-    para:chatState.chatActivo.id,
-    usuarios: chatState.usuarios
+    para:chatState.chatActivo.id
   }
   );
 }
@@ -100,15 +102,17 @@ const onSubmit=async(e:any)=>{
 
   
   const socketMsj = await grabarMensajeGQL(nuevoMsj)
-  socket.emit('mensaje-personal',{socketMsj});
+  socket.emit('mensaje-personal',{
+    socketMsj
+  });
   
 
   setMensaje('');
 }
 
 const handleReaded = async() => {  
-  const {id} = chatActivo
-  const resp = await upReadGQL(id,auth?.id!)
+  const {id} = chatActivo!
+  const resp = await upReadGQL(id!,auth?.id!)
 
   if(resp){
     await client.cache.reset()
@@ -134,7 +138,7 @@ const onScroll:TypeScroll = async (event)=>{
     setCargandoMsjs(!chatState.topeMsjs);
     
     event.preventDefault();
-    const resp = await obtenerChatGQL(auth?.id!,chatState.chatActivo.id,skip,take)
+    const resp = await obtenerChatGQL(auth?.id!,chatState?.chatActivo?.id!,skip,take)
     setCargandoMsjs(false);
     dispatch({
         type: types.paginarMensajes,
@@ -153,7 +157,7 @@ if(!chatActivo.id){
     </div>
   );
 }else{
-  const nombreDe = chatState.chatActivo.alumno ? chatState.chatActivo.alumno.nomentalu : chatState.chatActivo.nombre
+  const nombreDe = chatState?.chatActivo?.alumno! ? chatState.chatActivo.alumno.nomentalu : chatState.chatActivo.nombre
   const nombrePara = auth?.usuario?(auth.usuario.alumno?auth.usuario.alumno.nomentalu:auth.usuario.nombre):null 
   return (<>
     <div className='h-full chatBoxMain' onMouseUp={handleReaded} >

@@ -18,11 +18,17 @@ export const chatReducer = (state:TypeChatState,action:TypeChatAction):TypeChatS
                     totalOnline: 0
                 }
             case types.usuariosCargados:
+                if(action.payload.total){
+                    return {
+                        ...state,
+                        usuarios: action.payload.usuarios,
+                        totalUsuarios: action.payload.total,
+                        totalOnline: action.payload.totalConectados
+                    }
+                }
                 return {
                     ...state,
                     usuarios: action.payload.usuarios,
-                    totalUsuarios: action.payload.total,
-                    totalOnline: action.payload.totalConectados
                 }
             case types.activarChat:
                 if(state.chatActivo.id===action.payload.id){
