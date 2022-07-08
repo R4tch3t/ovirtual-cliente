@@ -482,7 +482,7 @@ const PerfilLayout = () => {
                             className="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12"
                             aria-hidden="true"
                           >
-                            <div className="flex items-center rounded-full h-full w-full" >
+                            <div className="flex items-center rounded-full h-full w-full overflow-hidden" >
                               <ImageNext 
                                 className="flex items-center rounded-full h-full w-full"
                                 width={'100%'}
@@ -517,7 +517,7 @@ const PerfilLayout = () => {
 
                       <div className="hidden relative rounded-full overflow-hidden lg:block">
                         
-                        <div className="rounded-full w-40 h-40" style={{filter: (cargandoFoto?"blur(4px)":'')}} >
+                        <div className="rounded-full w-40 h-40 overflow-hidden" style={{filter: (cargandoFoto?"blur(4px)":'')}} >
                           
                             <ImageNext 
                               

@@ -53,7 +53,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
 
   return (
     <PaginaTramite tramite={props.tramite} >
-      <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
+      <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-2 sm:grid sm:grid-cols-1 sm:gap-px">
             <div className='relative bg-white p-6' >
               <TramiteTabs tramite={props.tramite} tabID={0} />
               <TableTramite head={head} body={body} />

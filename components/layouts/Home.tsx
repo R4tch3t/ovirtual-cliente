@@ -105,7 +105,7 @@ const Home = () => {
                           <div className="sm:flex sm:items-center sm:justify-between">
                             <div className="sm:flex sm:space-x-5">
                               <div className="flex-shrink-0">
-                                <div className="mx-auto h-20 w-20 rounded-full" >
+                                <div className="mx-auto h-20 w-20 rounded-full overflow-hidden"  >
                                   <Image 
                                     className="mx-auto h-20 w-20 rounded-full"
                                     width={'100%'}

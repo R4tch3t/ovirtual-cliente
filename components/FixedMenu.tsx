@@ -62,7 +62,7 @@ const FixedMenu:FC<Props> = ({user,link,userNavigation,navigation}) => {
                               <div>
                                 <Menu.Button className="bg-white rounded-full flex text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                                   <span className="sr-only">Open user menu</span>
-                                  <div className="h-8 w-8 rounded-full" >
+                                  <div className="h-8 w-8 rounded-full overflow-hidden" >
                                     <Image 
                                       className="h-8 w-8 rounded-full" 
                                       width={'100%'} height={'100%'}  
@@ -214,7 +214,7 @@ const FixedMenu:FC<Props> = ({user,link,userNavigation,navigation}) => {
                                             <div className="pt-4 pb-2">
                                             <div className="flex items-center px-5">
                                                 <div className="flex-shrink-0">
-                                                <div className="h-10 w-10 rounded-full" >
+                                                <div className="h-10 w-10 rounded-full overflow-hidden" >
                                                   <Image 
                                                     //className="h-10 w-10 rounded-full"
                                                     width={'100%'}

@@ -55,14 +55,14 @@ const Home = () => {
                           <div className="sm:flex sm:items-center sm:justify-between">
                             <div className="sm:flex sm:space-x-5">
                               <div className="flex-shrink-0">
-                                <div className="mx-auto h-20 w-20 rounded-full" >
-                                  <Image 
+                                <div className="mx-auto h-20 w-20 rounded-full overflow-hidden" >
+                                   <Image 
                                     className="mx-auto h-20 w-20 rounded-full"
                                     width={'100%'}
                                     height={'100%'}
                                     placeholder='blur' 
                                     blurDataURL={user.imageUrl}
-                                    src={user.imageUrl} alt="" />
+                                    src={user.imageUrl} alt="FotoChat" />
                                 </div>
                               </div>
                               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">

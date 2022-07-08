@@ -188,7 +188,7 @@ if(!chatActivo.id){
         
     <div className="flex items-start space-x-4 w-full"  >
       <div className="flex-shrink-0">
-        <div className="inline-block h-10 w-10 rounded-full" >
+        <div className="inline-block h-10 w-10 rounded-full overflow-hidden" >
           <Image
             className="inline-block h-10 w-10 rounded-full"
             width={'100%'} height={'100%'}  

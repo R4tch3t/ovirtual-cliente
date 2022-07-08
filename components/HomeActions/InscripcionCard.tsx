@@ -14,6 +14,16 @@ import { ModalInscripcion } from "../ModalInscripcion";
 import { ModalSuccess } from "../ModalSucces";
 import { ModalWarning } from "../ModalWarning";
 
+const advertenciaCURP = (curp:string) => 
+    `La CURP que estas ingresando es diferente a la 
+    que ingresaste en tu proceso de registro. 
+    Comunícate en la escuela donde emitieron tu folio 
+    CENEVAL para que verifiquen y actualicen tus datos de ser 
+    necesario. O al Departamento de Educación Superior y 
+    posgrado a través del correo: nivelsuperior@uagro.mx 
+    describiendo tu problemática, anexando captura de imagen 
+    del error que emite el sistema, CURP y folio ceneval.`
+
 function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
@@ -235,7 +245,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         const campoFolio:any = document.getElementById('folioInscripcion')
         const campoCurp:any = document.getElementById('curpInscripcion')
         const consultaAspRegistro = await consultaAspCURPGQL({ folio: parseInt(campoFolio.value!),curp: campoCurp.value })
-        const {respAspCurp} = consultaAspRegistro
+        const {respAspCurp, CURP} = consultaAspRegistro
         
 
         if(respAspCurp){
@@ -271,7 +281,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
             
         }else{
             setCargando(false)
-            setTxt2("Error al hacer la busqueda, aseguresé que la CURP seá suya...")
+            setTxt2(advertenciaCURP(CURP!))
             setModalE(true)
         }
 
@@ -339,6 +349,8 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 </span>
             </div>
             <div className="mt-8">
+                <Info msg='Si accedes con android te recomendamos activar el modo "Sitio de escritorio" en tu navegador Web...' />
+                <Spacer y={2} />
                 <h3 className="text-lg font-medium">
                 {/*<Link href={action.href} >*/}
                     {/*<a  className="focus:outline-none">*/}                                

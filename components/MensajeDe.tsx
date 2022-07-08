@@ -26,7 +26,7 @@ const MensajeBase = ({de,name,txt,time}:any)=>{
           </div>
         </div>
         <div className="ml-4 flex-shrink-0">
-          <div className="inline-block h-9 w-9 rounded-full" >
+          <div className="inline-block h-9 w-9 rounded-full overflow-hidden" >
             <Image
               className="inline-block h-9 w-9 rounded-full"
               width={'100%'}

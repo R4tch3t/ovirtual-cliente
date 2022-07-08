@@ -44,7 +44,7 @@ const Home = () => {
                           <div className="sm:flex sm:items-center sm:justify-between">
                             <div className="sm:flex sm:space-x-5">
                               <div className="flex-shrink-0">
-                                <div className="mx-auto h-20 w-20 rounded-full" >
+                                <div className="mx-auto h-20 w-20 rounded-full overflow-hidden" >
                                   <Image 
                                     className="mx-auto h-20 w-20 rounded-full"
                                     width={'100%'}
@@ -99,7 +99,7 @@ const Home = () => {
                     <section aria-labelledby="quick-links-title">
                     
                     
-                      <div className="rounded-lg tramiteDiv bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
+                      <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
                         <div className='relative bg-white p-6' >
                           
                             <TramitesPrincipales />

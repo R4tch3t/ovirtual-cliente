@@ -1,6 +1,7 @@
 const validarCURP = (curp:string) => {
+    //CURP Extranjera
     if(curp.length===18){
-        if(curp[10]==='N' && curp[11] === 'E'){
+        if(curp[11]==='N' && curp[12] === 'E'){
             return true
         }
     }

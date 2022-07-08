@@ -5,6 +5,7 @@ interface Query {
     consultaAspCURP: {
         respAspCurp: boolean,
         resultadoAspRegistro: TipoResultadoAspRegistro | null,
+        CURP: string|null,
         msg: string|null,        
     }
 }
@@ -101,6 +102,7 @@ export const consultaAspCURPGQL = async (registroCeneval:InputRegistroCeneval) =
                     STATUS
                 }
                 msg
+                CURP
             }
         }
         `,

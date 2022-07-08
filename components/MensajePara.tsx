@@ -27,7 +27,7 @@ const MensajeBase = ({de,para,name,txt,time,readed}:any) => {
         <div className='chatDivPara' >
             <div className="sm:flex msjPara relative">
                 <div className="mb-4 flex-shrink-0 sm:mb-0 sm:mr-4">
-                    <div className="inline-block h-9 w-9 rounded-full" >                    
+                    <div className="inline-block h-9 w-9 rounded-full overflow-hidden" >                    
                         <Image
                             className="inline-block h-9 w-9 rounded-full"
                             width={'100%'}
@@ -50,7 +50,7 @@ const MensajeBase = ({de,para,name,txt,time,readed}:any) => {
                 {readed==='S'&&
                 
                 <Slide direction="down" in={true} mountOnEnter unmountOnExit>   
-                    <div className="absolute top-0 right-0 block h-4 w-4 rounded-full ring-2 ring-green-400 rounded-full" >                 
+                    <div className="absolute top-0 right-0 block h-4 w-4 rounded-full ring-2 ring-green-400 rounded-full overflow-hidden" >                 
                         <Image
                             width={'100%'}
                             height={'100%'}

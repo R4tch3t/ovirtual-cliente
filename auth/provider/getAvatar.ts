@@ -21,9 +21,5 @@ export const getAvatarApollo = async (idUser:number) => {
         base64 += respDoc?.avatar?.part64!
     }
 
-    if(localStorage.getItem('fotoPerfil') !== base64){
-      localStorage.setItem('fotoPerfil',base64)
-    }
-
     return base64
 }

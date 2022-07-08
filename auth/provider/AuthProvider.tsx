@@ -301,6 +301,9 @@ export const AuthProvider: FC = ({ children }) => {
         
         const {usuario} = auth! 
         getAvatarApollo(idUser)!.then((avatar)=>{
+            if(localStorage.getItem('fotoPerfil') !== avatar){
+                localStorage.setItem('fotoPerfil',avatar)
+            }
             setAuth({...auth,
                 usuario:{
                     ...usuario!,
