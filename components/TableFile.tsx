@@ -268,7 +268,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                         </div>
                     }
 
-                    {m.expedienteId===null &&
+                    {m.expedienteId===null && !m.cargado &&
                         <div className="ml-4 flex-shrink-0 flex space-x-4">
                             <button
                             type="button"

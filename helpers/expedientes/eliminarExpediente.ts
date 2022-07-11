@@ -23,6 +23,7 @@ export const eliminarExpediente = async (
 
     await client.cache.reset()
     await eliminarDocumentoGQL(expediente)
+    
     setEliminando(id)
     
 }

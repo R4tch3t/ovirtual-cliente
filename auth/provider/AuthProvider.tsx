@@ -285,7 +285,9 @@ export const AuthProvider: FC = ({ children }) => {
     const eliminarExpedienteAuth:TypeEliminarExpediente = (id) => {
         
             const {usuario} = auth! 
-            const filterExp = usuario?.expediente?.filter((e)=>{return e.id!==id})
+            const findExp = usuario?.expediente?.find((f)=>{ return f.id===id })
+            const {documentoId} = findExp!
+            const filterExp = usuario?.expediente?.filter((e)=>{return e.documentoId!==documentoId})
             setAuth({...auth,
                 usuario:{
                     ...usuario!,
