@@ -18,6 +18,7 @@ import { Slide } from '@mui/material'
 import FixedMenu from '../components/FixedMenu'
 import client from '../apollo-cliente'
 import Image from 'next/image'
+import { NotiMensaje } from '../components/Notificaciones'
 
 
 
@@ -90,9 +91,10 @@ export const Home: NextPage<Props> = ({children, link}) => {
           {auth?.logged&&
             <>
               <VincularOauth />          
-              <Resentemail />
+              <Resentemail />              
             </>
           }
+          
           <div className="min-h-full">
             <Popover as="header" className="pb-24 bg-gradient-to-r from-uagrojo to-uagrojo">
               {({ open }) => (

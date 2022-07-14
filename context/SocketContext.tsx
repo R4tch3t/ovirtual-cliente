@@ -9,6 +9,7 @@ import { urlSocket } from '../variables/url';
 import { obtenerUsuariosGQL } from '../apollo-cliente/chat/obtenerUsuarios';
 import { obtenerChatGQL } from '../apollo-cliente/chat';
 import client from '../apollo-cliente';
+import { Notificacion, NotiMensaje } from '../components/Notificaciones';
 
 const SocketContext = createContext({});
 
@@ -21,6 +22,8 @@ const SocketProvider = ({ children }:any) => {
     const [changeDown, setChangeDown] = useState({band: false, de: 0})
     const [changeUp, setChangeUp] = useState({band: false, de: 0})
     const [changeUsersWithMsg, setChangeUsersWithMsg] = useState({band: false})
+    const [newNotiMsj, setNewNotiMsj]:any = useState({band: false})
+    const [notisMsj, setNotisMsj] = useState([])
 
     useEffect(()=>{
         if(auth?.logged){
@@ -85,6 +88,8 @@ const SocketProvider = ({ children }:any) => {
     useEffect(()=>{
         socket?.on('mensaje-personal',(mensaje:any)=>{
             
+            setNewNotiMsj({band: true, mensaje})
+
             dispatch({
                 type: types.nuevoMensaje,
                 payload: mensaje
@@ -92,6 +97,25 @@ const SocketProvider = ({ children }:any) => {
             
         });
     },[socket,dispatch])
+
+    useEffect(()=>{
+        if(newNotiMsj.band){
+            const {mensaje} = newNotiMsj!
+            if(auth?.id! !== mensaje.de){
+                const newsNotiMsj:any = []
+                notisMsj.map((o:any)=>{
+                    if(o.time!==mensaje.time){
+                        newsNotiMsj.push({...o})
+                    }
+                })
+                newsNotiMsj.push({...mensaje})
+                
+                setNotisMsj(newsNotiMsj)
+            }
+            setNewNotiMsj({band: false})
+
+        }
+    },[notisMsj, newNotiMsj, chatState])
     
     useEffect(()=>{
         
@@ -145,9 +169,21 @@ const SocketProvider = ({ children }:any) => {
     },[changeUp, chatState])
 
     return (
-        <SocketContext.Provider value={{ socket, online }}>
-            { children }
-        </SocketContext.Provider>
+        <>
+            <Notificacion >
+                {notisMsj.map(({nombre,mensaje,de},i)=>{
+                    return <NotiMensaje 
+                                nombre={nombre} 
+                                mensaje={mensaje} 
+                                de={de}
+                                key={'notiMsj'+i} 
+                            />
+                })}
+            </Notificacion>
+            <SocketContext.Provider value={{ socket, online }}>
+                { children }
+            </SocketContext.Provider>
+        </>
     )
 }
 

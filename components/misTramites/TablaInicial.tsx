@@ -215,7 +215,7 @@ const TablaInicial = () => {
                           </p>
                           <p className={`mt-2 text-sm 
                             ${
-                              tramiteAlumno.estadoId===5?'text-green-500':
+                              (tramiteAlumno.estadoId===5||tramiteAlumno.estadoId===6)?'text-green-500':
                               (tramiteAlumno.estadoId===4?'text-yellow-500':
                               (tramiteAlumno.estadoId===7?'text-red-600':'text-gray-500'))
                             } 
@@ -228,7 +228,7 @@ const TablaInicial = () => {
                             { (tramiteAlumno.estadoId===7) &&
                               <ExclamationIcon className="inline h-5 w-5 text-red-600" aria-hidden="true" />
                             }
-                            { tramiteAlumno.estadoId===5 &&
+                            { (tramiteAlumno.estadoId===5||tramiteAlumno.estadoId===6) &&
                               <CheckCircleIcon className="inline h-5 w-5 text-green-400" aria-hidden="true" />
                             }
                           </p>

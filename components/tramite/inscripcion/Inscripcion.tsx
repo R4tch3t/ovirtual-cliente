@@ -49,9 +49,10 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   
   useEffect(()=>{
     let bandEffect = true // | inscripcion?.validoParaTramitar!
+      
       mapDocInit.map(doc=>{
 
-        const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
+        const findDoc = auth?.usuario?.expediente?.find((e)=>{return (e.id===doc?.expedienteId!||e.documentoId===doc.id)})
         bandEffect = findDoc?.validado!<3 && bandEffect 
         setBtnDis(bandEffect)
         
@@ -61,9 +62,9 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   
 
   useEffect(()=>{
-    if(btnDis){
+    if(btnDis){      
       if(data?.obtenerTramitesAlumno !== undefined){
-        if(data?.obtenerTramitesAlumno?.estadoId === 4){
+        if(data?.obtenerTramitesAlumno?.estadoId === 4){       
           estadoRevisionGQL(data?.obtenerTramitesAlumno?.id)
         }
       }
@@ -112,6 +113,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   useEffect(()=>{
     
     if(vwAspirante&&!inscripcion){
+      
       const {ID_PLAN, PLANESTUDIOS, UA} = vwAspirante!
       dispatch({
         type: types.seleccionarPlanProcedure,
@@ -180,20 +182,22 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
           </dl>
         </div>
 
-        {data?.obtenerTramitesAlumno?.estadoId! === 5 && 
+        {data?.obtenerTramitesAlumno?.estadoId! === 6 && 
           <div 
             className='chatDivCargando' >
-              <div
+              <a
+                target={'_blank'}
+                href={`https://die.uagro.mx/frontend/servicios/inscripcion/${data?.obtenerTramitesAlumno?.id!}/pdf`}
                 className='cursor-pointer text-center'
                 style={{width: 200}}
-                onMouseEnter={()=>{setVerPDF(false)}}
-                onMouseDown={()=>{setVerPDF(true)}}               
+                //onMouseEnter={()=>{setVerPDF(false)}}
+                //onMouseDown={()=>{setVerPDF(true)}}               
               >
                 
                   <PDFLogo width={50} height={50} />
                   <p className="mt-1 text-sm text-gray-500">Ver Trámite en PDF.</p>
                 
-              </div>
+              </a>
           </div>
         }
 

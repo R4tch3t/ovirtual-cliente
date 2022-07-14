@@ -103,7 +103,10 @@ const onSubmit=async(e:any)=>{
   
   const socketMsj = await grabarMensajeGQL(nuevoMsj)
   socket.emit('mensaje-personal',{
-    socketMsj
+    socketMsj: {
+      ...socketMsj,
+      nombre: auth?.usuario?.alumno?.nomentalu!
+    }
   });
   
 

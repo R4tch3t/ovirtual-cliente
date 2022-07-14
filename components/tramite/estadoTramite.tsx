@@ -45,7 +45,7 @@ const EstadoTramite:FC<Props> = ({estadoId}) => {
                     href={step.href}
                     className={`pl-4 py-2 flex flex-col border-l-4 
                       ${estadoId===4?'border-yellow-500':
-                      (estadoId===5?'border-green-600':
+                      ((estadoId===5||estadoId===6)?'border-green-600':
                       estadoId===7?'border-red-600':'border-indigo-600')} 
                       md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4`}
                     aria-current="step"
@@ -56,7 +56,7 @@ const EstadoTramite:FC<Props> = ({estadoId}) => {
                     { (estadoId===7) &&
                       <ExclamationIcon className="h-5 w-5 text-red-600" aria-hidden="true" />
                     }
-                    { estadoId===5 &&
+                    { (estadoId===5 || estadoId===6) &&
                       <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
                     }
                     <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase">{step.id}</span>
