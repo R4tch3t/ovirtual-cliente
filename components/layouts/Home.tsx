@@ -159,7 +159,7 @@ const Home = () => {
                     </section>
     
                     <section aria-labelledby="quick-links-title">
-                    <Info msg='Si accedes con android te recomendamos activar el modo "Sitio de escritorio" en tu navegador Web...' />
+                    <Info msg='Si accedes con un dispositivo móvil te recomendamos activar el modo "Sitio de escritorio" en tu navegador Web...' />
                     <Spacer y={1} />
                       {!auth?.logged &&
                         <HomeActions card='inscripciones' nCol={1} actions={actionsOne} />

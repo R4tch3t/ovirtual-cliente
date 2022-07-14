@@ -195,25 +195,30 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
               >
                 
                   <PDFLogo width={50} height={50} />
-                  <p className="mt-1 text-sm text-gray-500">Ver Trámite en PDF.</p>
+                  <p className="mt-1 text-sm text-gray-500">Descarga tu comprobante de inscripción</p>
                 
               </a>
+              
+              <button
+                type="button"
+                style={{width: 300}}
+                className="mt-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+              >
+                <a
+                  target={'_blank'}
+                  href={``}
+                  className='cursor-pointer text-center'
+                  style={{width: 200}}
+                >
+                
+                  <p className="mt-1 text-sm text-white-500">Contesta la encuesta de satisfacción</p>
+                
+                </a>
+              </button>
           </div>
         }
 
-        {verPDF && 
-          <RenderPDF 
-              tramiteId={tramiteId}
-              titulo='Inscripcion' 
-              matricula={retornarPrimerMat(auth?.usuario?.matricula!)} 
-              nombre={auth?.usuario?.alumno.nomentalu}
-              apellidos={auth?.usuario?.alumno?.apeentalu!}
-              fechaCreacion={data?.obtenerTramitesAlumno?.fechaCreacion}
-              unidadAcademica={tramitesState.procedimientos.inscripcion?.unidadAcademica}
-              planEstudios={tramitesState.procedimientos.inscripcion?.planElegido}
-              datosTramite={data?.obtenerTramitesAlumno?.datosTramite!}
-          />
-        }
+        
 
           {!data?.obtenerTramitesAlumno &&
             <div className="mt-4 py-4 px-4 flex justify-end sm:px-12">
