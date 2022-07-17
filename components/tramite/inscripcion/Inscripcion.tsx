@@ -190,6 +190,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
                 href={`https://die.uagro.mx/frontend/servicios/inscripcion/${data?.obtenerTramitesAlumno?.id!}/pdf`}
                 className='cursor-pointer text-center'
                 style={{width: 200}}
+                rel='noreferrer'
                 //onMouseEnter={()=>{setVerPDF(false)}}
                 //onMouseDown={()=>{setVerPDF(true)}}               
               >
@@ -209,6 +210,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
                   href={``}
                   className='cursor-pointer text-center'
                   style={{width: 200}}
+                  rel='noreferrer'
                 >
                 
                   <p className="mt-1 text-sm text-white-500">Contesta la encuesta de satisfacción</p>
