@@ -19,6 +19,7 @@ import FixedMenu from '../components/FixedMenu'
 import client from '../apollo-cliente'
 import Image from 'next/image'
 import { NotiMensaje } from '../components/Notificaciones'
+import { NotiIcon } from '../components/Bell'
 
 
 
@@ -57,7 +58,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
     let navigation = [
         { name: 'Inicio', href: '/', current: link==="Inicio" },
         { name: 'Perfil', href: '/perfil', current: link==="Perfil" },
-        { name: 'Chat en linea', href: '/chat', current: link==="Chat" },
+        { name: 'Chat en línea', href: '/chat', current: link==="Chat" },
         { name: 'Trámites', href: '/tramites', current: link==="Tramites" },
     ];
 
@@ -112,13 +113,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
                       </div>
                           
                       <div className="hidden lg:ml-4 lg:flex lg:items-center lg:py-5 lg:pr-0.5">
-                        <button
-                          type="button"
-                          className="flex-shrink-0 p-1 text-cyan-200 rounded-full hover:text-white hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-white"
-                        >
-                          <span className="sr-only">View notifications</span>
-                          <BellIcon className="h-6 w-6" aria-hidden="true" />
-                        </button>
+                        <NotiIcon />
                             
                         <Menu as="div" className="ml-4 relative flex-shrink-0">
                           <div>
@@ -295,13 +290,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
                                   <div className="text-base font-medium text-gray-800 truncate">{user.name}</div>
                                   <div className="text-sm font-medium text-gray-500 truncate">{user.email}</div>
                                 </div>
-                                <button
-                                  type="button"
-                                  className="ml-auto flex-shrink-0 bg-white p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                                >
-                                  <span className="sr-only">View notifications</span>
-                                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                </button>
+                                <NotiIcon />
                               </div>
                               <div className="mt-3 px-2 space-y-1">
                                 {userNavigation.map((item) => (

@@ -9,33 +9,53 @@ import { types } from '../../types/types';
 import { obtenerChatGQL } from '../../apollo-cliente/chat';
 import { scrollToBottom } from '../../helpers/scrollToBottom';
 import Router from 'next/router';
+import { obtenerUsuarioGQL } from '../../apollo-cliente/chat/obtenerUsuario';
+import { useNotiContext } from '../../context/notificaciones/NotiContext';
+import { typesNoti } from '../../types/notificaciones';
+import { actualizarNotificacionGQL } from '../../apollo-cliente/notificacion';
 
 type Props = {
-  nombre: string,
-  mensaje: string,
-  de: number
+  msj: any
+  //nombre: string,
+  //mensaje: string,
+  //de: number
 }
 
-export const NotiMensaje:FC<Props> = ({nombre, mensaje, de}) => {
+export const NotiMensaje:FC<Props> = ({msj}) => {
+  const {mensaje, de, count} = msj
   const {chatState,dispatch} = useChatContext()
+  const notiContext = useNotiContext()
   const {auth} = useAppContext()
   const [show, setShow] = useState(auth?.logged!)
   const [avatar,setAvatar] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKxYfvIZ4RJ4x79EtaIcgNs8EgQTx2C3eG-w&usqp=CAU")
-  
+  const nombre = msj.titulo.split(' dice').join('').split(':').join('');
   useEffect(()=>{
     setShow(auth?.logged!)
     getAvatarApollo(de).then((avatar)=>{          
       setAvatar(avatar)
     })
-  },[auth?.logged])
+  },[auth?.logged, mensaje])
 
   const onClick = async () => {
     //const user = {id: de}
-    const user = chatState.usuarios.find((u)=>{return u.id===de})
+    
+    //const user = chatState.usuarios.find((u)=>{return u.id===de})
+    //const newItem = {...item, readed: 1}
+    setShow(false)
+    const {id, de, para, count, titulo, time} = msj
+
+    const user = (await obtenerUsuarioGQL(de)).usuario
     dispatch({
         type: types.activarChat,
         payload: user
     });
+    const newMsj = {...msj, readed: 1, count: 1}
+    //msj.readed=1
+    //msj.count=1
+            
+    await actualizarNotificacionGQL({id,de,para,count, titulo, mensaje: newMsj.mensaje, time, readed:1})
+    notiContext.dispatch({type: typesNoti.nuevoMsj, payload:{mensajes: [newMsj]}})
+
     const resp = await obtenerChatGQL(auth?.id!,user.id,0,30)
     dispatch({
         type: types.cargarMensajes,
@@ -45,7 +65,7 @@ export const NotiMensaje:FC<Props> = ({nombre, mensaje, de}) => {
     await Router.push('/chat')
 
     scrollToBottom('chatBox');
-    setShow(false)
+    
 }
 
   return (
@@ -80,8 +100,9 @@ export const NotiMensaje:FC<Props> = ({nombre, mensaje, de}) => {
 
                   </div>
                   <div className="ml-3 w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900">{nombre} <span className="mt-1 text-sm text-sky-500">dice:</span> </p>
-                    <p className="mt-1 text-sm text-gray-500">{mensaje}</p>
+                    {(!count||count<2)&&<p className="text-sm font-medium text-gray-900">{nombre} <span className="mt-1 text-sm text-sky-500">dice:</span> </p>}
+                    {(count>1)&&<p className="text-sm font-medium text-gray-900">{nombre}</p>}
+                    <p className={`mt-1 text-sm text-${count>1?'sky':'gray'}-500`}>{mensaje}</p>
                   </div>
                 </div>
               </div>

@@ -55,7 +55,7 @@ const Home = () => {
         },
         {
           icon: ChatAlt2Icon,
-          name: 'Chat en linea',
+          name: 'Chat en línea',
           href: '/chat',
           descripcion: 'Intercambio de mensajes en linea entre alumnos, docentes y trabajadores de la universidad.',
           iconForeground: 'text-sky-700',

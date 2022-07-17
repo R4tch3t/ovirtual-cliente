@@ -11,6 +11,7 @@ import { graytheme } from '../themes';
 import { SessionProvider } from "next-auth/react"
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-cliente";
+import NotiProvider from '../context/notificaciones/NotiContext';
 moment.locale('es-mx');
 
 
@@ -19,17 +20,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   return(  
     <ApolloProvider client={client}>
       <SessionProvider>
-        <ChatProvider>
-          <AuthProvider> 
-            <TramitesProvider>
-              <SocketProvider>
-                <NextUIProvider theme={graytheme} >
-                  <Component {...pageProps} />
-                </NextUIProvider>
-              </SocketProvider>
-            </TramitesProvider>
-          </AuthProvider>
-        </ChatProvider>
+        <NotiProvider>
+          <ChatProvider>
+            <AuthProvider> 
+              <TramitesProvider>
+                <SocketProvider>
+                  <NextUIProvider theme={graytheme} >
+                    <Component {...pageProps} />
+                  </NextUIProvider>
+                </SocketProvider>
+              </TramitesProvider>
+            </AuthProvider>
+          </ChatProvider>
+        </NotiProvider>
       </SessionProvider>
     </ApolloProvider>
   );

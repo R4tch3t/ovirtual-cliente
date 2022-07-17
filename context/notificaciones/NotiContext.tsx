@@ -5,12 +5,7 @@ import {notiReducer} from "./notiReducer";
 const NotiContext = createContext({} as TypeNotiContext);
 
 const initialState:TypeNotiState = {
-    id:0,
-    de:0,
-    para:0,
-    nMsj:0,
-    leida:0,
-    fechaCreacion: null
+    msjs: []
 }
 
 const NotiProvider:FC = ({children})=>{

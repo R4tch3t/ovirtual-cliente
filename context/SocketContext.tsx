@@ -10,6 +10,9 @@ import { obtenerUsuariosGQL } from '../apollo-cliente/chat/obtenerUsuarios';
 import { obtenerChatGQL } from '../apollo-cliente/chat';
 import client from '../apollo-cliente';
 import { Notificacion, NotiMensaje } from '../components/Notificaciones';
+import { actualizarNotificacionGQL, nuevaNotificacionGQL } from '../apollo-cliente/notificacion';
+import { useNotiContext } from './notificaciones/NotiContext';
+import { typesNoti } from '../types/notificaciones';
 
 const SocketContext = createContext({});
 
@@ -19,11 +22,13 @@ const SocketProvider = ({ children }:any) => {
     const { socket, online, conectarSocket, desconectarSocket } = useSocket(urlSocket);
     const {auth,logout} = useAppContext();
     const {chatState,dispatch} = useChatContext();
+    const notiContext = useNotiContext();
     const [changeDown, setChangeDown] = useState({band: false, de: 0})
     const [changeUp, setChangeUp] = useState({band: false, de: 0})
     const [changeUsersWithMsg, setChangeUsersWithMsg] = useState({band: false})
     const [newNotiMsj, setNewNotiMsj]:any = useState({band: false})
-    const [notisMsj, setNotisMsj] = useState([])
+    //const [notisMsj, setNotisMsj] = useState([])
+    let notisMsj = notiContext?.notiState?.msjs!
 
     useEffect(()=>{
         if(auth?.logged){
@@ -96,26 +101,66 @@ const SocketProvider = ({ children }:any) => {
             });
             
         });
-    },[socket,dispatch])
+    },[socket/*,dispatch*/])
 
+    //apilar nueva notificacion
     useEffect(()=>{
         if(newNotiMsj.band){
-            const {mensaje} = newNotiMsj!
-            if(auth?.id! !== mensaje.de){
-                const newsNotiMsj:any = []
-                notisMsj.map((o:any)=>{
-                    if(o.time!==mensaje.time){
-                        newsNotiMsj.push({...o})
-                    }
-                })
-                newsNotiMsj.push({...mensaje})
+
+            let bandActualizar = false
+            const {mensaje} = newNotiMsj!            
+            const newsNotiMsj:any = notisMsj.filter((n:any)=>{return n.de !== mensaje.de && n.para !== mensaje.para})
+            
+            setNewNotiMsj({band: false});
+
+            let esNoti:any = {...notisMsj.find((n:any)=>{ return n.de === mensaje.de && n.para===mensaje.para })}
+            
+            if(esNoti?.id!){
                 
-                setNotisMsj(newsNotiMsj)
+                if(!esNoti.count){
+                    esNoti.count=1
+                }
+
+                if(esNoti.time!==mensaje.time){
+                    esNoti.time = mensaje.time
+                    bandActualizar=true
+                    esNoti.count++                    
+                }
+
+                esNoti.titulo=mensaje.nombre
+                esNoti.mensaje='Tienes '+esNoti.count+' nuevos mensajes...'
+                newsNotiMsj.push({...esNoti})
+                
+                if(auth?.id! === mensaje.de && (bandActualizar || esNoti.readed===1)){
+                    if(esNoti.readed===1){
+                        esNoti.count = 1
+                        esNoti.titulo = mensaje.nombre
+                        esNoti.mensaje = mensaje.mensaje
+                        esNoti.readed = 0
+                        esNoti.time = mensaje.time
+                    }
+                    const {id, de, para, count, titulo, time,readed} = esNoti     
+
+                    actualizarNotificacionGQL({id,de,para,count, titulo, mensaje: esNoti.mensaje, time, readed})
+                }
+
+            }else{
+
+                mensaje.titulo=mensaje.nombre+" dice:"
+                mensaje.readed=0
+                newsNotiMsj.push({...mensaje})                
+                if(auth?.id! === mensaje.de){
+                    const {id, de, para, count, titulo, time,readed} = mensaje
+                    nuevaNotificacionGQL({id,de,para,count, titulo, mensaje: mensaje.mensaje, time, readed})
+                }
+
             }
-            setNewNotiMsj({band: false})
+            
+            notiContext.dispatch({type: typesNoti.nuevoMsj, payload:{mensajes: [newsNotiMsj[0]]}})
+            //setNotisMsj(newsNotiMsj)
 
         }
-    },[notisMsj, newNotiMsj, chatState])
+    },[/*notisMsj,*/ newNotiMsj/*, chatState*/])
     
     useEffect(()=>{
         
@@ -167,23 +212,13 @@ const SocketProvider = ({ children }:any) => {
 
         }
     },[changeUp, chatState])
-
+    
     return (
-        <>
-            <Notificacion >
-                {notisMsj.map(({nombre,mensaje,de},i)=>{
-                    return <NotiMensaje 
-                                nombre={nombre} 
-                                mensaje={mensaje} 
-                                de={de}
-                                key={'notiMsj'+i} 
-                            />
-                })}
-            </Notificacion>
+        
             <SocketContext.Provider value={{ socket, online }}>
                 { children }
             </SocketContext.Provider>
-        </>
+        
     )
 }
 

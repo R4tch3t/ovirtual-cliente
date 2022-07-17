@@ -8,6 +8,7 @@ import Link from "next/link"
 import Busqueda from "./Busqueda"   
 import Logo from './Logo'
 import Image from "next/image"
+import { NotiIcon } from "./Bell"
 
 type Props =     {
     link: string,
@@ -50,13 +51,7 @@ const FixedMenu:FC<Props> = ({user,link,userNavigation,navigation}) => {
         <div className={`fixed left-0 w-full py-10 fixed z-999 top-0 bg-gradient-to-r from-uagrojo to-uagrojo`} > 
                         
                          <div className="absolute right-10 bottom-7 hidden lg:ml-4 lg:flex lg:items-center">
-                            <button
-                              type="button"
-                              className="flex-shrink-0 p-1 text-cyan-200 rounded-full hover:text-white hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-white"
-                            >
-                              <span className="sr-only">View notifications</span>
-                              <BellIcon className="h-6 w-6" aria-hidden="true" />
-                            </button>
+                         <NotiIcon />
                                 
                             <Menu as="div" className="ml-4 flex-shrink-0">
                               <div>
@@ -134,9 +129,9 @@ const FixedMenu:FC<Props> = ({user,link,userNavigation,navigation}) => {
                             
 
                           </div>
-                            <div className="absolute bottom-6" style={{width: 350, right: 125}} >
+                            <div className="absolute bottom-6" style={{width: 350, right: 125, paddingRight: '10px'}} >
                                 {link!=="Signup"&&link!=="Login"&&
-                                <Busqueda />                              
+                                  <Busqueda />                              
                                 }
                             </div>
                             <Popover as="header" className="lg:hidden">
@@ -229,13 +224,7 @@ const FixedMenu:FC<Props> = ({user,link,userNavigation,navigation}) => {
                                                 <div className="text-base font-medium text-gray-800 truncate">{user.name}</div>
                                                 <div className="text-sm font-medium text-gray-500 truncate">{user.email}</div>
                                                 </div>
-                                                <button
-                                                    type="button"
-                                                    className="ml-auto flex-shrink-0 bg-white p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                                                >
-                                                <span className="sr-only">View notifications</span>
-                                                <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                                </button>
+                                                <NotiIcon />
                                             </div>
                                             <div className="mt-3 px-2 space-y-1">
                                                 {userNavigation.map((item:any) => (
