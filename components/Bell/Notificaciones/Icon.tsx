@@ -1,10 +1,13 @@
+import { FC } from 'react';
 import {FlayoutNoti} from './Flayout';
 
-
-export const NotiIcon = () => {
+type Props = {
+    FixedMenu?: boolean
+}
+export const NotiIcon:FC<Props> = ({FixedMenu}) => {
 
 return (
-    <FlayoutNoti />
+    <FlayoutNoti FixedMenu={FixedMenu} />
 )
 /*return (
     <>

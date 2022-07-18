@@ -39,7 +39,11 @@ function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export const FlayoutNoti:FC = ({children}) => {
+type Props = {
+  FixedMenu?: boolean
+}
+
+export const FlayoutNoti:FC<Props> = ({FixedMenu}) => {
 const {auth} = useAppContext()
 const {notiState, dispatch} = useNotiContext()
 const maxHeight = window.document.body.offsetHeight
@@ -90,7 +94,7 @@ useEffect(()=>{
 
   return (
     <>
-    <Notificacion >
+    {!FixedMenu && <Notificacion >
         {datosNotiTramite?.map((tramite,i)=>{
             return <NotiTramite                         
                         tramite={tramite}
@@ -110,7 +114,7 @@ useEffect(()=>{
             }
         })}
           
-    </Notificacion>
+    </Notificacion>}
     <Popover className="relative">
       {({ open }) => (
         <>
@@ -135,7 +139,7 @@ useEffect(()=>{
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute z-10 transform -translate-x-1/2 mt-3 px-2 w-screen max-w-md sm:px-0">
+            <Popover.Panel className={`absolute z-10 mt-3 px-2 w-screen max-w-md sm:px-0`} style={{right: -25}}  >
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 overflow-auto" style={{maxHeight: maxHeight}} >
                   {!notiMsjFilter?.length! && !datosNotiTramite?.length! && <Info msg='No tienes notificaciones...' /> }

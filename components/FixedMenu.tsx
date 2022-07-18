@@ -51,7 +51,7 @@ const FixedMenu:FC<Props> = ({user,link,userNavigation,navigation}) => {
         <div className={`fixed left-0 w-full py-10 fixed z-999 top-0 bg-gradient-to-r from-uagrojo to-uagrojo`} > 
                         
                          <div className="absolute right-10 bottom-7 hidden lg:ml-4 lg:flex lg:items-center">
-                         <NotiIcon />
+                         <NotiIcon FixedMenu={true} />
                                 
                             <Menu as="div" className="ml-4 flex-shrink-0">
                               <div>
@@ -224,7 +224,7 @@ const FixedMenu:FC<Props> = ({user,link,userNavigation,navigation}) => {
                                                 <div className="text-base font-medium text-gray-800 truncate">{user.name}</div>
                                                 <div className="text-sm font-medium text-gray-500 truncate">{user.email}</div>
                                                 </div>
-                                                <NotiIcon />
+                                                <NotiIcon FixedMenu={true} />
                                             </div>
                                             <div className="mt-3 px-2 space-y-1">
                                                 {userNavigation.map((item:any) => (
