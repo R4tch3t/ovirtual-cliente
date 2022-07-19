@@ -7,4 +7,5 @@ export * from './subirDocumento'
 export * from './eliminarDocumento'
 export * from './matriculaPorDefecto'
 export * from './activarCuenta'
+export * from './recuperarContrasena'
 

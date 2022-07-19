@@ -22,7 +22,7 @@ export type TipoNotificacion = {
 }
 
 
-export const obtenerNotisGQL = async (de:number,para:number) => {
+export const obtenerNotisGQL = async (de:number,para=0) => {
     await client.cache.reset()
     const { data } = await client.query<Query>({
         variables:{de,para},

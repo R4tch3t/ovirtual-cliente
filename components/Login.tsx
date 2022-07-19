@@ -138,9 +138,11 @@ const Login: NextPage = () => {
                     </div>
     
                     <div className="text-sm">
-                      <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                        Recuperar contraseña
-                      </a>
+                      <Link href="/recuperarContrasena" >
+                        <a className="font-medium text-indigo-600 hover:text-indigo-500">
+                          Recuperar contraseña
+                        </a>
+                      </Link>
                     </div>
                   </div>
 

@@ -48,7 +48,7 @@ const {auth} = useAppContext()
 const {notiState, dispatch} = useNotiContext()
 const maxHeight = window.document.body.offsetHeight
 const notiMsjFilter = notiState?.msjs?.filter((n)=>{ return ( !parseInt(n?.readed!+"") && n.de !== auth?.id ) })
-const notiTramiteIn = {idUser: auth?.id!, idTramite: null}
+const notiTramiteIn = {idUser: auth?.usuario?.id!, idTramite: null}
 const {data, refetch} = useActualizarNotificacionTramite(notiTramiteIn)
 const datosNotiTramite = data?.actualizarNotificacionTramite!.filter((nt)=>{ return ( nt.estado>3 && !parseInt(nt?.readed!+"")) })
 let badgeContent = notiMsjFilter?.length! //+ datosNotiTramite?.length!
@@ -73,8 +73,8 @@ const loop = () => {
   if(data?.actualizarNotificacionTramite){
     timeNotiTramiteRef = setTimeout(()=>{
       clearTimeout(timeNotiTramiteRef)        
-      refetch()        
-      obtenerNotisGQL(0,auth?.id!).then((r)=>{
+      refetch()              
+      obtenerNotisGQL(0,auth?.usuario?.id!).then((r)=>{
         const {notiMensajes} = r
         dispatch({type: typesNoti.notiMsjCargados, payload:{mensajes: notiMensajes}})
         loop()
