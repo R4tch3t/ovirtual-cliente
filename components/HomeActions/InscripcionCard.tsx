@@ -287,6 +287,10 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
 
     }
 
+    //Verificar las fechas de inscripcion
+
+    
+
     return (
         <>
         
@@ -363,7 +367,8 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 <p className="mt-2 text-sm text-gray-500">
                     {action.descripcion}
                 </p>
-                <Spacer y={2} />
+               
+               {/* <Spacer y={2} />
                 <Input id='folioInscripcion' 
                     width={"50%"} 
                     name='folio'
@@ -435,6 +440,8 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                         password={aspPDF.password}
                         dispatch={dispatch}
                     />}
+                    */}
+                    
             </div>
         </>)
 }

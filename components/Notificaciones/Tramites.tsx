@@ -17,7 +17,6 @@ type Props = {
 
 export const NotiTramite:FC<Props> = ({tramite}) => {
   const {titulo, mensaje, idUser, estado} = tramite
-  const notiContext = useNotiContext()
   const {auth} = useAppContext()
   const [show, setShow] = useState(auth?.logged!)
 
@@ -50,7 +49,7 @@ export const NotiTramite:FC<Props> = ({tramite}) => {
                 <div className="flex items-start">
                   <div className="flex-shrink-0 pt-0.5">
 
-                  {(estado === 4) &&
+                  {(estado === 4||estado===8) &&
                     <ExclamationIcon className="flex-shrink-0 h-6 w-6 text-yellow-600" aria-hidden="true" />
                   }
 
@@ -65,7 +64,7 @@ export const NotiTramite:FC<Props> = ({tramite}) => {
                   </div>
                   <div className="ml-3 w-0 flex-1">
                     <p className="text-sm font-medium text-gray-900">{titulo}  </p>
-                    <p className={`mt-1 text-sm text-${estado===4 ? 'yellow' : 
+                    <p className={`mt-1 text-sm text-${(estado===4||estado===8) ? 'yellow' : 
                       ((estado===5||estado===6)?'green':'red')}-500`}>{mensaje}</p>
                   </div>
                 </div>

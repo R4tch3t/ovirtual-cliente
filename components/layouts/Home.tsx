@@ -37,7 +37,7 @@ const Home = () => {
         icon: AcademicCapIcon,
         name: 'Proceso de Inscripción 2022 - 2023',
         href: '/inscripciones',
-        descripcion: 'Aquí podrá iniciar el proceso de inscripcion para el próximo ciclo escolar.',
+        descripcion: 'El proceso de inscripción para Posgrados ha concluido. Próximamente se aperturará para Nivel Superior (Licenciaturas) y Nivel medio Superior (Preparatorias)',
         iconForeground: 'text-indigo-700',
         iconBackground: 'bg-indigo-50',
       }

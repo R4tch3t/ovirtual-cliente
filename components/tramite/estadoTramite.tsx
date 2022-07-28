@@ -15,13 +15,13 @@ const EstadoTramite:FC<Props> = ({estadoId}) => {
     { id: '03', name: 'Validación', description: 'El trámite se encuentra en validación.', href: undefined, 
       status: estadoId>3?'complete':(estadoId===3?'current':'upcoming') },
     { id: '04', name: 'Correción', description: 'El trámite es enviado a correción.', href: undefined, 
-      status: estadoId>4?'complete':(estadoId===4?'current':'upcoming') },
+      status: (estadoId>4&&estadoId!==8)?'complete':((estadoId===4||estadoId===8)?'current':'upcoming') },
     { id: '05', name: 'Aprobado', description: 'El trámite a sido aprobado.', href: undefined, 
-      status: estadoId>5?'complete':(estadoId===5?'current':'upcoming') },
+      status: (estadoId>5&&estadoId!==8)?'complete':(estadoId===5?'current':'upcoming') },
     { id: '06', name: 'Finalizado', description: 'El trámite ha finalizado.', href: undefined, 
-      status: estadoId>6?'complete':(estadoId===6?'current':'upcoming') },
+      status: (estadoId>6&&estadoId!==8)?'complete':(estadoId===6?'current':'upcoming') },
     { id: '07', name: 'Cancelado', description: 'El trámite a sido cancelado.', href: undefined, 
-      status: estadoId>7?'complete':(estadoId===7?'current':'upcoming') },
+      status: (estadoId>7&&estadoId!==8)?'complete':(estadoId===7?'current':'upcoming') },
   ]
 
     return (
@@ -44,13 +44,13 @@ const EstadoTramite:FC<Props> = ({estadoId}) => {
                   <a
                     href={step.href}
                     className={`pl-4 py-2 flex flex-col border-l-4 
-                      ${estadoId===4?'border-yellow-500':
+                      ${(estadoId===4||estadoId===8)?'border-yellow-500':
                       ((estadoId===5||estadoId===6)?'border-green-600':
                       estadoId===7?'border-red-600':'border-indigo-600')} 
                       md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4`}
                     aria-current="step"
                   >
-                    { (estadoId===4) &&
+                    { (estadoId===4||estadoId===8) &&
                       <ExclamationIcon className="h-5 w-5 text-yellow-500" aria-hidden="true" />
                     }
                     { (estadoId===7) &&
