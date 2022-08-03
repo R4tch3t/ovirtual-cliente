@@ -6,7 +6,7 @@ const validarNombre = (value:string,setInputs:any,inputs:any,dispatch:any) => {
     if(!valida){
       setInputs({...inputs,[name]:{
         color: 'error', 
-        helper: 'Nombre INVALIDO',
+        helper: 'Nombre INVÁLIDO',
         statusColor: 'error'
       }})
     }

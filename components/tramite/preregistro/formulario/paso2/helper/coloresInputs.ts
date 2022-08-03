@@ -17,7 +17,7 @@ export const coloresInputs2 = (paso2:TypePaso2) => {
     if(!numExtValido){
         inputs.numeroExt = {
             color: 'error', 
-            helper: 'Número exterior INVALIDO',
+            helper: 'Número exterior INVÁLIDO',
             statusColor: 'error'
         }
     }else{
@@ -41,7 +41,7 @@ export const coloresInputs2 = (paso2:TypePaso2) => {
     if(!cpValido){
         inputs.cp = {
             color: 'error', 
-            helper: 'Código Postal INVALIDO',
+            helper: 'Código Postal INVÁLIDO',
             statusColor: 'error'
         }
     }else{

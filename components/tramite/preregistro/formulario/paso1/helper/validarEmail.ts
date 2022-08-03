@@ -6,7 +6,7 @@ const validarEmail = (confirmE:string, value:string,setInputs:any,inputs:any,dis
     if(!valida){
       setInputs({...inputs,[name]:{
         color: 'error', 
-        helper: 'Email INVALIDO',
+        helper: 'Email INVÁLIDO',
         statusColor: 'error'
       }})
     }

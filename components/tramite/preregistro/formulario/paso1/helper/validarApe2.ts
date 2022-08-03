@@ -6,7 +6,7 @@ const validarApe2 = (value:string,setInputs:any,inputs:any,dispatch:any) => {
   if(!valida){
     setInputs({...inputs,[name]:{
       color: 'error', 
-      helper: 'Apellido materno INVALIDO',
+      helper: 'Apellido materno INVÁLIDO',
       statusColor: 'error'
     }})
   }

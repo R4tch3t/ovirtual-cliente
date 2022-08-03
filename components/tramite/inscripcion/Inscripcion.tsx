@@ -17,6 +17,7 @@ import RenderPDF from '../../../helpers/renderPDF/formatoTramite'
 import { types } from '../../../types/tramites'
 import HeadSeleccionarInscripcion from './headSelecionarPlan'
 import { SeleccionarPlan } from '../seleccionarPlan'
+import Info from '../../Info'
 
 let timeRef:any = null
 type Props = {
@@ -40,7 +41,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   const {periodoLectivo,causaBaja} = JSON.parse(datosTramite?datosTramite:'{}')
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
-  const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
+  const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalS}})
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
   const vwAspirante = auth?.usuario?.vwAspirante![0]
@@ -86,8 +87,11 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
     if(resp){
       await refetch()
       setModalS(true);
-      setDataModal({title: 'Éxito', txt: "El trámite fue enviado con éxito.", btn1: {txt:"Aceptar", onClose:setModalE} })
+      setDataModal({title: 'Éxito', txt: "El trámite fue enviado con éxito.", btn1: {txt:"Aceptar", onClose:setModalS} })
       
+    }else{
+      setModalE(true);
+      setDataModal({title: 'Error', txt: "El trámite ESTÁ en revisión.", btn1: {txt:"Aceptar", onClose:setModalE} })
     }
   }
 
@@ -139,7 +143,11 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
     
   },[])
 
-  if((vwAlumno&&!vwAspirante)&&!inscripcion){
+  if(!vwAspirante){
+    return <Info msg={'Usted no es Aspirante a algún plan de estudios, si cree que es un error contacte a los administradores...'} />
+  }
+
+  /*if((vwAlumno&&!vwAspirante)&&!inscripcion){
     return (
       <HeadSeleccionarInscripcion 
         titulo={titulo!} 
@@ -147,7 +155,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
           <SeleccionarPlan nombreContextState='inscripcion' />
       </HeadSeleccionarInscripcion>
     )
-  }
+  }*/
 
 
   return (
@@ -155,8 +163,17 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           
           <ConfirmarTramite onSubmit={onSubmit} open={clickEnviar} setOpen={setClickEnviar} >
-            <ModalSuccess open={modalS} setOpen={()=>{
+            <ModalSuccess open={modalS} 
+              setOpen={()=>{
                 setModalS(false);
+                setClickEnviar(false);
+              }} 
+              title={dataModal.title} 
+              txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />
+              
+            <ModalError open={modalE} 
+              setOpen={()=>{
+                setModalE(false);
                 setClickEnviar(false);
               }} 
               title={dataModal.title} 

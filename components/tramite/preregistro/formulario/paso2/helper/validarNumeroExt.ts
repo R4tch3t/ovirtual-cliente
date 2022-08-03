@@ -6,7 +6,7 @@ const validarNumeroExt = (value:string | undefined,setInputs:any,inputs:any,disp
   if(!valida){
     setInputs({...inputs,[name]:{
       color: 'error', 
-      helper: 'Número exterior INVALIDO',
+      helper: 'Número exterior INVÁLIDO',
       statusColor: 'error'
     }})
   }

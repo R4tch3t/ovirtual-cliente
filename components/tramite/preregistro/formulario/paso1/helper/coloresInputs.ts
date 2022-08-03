@@ -7,7 +7,7 @@ export const coloresInputs1 = (paso1:TypePaso1) => {
     if(!curpValido){
         inputs.curp = {
             color: 'error', 
-            helper: 'Número de celular INVALIDO',
+            helper: 'Número de celular INVÁLIDO',
             statusColor: 'error'
         }
     }else{
@@ -18,7 +18,7 @@ export const coloresInputs1 = (paso1:TypePaso1) => {
     if(!nombreValido){
         inputs.nombre = {
             color: 'error', 
-            helper: 'Nombre INVALIDO',
+            helper: 'Nombre INVÁLIDO',
             statusColor: 'error'
           }
     }else{
@@ -29,7 +29,7 @@ export const coloresInputs1 = (paso1:TypePaso1) => {
     if(!ape1Valido){
         inputs.ape1 = {
             color: 'error', 
-            helper: 'Apellido paterno INVALIDO',
+            helper: 'Apellido paterno INVÁLIDO',
             statusColor: 'error'
           }
     }else{
@@ -42,7 +42,7 @@ export const coloresInputs1 = (paso1:TypePaso1) => {
     if(!celularValido){
         inputs.celular = {
             color: 'error', 
-            helper: 'Número de celular INVALIDO',
+            helper: 'Número de celular INVÁLIDO',
             statusColor: 'error'
         }
     }else{
@@ -55,7 +55,7 @@ export const coloresInputs1 = (paso1:TypePaso1) => {
     if(!emailValido){
         inputs.email = {
             color: 'error', 
-            helper: 'Email INVALIDO',
+            helper: 'Email INVÁLIDO',
             statusColor: 'error'
           }
     }else{
@@ -68,7 +68,7 @@ export const coloresInputs1 = (paso1:TypePaso1) => {
 
         inputs.confirmEmail = {
             color: 'error', 
-            helper: 'Email INVALIDO',
+            helper: 'Email INVÁLIDO',
             statusColor: 'error'
           }
     }else{

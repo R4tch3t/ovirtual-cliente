@@ -7,7 +7,7 @@ export const coloresInputs4 = (paso4:TypePaso4) => {
     if(!nombreValido){
         inputs.escuelaProcedencia = {
             color: 'error', 
-            helper: 'Nombre INVALIDO',
+            helper: 'Nombre INVÁLIDO',
             statusColor: 'error'
           }
     }else{

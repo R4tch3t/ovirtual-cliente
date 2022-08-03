@@ -119,7 +119,7 @@ const PerfilLayout = () => {
     if(!valida){
       setInputs({...inputs,[name]:{
         color: 'error', 
-        helper: 'Correo invalido',
+        helper: 'Correo inválido',
         statusColor: 'error'
       }})
     }

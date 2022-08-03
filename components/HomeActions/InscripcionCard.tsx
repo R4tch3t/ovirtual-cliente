@@ -1,5 +1,6 @@
 import { Slide } from "@mui/material";
 import { FormElement, Input, Loading, Spacer } from "@nextui-org/react";
+import Link from "next/link";
 import { FC, KeyboardEventHandler, useState } from "react";
 import { PropsCard } from ".";
 import client from "../../apollo-cliente";
@@ -13,6 +14,7 @@ import { ModalError } from "../ModalError";
 import { ModalInscripcion } from "../ModalInscripcion";
 import { ModalSuccess } from "../ModalSucces";
 import { ModalWarning } from "../ModalWarning";
+import Warning from "../Warning";
 
 const advertenciaCURP = (curp:string) => 
     `La CURP que estas ingresando es diferente a la 
@@ -209,7 +211,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 }else{
                     setInputs({...inputs,[name]:{
                         color: 'error', 
-                        helper: 'Folio Ceneval invalido...',
+                        helper: 'Folio Ceneval inválido...',
                         statusColor: 'error'
                     }})
                 }
@@ -343,20 +345,23 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
 
                     </ModalWarning>
                 </ModalInscripcion>
+                <Warning msg={<>Sí ya tienes cuenta favor de <Link href={'/login'} ><a className="underline text-lg" >iniciar sesión</a></Link> </>} />
+                <Spacer y={2} />
                 <span
                 className={classNames(
                     action.iconBackground,
                     action.iconForeground,
-                    'rounded-lg inline-flex p-3 ring-4 ring-white'
+                    'rounded-lg inline-flex p-4 ring-4 ring-white'
                 )}
                 >
-                <action.icon className="h-6 w-6" aria-hidden="true" />
+                    <action.icon className="h-6 w-6" aria-hidden="true" />                      
+                    <h3 className="text-xl font-medium pl-4" >{action.name}</h3>
                 </span>
             </div>
             <div className="mt-8">
                 
                 <Spacer y={2} />
-                <h3 className="text-lg font-medium">
+                <h3 className="text-xl font-medium">
                 {/*<Link href={action.href} >*/}
                     {/*<a  className="focus:outline-none">*/}                                
                     <span className="absolute" aria-hidden="true" />
@@ -364,16 +369,16 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                     {/*</a>*/}
                 {/*</Link>*/}
                 </h3>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-lg text-gray-500">
                     {action.descripcion}
                 </p>
                
-               {/* <Spacer y={2} />
+                <Spacer y={2} />
                 <Input id='folioInscripcion' 
                     width={"50%"} 
                     name='folio'
                     onChange={onChange}
-                    clearable bordered labelPlaceholder="Ingresa tú Folio Ceneval aquí..." 
+                    clearable bordered labelPlaceholder="Ingresa tú Folio Ceneval..." 
                     css={{
                         '.nextui-input-helper-text':{fontSize: '$xs'},
                         '.nextui-input-helper-text-container':{top:40}
@@ -440,7 +445,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                         password={aspPDF.password}
                         dispatch={dispatch}
                     />}
-                    */}
+                    
                     
             </div>
         </>)

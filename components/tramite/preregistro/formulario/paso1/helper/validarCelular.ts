@@ -8,7 +8,7 @@ const validarCelular = (value:string | undefined,setInputs:any,inputs:any,dispat
   if(!valida){
     setInputs({...inputs,[name]:{
       color: 'error', 
-      helper: 'Número de celular INVALIDO',
+      helper: 'Número de celular INVÁLIDO',
       statusColor: 'error'
     }})
   }

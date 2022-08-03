@@ -35,9 +35,9 @@ const Home = () => {
       const actionsOne = [
       {
         icon: AcademicCapIcon,
-        name: 'Proceso de Inscripción 2022 - 2023',
+        name: 'PROCESO DE INSCRIPCIÓN 2022 - 2023',
         href: '/inscripciones',
-        descripcion: 'El proceso de inscripción para Posgrados ha concluido. Próximamente se aperturará para Nivel Superior (Licenciaturas) y Nivel medio Superior (Preparatorias)',
+        descripcion: 'Proceso de inscripción para Nivel Superior (Licenciaturas) y Nivel medio Superior (Preparatorias)',
         iconForeground: 'text-indigo-700',
         iconBackground: 'bg-indigo-50',
       }
@@ -124,7 +124,7 @@ const Home = () => {
                               </div>
                             </div>
                             
-                            <div className="mt-5 flex justify-center sm:mt-0">
+                            {/*<div className="mt-5 flex justify-center sm:mt-0">
                             {
                                 btnHome.map((b:any,i:any)=> 
                                     (
@@ -140,10 +140,8 @@ const Home = () => {
                                     </Link>
                                     )
                                 )
-                              }
-                              
-
-                            </div>
+                              }                              
+                            </div>*/}
                             
                           </div>
                         </div>

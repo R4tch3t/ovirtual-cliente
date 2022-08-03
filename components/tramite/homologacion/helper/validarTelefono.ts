@@ -7,7 +7,7 @@ const validarTelefono = (inputs:any) => {
     if(!valida){
       inputs[1] = {...inputs[1],[name]:{
         color: 'error', 
-        helper: 'Telefono INVALIDO',
+        helper: 'Telefono INVÁLIDO',
         statusColor: 'error'
       }}
       return false

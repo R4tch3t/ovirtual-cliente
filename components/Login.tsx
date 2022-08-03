@@ -149,11 +149,12 @@ const Login: NextPage = () => {
                   <div className="flex items-center justify-between">
     
                     <div className="text-sm">
+                      {/* ocultar durante el Periodo de inscripcion
                       <Link href="/signup" >
                         <a  className="font-medium text-indigo-600 hover:text-indigo-500">
                           Registrar nueva cuenta
                         </a>
-                      </Link>
+                      </Link>*/}
                     </div>
                   </div>
 

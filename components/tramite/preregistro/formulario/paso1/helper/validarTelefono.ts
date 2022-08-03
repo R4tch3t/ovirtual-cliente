@@ -6,7 +6,7 @@ const validarTelefono = (value:string,setInputs:any,inputs:any,dispatch:any) => 
   if(!valida){
     setInputs({...inputs,[name]:{
       color: 'error', 
-      helper: 'Número de telefono INVALIDO',
+      helper: 'Número de telefono INVÁLIDO',
       statusColor: 'error'
     }})
   }

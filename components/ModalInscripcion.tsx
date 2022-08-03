@@ -29,7 +29,7 @@ export const ModalInscripcion=({open, setOpen, dataModal, children}:any)=>{
               }else{
                   setInputs({...inputs,[name]:{
                       color: 'error', 
-                      helper: 'El número es invalido...',
+                      helper: 'El número es inválido...',
                       statusColor: 'error'
                   }})
               }
@@ -47,7 +47,7 @@ export const ModalInscripcion=({open, setOpen, dataModal, children}:any)=>{
               }else{
                   setInputs({...inputs,[name]:{
                       color: 'error', 
-                      helper: 'El correo es invalido...',
+                      helper: 'El correo es inválido...',
                       statusColor: 'error'
                   }})
               }

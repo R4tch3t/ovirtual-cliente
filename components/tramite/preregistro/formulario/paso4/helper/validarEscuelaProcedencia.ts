@@ -6,7 +6,7 @@ const validarEscuelaProcedencia = (value:string,setInputs:any,inputs:any,dispatc
     if(!valida){
       setInputs({...inputs,[name]:{
         color: 'error', 
-        helper: 'Nombre INVALIDO',
+        helper: 'Nombre INVÁLIDO',
         statusColor: 'error'
       }})
     }

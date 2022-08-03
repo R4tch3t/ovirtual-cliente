@@ -7,7 +7,7 @@ const validarPeriodo = (inputs:any) => {
     if(!valida){
       inputs[1] = {...inputs[1],[name]:{
         color: 'error', 
-        helper: 'Periodo de baja temporal INVALIDO',
+        helper: 'Periodo de baja temporal INVÁLIDO',
         statusColor: 'error'
       }}
       return false

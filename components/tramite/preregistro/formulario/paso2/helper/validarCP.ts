@@ -6,7 +6,7 @@ const validarCP = (value:string | undefined,setInputs:any,inputs:any,dispatch:an
   if(!valida){
     setInputs({...inputs,[name]:{
       color: 'error', 
-      helper: 'Código Postal INVALIDO',
+      helper: 'Código Postal INVÁLIDO',
       statusColor: 'error'
     }})
   }

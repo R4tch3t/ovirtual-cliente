@@ -4,7 +4,7 @@ const confirmEmail = (value:string, emailActual:string, setInputs:any,inputs:any
     const valida = emailActual && value === emailActual     
     const name='confirmEmail'
     if(!valida){
-      const helper = emailActual ? '¡ERROR! La confirmación fallo...' : 'Email INVALIDO' 
+      const helper = emailActual ? '¡ERROR! La confirmación fallo...' : 'Email INVÁLIDO' 
       setInputs({...inputs,[name]:{
         color: 'error', 
         helper,
