@@ -9,6 +9,8 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
     let planID = null
     let unidadAcademica = null
     let planElegido = null
+    let nivelIngresar = null
+    let tramiteId = null
     let localidad = null
     let periodoLectivo = null
     let causaBaja = null
@@ -34,6 +36,8 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
 
             planID = action.payload.planID
             planElegido = action.payload.planElegido
+            nivelIngresar = action.payload.nivelIngresar
+            tramiteId = action.payload.tramiteId
             localidad = action.payload.localidad
             
             return {
@@ -44,6 +48,8 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                         aspiranteId: null,
                         planID,
                         planElegido,
+                        nivelIngresar,
+                        tramiteId,
                         localidad,
                         paso1: null,
                         paso2: null,
@@ -74,6 +80,8 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                 aspiranteId = action.payload.aspiranteId
                 planID = action.payload.planID
                 planElegido = action.payload.planElegido
+                nivelIngresar = action.payload.nivelIngresar
+                tramiteId = action.payload.tramiteId
                 localidad = action.payload.localidad
                 paso1 = action.payload.paso1
                 paso2 = action.payload.paso2
@@ -89,6 +97,8 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                             aspiranteId,
                             planID,
                             planElegido,
+                            nivelIngresar,
+                            tramiteId,
                             localidad,
                             paso1,
                             paso2,
@@ -139,7 +149,7 @@ export const tramitesReducer = (state:TypeTramitesState,action:TypeTramitesActio
                     }
                 }
             case types.seleccionarTramiteAlumno:
-                const {tramiteId} = action.payload
+                tramiteId = action.payload.tramiteId
 
                 return {
                     ...state,

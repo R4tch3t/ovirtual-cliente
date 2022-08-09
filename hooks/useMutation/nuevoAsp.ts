@@ -33,6 +33,7 @@ export type TipoAspRegistro = {
     folioCeneval: number | null;
     estado: number;
     referencia: string | null;
+    tramiteId: number | null;
 }
 
 export type TipoAspDomiciliario = {

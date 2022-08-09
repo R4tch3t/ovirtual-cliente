@@ -11,6 +11,7 @@ import { useGuardarAsp, useNuevoAsp } from "../../../../../hooks/useMutation";
 import { validarFormulario1 } from "../paso1/helper";
 import { validarFormulario2 } from "../paso2/helper";
 import { validarFormulario3 } from "./helper";
+import { ModalError } from "../../../../ModalError";
 
 
 const Paso3 = () => {
@@ -22,6 +23,7 @@ const Paso3 = () => {
 
     const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
+    
     const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
 
     const formularioValido = () => {
@@ -71,8 +73,10 @@ const Paso3 = () => {
 
     return (
         <>  
-            {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-                txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
+            <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+                txt={dataModal.txt} btnTxt={dataModal.btnTxt} />
+            <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+            txt={dataModal.txt} btn1={{txt: dataModal.btnTxt, onClose: setModalE}} />
             <div>
                 <Spacer y={1} />
                 
@@ -157,7 +161,10 @@ const Paso3 = () => {
                                 if(data?.nuevoAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
-                                } 
+                                }else{
+                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista, si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
+                                    setModalE(true);
+                                }
                             }else{
                                 
                                 

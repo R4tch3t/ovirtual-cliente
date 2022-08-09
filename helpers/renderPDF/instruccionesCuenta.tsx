@@ -261,7 +261,7 @@ class RenderPDF extends React.Component<Props> {
 
                         <Text style={{marginTop: 20}} >
 
-                          <Link style={[this.styles.headT,{fontSize: 11}]} src='https://tramitadae.uagro.mx' >https://tramitadae.uagro.mx  </Link> 
+                          <Link style={[this.styles.headT,{fontSize: 11}]} src='https://tramitesdae.uagro.mx' >https://tramitesdae.uagro.mx  </Link> 
                           
                         </Text>
 

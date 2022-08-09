@@ -46,6 +46,7 @@ export type TipoAspRegistro = {
     estado: number;
     referencia: string | null;
     planOfertado: TypeUnidadesAcademicas | null;
+    tramiteId: number|null;
 }
 
 export type TipoAspDomiciliarios = {
@@ -120,6 +121,7 @@ const QUERY = gql`
                 folioCeneval
                 estado
                 referencia
+                tramiteId
                 planOfertado {
                     id
                     claveUnidadAcademica

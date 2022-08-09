@@ -7,7 +7,8 @@ import IconUni from '../../../public/iconUni.png'
 import { types } from '../../../types/tramites'
 
 type Props = {
-  unidadesAcademicas: TypeUnidadesAcademicas[]
+  unidadesAcademicas: TypeUnidadesAcademicas[],
+  tramiteId: number | null 
 }
 
 const icon = <Image
@@ -42,25 +43,31 @@ function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
 }
 
-const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
+const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas, tramiteId}) => {
   const {dispatch}:any = useTramitesContext();
   let c = -1
   const y = new Date().getFullYear()
-  const seleccionarPlan = (planID: number, planElegido: string, localidad: string) => {
+  const seleccionarPlan = (planID: number, planElegido: string, 
+    nivelIngresar: number, tramiteId: number | null, localidad: string,
+    ) => {
     dispatch({
       type: types.seleccionarPlan,
-      payload: {planID, planElegido, localidad}
+      payload: {
+        planID, planElegido, nivelIngresar,
+        tramiteId, localidad
+      }
     });
   }
     return (
       <div>
           <h1  style={{textAlign: 'center'}} className="text-lg font-medium">
-            <p className="mt-2 text-xl text-gray-500">
+            {/*<p className="mt-2 text-xl text-gray-500">
               Proceso de Admisión de: <b> Especialidades, Maestrías y Doctorados. </b>
-            </p>
+            </p>*/}
 
             <span className="mt-2 text-xl text-gray-500">
-              <b> {y + " - " +(y+1)}. </b>
+              {/*<b> {y + " - " +(y+1)}. </b>*/}
+              <b> PREREGISTRO </b>
             </span>
 
             <p className="mt-2 text-gray-500">
@@ -75,9 +82,9 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas}) => {
             <div
               key={unidad.id}
               onMouseDown={()=>{
-                const {id, localidad} = unidad;
+                const {id, nivelPlanEstudios, localidad} = unidad;
                 const planElegido = unidad.nombrePlanEstudios + " - " + unidad.nombreUnidadAcademica;
-                seleccionarPlan(id, planElegido, localidad) 
+                seleccionarPlan(id, planElegido, nivelPlanEstudios, tramiteId, localidad) 
               }}
               className={classNames(
                 unidadIdx === 0 ? 'rounded-tl-lg rounded-tr-lg sm:rounded-tr-none' : '',

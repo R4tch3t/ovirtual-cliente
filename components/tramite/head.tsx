@@ -52,7 +52,7 @@ const TramiteHead: FC<Head> = ({tramiteId, nombre, descripcion, nivel, linkChild
             <h3 className="text-lg leading-6 font-medium text-gray-900">NOMBRE DEL TRÁMITE:</h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">{nombre}</p>
             
-              {auth?.logged! &&
+              {(auth?.logged! || (tramiteId === 14 || tramiteId === 16)) &&
                 <button
                   type="button"
                   onClick={btnState.onClick}

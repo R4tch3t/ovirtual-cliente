@@ -56,6 +56,8 @@ export type TypePreregistro = {
     aspiranteId: number | null,
     planID: number,
     planElegido: string,
+    nivelIngresar: number,
+    tramiteId: number | null,
     localidad: string,
     paso1: TypePaso1 | null,
     paso2: TypePaso2 | null,

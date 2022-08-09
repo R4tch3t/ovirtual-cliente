@@ -12,6 +12,7 @@ import { useGuardarAsp, useNuevoAsp } from "../../../../../hooks/useMutation";
 import { ModalSuccess } from "../../../../ModalSucces";
 import { obtenerFormulario } from "../obtenerFormulario";
 import { coloresInputs1 } from './helper/coloresInputs';
+import { ModalError } from "../../../../ModalError";
 
 type Props = {
     paises: TypePais[]
@@ -30,6 +31,7 @@ const Paso1:FC<Props> = ({paises}) => {
     const {aspiranteId,paso1} = tramitesState.procedimientos.preregistro!
     const [inputs, setInputs]:any = useState(coloresInputs1(paso1!));
     const [modalS, setModalS] = useState(false)
+    const [modalE, setModalE] = useState(false)
     const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
 
     const [nuevoAsp] = useNuevoAsp()
@@ -178,8 +180,10 @@ const Paso1:FC<Props> = ({paises}) => {
     
     return (
         <>
-        {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-        txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
+        <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+            txt={dataModal.txt} btnTxt={dataModal.btnTxt} />
+        <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
+            txt={dataModal.txt} btn1={{txt: dataModal.btnTxt, onClose: setModalE}} />
           <Nacionalidad />
 
             {paso1?.nacionalidadID===1 &&
@@ -365,7 +369,11 @@ const Paso1:FC<Props> = ({paises}) => {
                                 if(data?.nuevoAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
-                                } 
+                                }else{
+                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista, si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
+                                    setModalE(true);
+                                }
+
                             }else{
                                 
                                 const {data} = await guardarAsp({

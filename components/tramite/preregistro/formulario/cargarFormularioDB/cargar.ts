@@ -10,6 +10,8 @@ const cargarPreregistroDB = (data:QueryPreregistro, dispatch: any) => {
         const aspiranteId = aspirante.id
         const planID = aspRegistro.planOfertadoId
         const planElegido = planOfertado?.nombrePlanEstudios + " - " + planOfertado?.nombreUnidadAcademica;
+        const nivelIngresar = aspRegistro.nivelIngresar
+        const tramiteId = aspRegistro.tramiteId
         const localidad = planOfertado?.localidad
         
         //paso1
@@ -131,7 +133,10 @@ const cargarPreregistroDB = (data:QueryPreregistro, dispatch: any) => {
         }
         dispatch({
             type: types.cargarPreregistroDB,
-            payload: {aspiranteId, planID, planElegido, localidad, paso1, paso2, paso3, paso4, paso5}
+            payload: {
+                aspiranteId, planID, planElegido, nivelIngresar,
+                tramiteId, localidad, paso1, paso2, paso3, paso4, paso5
+            }
         });
     
     }

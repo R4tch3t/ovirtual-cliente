@@ -46,8 +46,9 @@ const TramiteHome:NextPage<Props> = (props) =>{
     )
   }
 
-  if(!auth?.logged! || (auth?.usuario!&&auth?.usuario?.matactiva! === 0)){
-   
+  if((!auth?.logged!&&(props.id!=="14"&&props.id!=="16")) || 
+    (auth?.usuario!&&auth?.usuario?.matactiva! === 0)
+  ){
     Router.replace("/");
   }
 
@@ -109,8 +110,19 @@ const TramiteHome:NextPage<Props> = (props) =>{
                     <SeleccionarPlan nombreContextState='homologacion' />
                   </HeadSeleccionarPlanHomologacion>
                 }
+                {homologacion && <Homologacion tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
+              </>
+            }
 
-              {homologacion && <Homologacion tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
+            {
+              (props.id==="14"||props.id==="16") && <>
+                {/*!preregistro && <HeadSeleccionarPlanHomologacion >
+                    <SeleccionarPlan nombreContextState='homologacion' />
+                  </HeadSeleccionarPlanHomologacion>
+                */}
+              {!preregistro && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} tramiteId={parseInt(props.id)!} />}
+
+              {preregistro && <PasosPreregistro paises={props.paises} />}
               </>
             }
             
@@ -140,7 +152,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   const {id} = params as {id: string} 
   const tramiteId = parseInt(id)
   const tramite:TypeTramite = await tramitePorId(tramiteId)
-  const unidadesAcademicas = await planesOfertados(6)
+  const unidadesAcademicas = await planesOfertados(3)
   const paises = await Paises()
   const requisitos = await obtenerRequisitosGQL(tramiteId)
   

@@ -7,7 +7,7 @@ import { validarFormulario4 } from "../paso4/helper";
 import { validarFormulario5 } from '../paso5/helper';
 
 const obtenerFormulario = (preregistro: TypePreregistro, paso: number) => {
-    const {aspiranteId, planID, paso1, paso2, paso3, paso4, paso5} = preregistro;
+    const {aspiranteId, planID, nivelIngresar, tramiteId, paso1, paso2, paso3, paso4, paso5} = preregistro;
     const nacionalidad = paso1?.nacionalidadID! === 0 ? 'MX' : 'NE' ;
 
     const asp: TipoAspirante = {
@@ -28,7 +28,7 @@ const obtenerFormulario = (preregistro: TypePreregistro, paso: number) => {
     const aspReg: TipoAspRegistro = {
         aspiranteId: null,
         planOfertadoId: planID,
-        nivelIngresar: 5,
+        nivelIngresar,
         egresadoUagro: null,
         claveEscuelaUagro: null,
         nombreEscuelaProcedencia: null,
@@ -40,8 +40,9 @@ const obtenerFormulario = (preregistro: TypePreregistro, paso: number) => {
         fechaActualizacion: new Date(),
         cancelado: 0,
         folioCeneval: null,
-        estado: 1,
+        estado: 2,
         referencia: null,
+        tramiteId
     }
 
     let aspDomi: TipoAspDomiciliario | null = null
