@@ -8,7 +8,7 @@ import { Loading } from '@nextui-org/react';
 import { FeedItem } from './feedItem';
 
 import client from '../../apollo-cliente';
-import { obtenerUsuariosGQL } from '../../apollo-cliente/chat';
+import { pageUsuariosGQL } from '../../apollo-cliente/chat';
 type TypeScroll = UIEventHandler<HTMLDivElement>
 export const Feed: NextPage = () => {
     const {chatState, dispatch} = useChatContext()
@@ -33,7 +33,10 @@ export const Feed: NextPage = () => {
                 });
                 
                 await client.cache.reset()
-                const {usuarios, total, totalConectados} = await obtenerUsuariosGQL(chatState.skipUsuarios,valor)
+                const {usuarios} = await pageUsuariosGQL(chatState.skipUsuarios,valor)
+                const total = chatState.totalUsuarios
+                const totalConectados = chatState.totalOnline
+                
                 dispatch({
                     type: types.usuariosCargados,
                     payload: {usuarios,total,totalConectados}

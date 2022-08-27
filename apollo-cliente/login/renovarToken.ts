@@ -28,8 +28,7 @@ export const renovarTokenGraphQL = async (tokenAnterior:string) => {
                     uuid
                     matricula
                     nombre
-                    email
-                    password
+                    email                    
                     online
                     activated
                     matactiva

@@ -83,9 +83,19 @@ export interface TypeInscripcion extends HeadTramite {
     validoParaTramitar: boolean,
 }
 
+export interface TypeEquivalencia extends HeadTramite {
+    //planIngresarId: number,
+    //telefono: string | null,
+    validoParaTramitar: boolean,
+}
+
 export interface TypeHomologacion extends HeadTramite {
     planIngresarId: number,
     telefono: string | null,
+    validoParaTramitar: boolean,
+}
+
+export interface TypeRevalidacion extends HeadTramite {
     validoParaTramitar: boolean,
 }
 
@@ -102,7 +112,9 @@ export type TypeProcedimiento = {
     preregistro: TypePreregistro | null,
     bajaTemporal: TypeBajaTemporal | null,
     inscripcion: TypeInscripcion | null,
+    equivalencia: TypeEquivalencia | null,
     homologacion: TypeHomologacion | null,
+    revalidacion: TypeRevalidacion | null,
 }
 
 type ProcesoConfirmacion = {

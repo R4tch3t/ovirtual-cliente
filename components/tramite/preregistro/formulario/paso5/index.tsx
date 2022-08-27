@@ -146,7 +146,7 @@ const Paso5 = () => {
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
                                 }else{
-                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista, si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista ó que ya seá alumno UAGro., si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
                                     setModalE(true);
                                 } 
                             }else{

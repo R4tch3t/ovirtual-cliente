@@ -12,11 +12,13 @@ import { validarFormulario1 } from "../paso1/helper";
 import { validarFormulario2 } from "../paso2/helper";
 import { validarFormulario3 } from "./helper";
 import { ModalError } from "../../../../ModalError";
+import { validarFormulario4 } from "../paso4/helper";
+import { validarFormulario5 } from "../paso5/helper";
 
 
 const Paso3 = () => {
     const {tramitesState, dispatch} = useTramitesContext()
-    const {aspiranteId,paso1,paso2,paso3} = tramitesState.procedimientos.preregistro!
+    const {aspiranteId,paso1,paso2,paso3,paso4,paso5} = tramitesState.procedimientos.preregistro!
 
     const [nuevoAsp] = useNuevoAsp()
     const [guardarAsp] = useGuardarAsp()
@@ -28,6 +30,13 @@ const Paso3 = () => {
 
     const formularioValido = () => {
         const valido =  validarFormulario1(paso1!) && validarFormulario2(paso2!) && validarFormulario3(paso3!);
+
+        return valido
+    }
+
+    const formularioParaGuardarValido = () => {
+        const valido =  validarFormulario1(paso1!) && validarFormulario2(paso2!) && validarFormulario3(paso3!)
+        && validarFormulario4(paso4!) && validarFormulario5(paso5!);
 
         return valido
     }
@@ -186,8 +195,8 @@ const Paso3 = () => {
                            
                         }}
                         style={{width: 120}}
-                        className={`ml-5 bg-${!formularioValido()?'gray-400':'sky-700'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${!formularioValido()?'gray-400':'sky-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
-                        disabled={!formularioValido()}
+                        className={`ml-5 bg-${!formularioParaGuardarValido()?'gray-400':'sky-700'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${!formularioParaGuardarValido()?'gray-400':'sky-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                        disabled={!formularioParaGuardarValido()}
                     >
 
                         <ClipboardCopyIcon  width={20} height={20} /> GUARDAR

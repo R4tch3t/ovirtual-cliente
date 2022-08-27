@@ -28,8 +28,7 @@ export const newUserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                     uuid
                     matricula
                     nombre
-                    email
-                    password
+                    email                    
                     online
                     activated
                     matactiva

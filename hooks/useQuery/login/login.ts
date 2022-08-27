@@ -14,8 +14,7 @@ export type TipoUsuario = {
     id: number;
     uuid: string | null;
     matricula: string | null;
-    nombre: string | null;
-    password: string;
+    nombre: string | null;    
     online: number | null;
     activated: number | null;
     matactiva: number | null;
@@ -32,8 +31,7 @@ const QUERY = gql`
                 uuid
                 matricula
                 nombre
-                email
-                password
+                email                
                 online
                 activated
                 matactiva

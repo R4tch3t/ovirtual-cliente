@@ -29,8 +29,7 @@ export const activarMatriculaGQL = async (user:ActivarMatriculaInput) => {
                     uuid
                     matricula
                     nombre
-                    email
-                    password
+                    email                    
                     online
                     activated
                     matactiva

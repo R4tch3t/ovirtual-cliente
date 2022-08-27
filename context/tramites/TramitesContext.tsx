@@ -23,7 +23,10 @@ const initialState:TypeTramitesState = {
         preregistro: null,
         bajaTemporal: null,
         inscripcion: null,
-        homologacion: null
+        equivalencia: null,
+        homologacion: null,
+        revalidacion: null,
+
     },
     tramiteAlumnoSeleccionado: null,
     nombreTramiteSeleccionado: null

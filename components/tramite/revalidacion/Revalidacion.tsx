@@ -6,8 +6,8 @@ import { ObtenerTramiteAlumnoInput, useObtenerTramitesAlumno } from '../../../ho
 import { ModalError } from '../../ModalError'
 import { ModalSuccess } from '../../ModalSucces';
 import EstadoTramite from '../estadoTramite'
-import { HeadTramite } from './'
-import { FormularioHomologacion } from './formulario'
+import { HeadTramite } from '.'
+import { FormularioRevalidacion } from './formulario'
 import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
@@ -22,14 +22,14 @@ type Props = {
   mapDocInit: CatDocumentos[]
 }
 
-export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocInit}) => {
+export const Revalidacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocInit}) => {
   const {auth} = useAppContext();
   const {tramitesState} = useTramitesContext();
-  const {homologacion} = tramitesState?.procedimientos!
+  const {revalidacion} = tramitesState?.procedimientos!
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
     userAlumnoId: auth?.id!,
     tramiteId,
-    plesxurRef: homologacion?.plesXur!
+    plesxurRef: revalidacion?.plesXur!
   }
   const {data, refetch} = useObtenerTramitesAlumno(tramiteAlumno)
   const datosTramite = data?.obtenerTramitesAlumno?.datosTramite
@@ -39,7 +39,7 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
-  let btnDis:any = homologacion?.validoParaTramitar!
+  let btnDis:any = true//revalidacion?.validoParaTramitar!
   const excludDocs = [1,47]
   let mapDocInitExclud = [...mapDocInit]
 
@@ -59,21 +59,21 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   mapDocInit = [...mapDocInitExclud]
 
 
-  mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
+  /*mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
     return excludDocs.find((exc)=>{
       return exc === doc.id
     })
   });
   
   if(!data?.obtenerTramitesAlumno){
-    btnDis = homologacion?.validoParaTramitar!
+    btnDis = revalidacion?.validoParaTramitar!
     mapDocInitExclud.map(doc=>{
       const findDoc = auth?.usuario?.expediente?.find((e)=>{
         return e.id===doc?.expedienteId!
       })
       btnDis = findDoc?.validado!<3 && btnDis
     });
-  }
+  }*/
 
   useEffect(()=>{
     if(btnDis){
@@ -87,12 +87,12 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({
-      planIngresarId: homologacion?.planIngresarId!,
-      telefono: homologacion?.telefono!
+      /*planIngresarId: revalidacion?.planIngresarId!,
+      telefono: revalidacion?.telefono!*/
     });
     const tramite: TramiteAlumnoInput = {
       tramiteId,
-      plesxurRef: homologacion?.plesXur!,
+      plesxurRef: revalidacion?.plesXur!,
       userAlumnoId: auth?.id!,
       email: auth?.email!,
       matricula: retornarPrimerMat(auth?.usuario?.matricula!),
@@ -106,6 +106,19 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
       
     }
   }
+
+  /*useEffect(()=>{
+    let bandEffect = true // | inscripcion?.validoParaTramitar!
+      
+      mapDocInit.map(doc=>{
+
+        const findDoc = auth?.usuario?.expediente?.find((e)=>{return (e.id===doc?.expedienteId!||e.documentoId===doc.id)})
+        bandEffect = findDoc?.validado!<3 && bandEffect 
+        setBtnDis(bandEffect)
+        
+      });
+    
+  },[auth?.usuario?.expediente, inscripcion])*/
 
   const loop = () =>{
     
@@ -143,7 +156,7 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
 
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg leading-6 font-medium text-gray-900">{titulo}</h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">{descripcion}</p>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">{descripcion}.</p>
         </div>
 
         {data?.obtenerTramitesAlumno && 
@@ -155,10 +168,10 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
             
             <HeadTramite />
             {data?.obtenerTramitesAlumno && 
-              <FormularioHomologacion mapDocInit={mapDocInit} telefono={telefono} planIngresarId={planIngresarId} />
+              <FormularioRevalidacion mapDocInit={mapDocInit} telefono={telefono} planIngresarId={planIngresarId} />
             }
             {!data?.obtenerTramitesAlumno && 
-              <FormularioHomologacion mapDocInit={mapDocInitExclud} telefono={telefono} planIngresarId={planIngresarId} />
+              <FormularioRevalidacion mapDocInit={mapDocInitExclud} telefono={telefono} planIngresarId={planIngresarId} />
             }
 
           </dl>
@@ -172,8 +185,8 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
               nombre={auth?.usuario?.alumno.nomentalu}
               apellidos={auth?.usuario?.alumno?.apeentalu!}
               fechaCreacion={data?.obtenerTramitesAlumno?.fechaCreacion}
-              unidadAcademica={tramitesState.procedimientos.homologacion?.unidadAcademica}
-              planEstudios={tramitesState.procedimientos.homologacion?.planElegido}
+              unidadAcademica={tramitesState.procedimientos.revalidacion?.unidadAcademica}
+              planEstudios={tramitesState.procedimientos.revalidacion?.planElegido}
               datosTramite={data?.obtenerTramitesAlumno?.datosTramite!}
           />
         }

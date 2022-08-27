@@ -14,11 +14,17 @@ import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 import { BajaTemporal } from '../../../components/tramite/bajaTemporal';
 import { obtenerRequisitosGQL, TipoRequisitos } from '../../../apollo-cliente/tramites/obtenerRequisitos';
 import { CatDocumentos } from '../../../helpers/expedientes';
+
 import HeadSeleccionarInscripcion from '../../../components/tramite/inscripcion/headSelecionarPlan';
 import HeadSeleccionarPlanBajaTemporal from '../../../components/tramite/bajaTemporal/headSelecionarPlan';
+import HeadSeleccionarPlanEquivalencia from '../../../components/tramite/equivalencia/headSelecionarPlan';
 import HeadSeleccionarPlanHomologacion from '../../../components/tramite/homologacion/headSelecionarPlan';
+import HeadSeleccionarPlanRevalidacion from '../../../components/tramite/revalidacion/headSelecionarPlan';
+
+import { Equivalencia } from '../../../components/tramite/equivalencia'
 import { Homologacion } from '../../../components/tramite/homologacion';
-import { Inscripcion } from '../../../components/tramite/inscripcion';
+import { Revalidacion } from '../../../components/tramite/revalidacion'
+import { Inscripcion } from '../../../components/tramite/inscripcion';;
 interface Props {
   id: string,
   tramite: TypeTramite,
@@ -31,7 +37,7 @@ interface Props {
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const {tramitesState,dispatch} = useTramitesContext()
-  const {preregistro, bajaTemporal, inscripcion, homologacion} = tramitesState.procedimientos
+  const {preregistro, bajaTemporal, inscripcion, equivalencia, homologacion, revalidacion} = tramitesState.procedimientos
   
   /*const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
@@ -46,7 +52,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
     )
   }
 
-  if((!auth?.logged!&&(props.id!=="14"&&props.id!=="16")) || 
+  if((!auth?.logged!&&(props.id!=="14"&&props.id!=="15"&&props.id!=="16")) || 
     (auth?.usuario!&&auth?.usuario?.matactiva! === 0)
   ){
     Router.replace("/");
@@ -105,25 +111,68 @@ const TramiteHome:NextPage<Props> = (props) =>{
             }
 
             {
-              props.id==="15" && <>
-                {!homologacion && <HeadSeleccionarPlanHomologacion >
-                    <SeleccionarPlan nombreContextState='homologacion' />
-                  </HeadSeleccionarPlanHomologacion>
+              props.id==="14" && auth.logged && <>
+                {!equivalencia && <HeadSeleccionarPlanEquivalencia
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                >
+                    <SeleccionarPlan nombreContextState='equivalencia' />
+                  </HeadSeleccionarPlanEquivalencia>
                 }
-                {homologacion && <Homologacion tramiteId={parseInt(props.id)!} mapDocInit={mapDocInit} />}
+                {equivalencia && <Equivalencia 
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                  tramiteId={parseInt(props.id)!} 
+                  mapDocInit={mapDocInit} />}
               </>
             }
 
             {
-              (props.id==="14"||props.id==="16") && <>
-                {/*!preregistro && <HeadSeleccionarPlanHomologacion >
+              props.id==="15" && auth.logged && <>
+                {!homologacion && <HeadSeleccionarPlanHomologacion
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                >
                     <SeleccionarPlan nombreContextState='homologacion' />
                   </HeadSeleccionarPlanHomologacion>
-                */}
-              {!preregistro && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} tramiteId={parseInt(props.id)!} />}
-
-              {preregistro && <PasosPreregistro paises={props.paises} />}
+                }
+                {homologacion && <Homologacion 
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                  tramiteId={parseInt(props.id)!} 
+                  mapDocInit={mapDocInit} />}
               </>
+            }
+
+            {
+              props.id==="16" && auth.logged && <>
+                {!revalidacion && <HeadSeleccionarPlanRevalidacion
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                >
+                    <SeleccionarPlan nombreContextState='revalidacion' />
+                  </HeadSeleccionarPlanRevalidacion>
+                }
+                {revalidacion && <Revalidacion 
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                  tramiteId={parseInt(props.id)!} 
+                  mapDocInit={mapDocInit} />}
+              </>
+            }
+
+            {
+              (props.id==="14"||props.id==="15"||props.id==="16") && 
+                !auth.logged &&
+                  <>
+                    {/*!preregistro && <HeadSeleccionarPlanHomologacion >
+                        <SeleccionarPlan nombreContextState='homologacion' />
+                      </HeadSeleccionarPlanHomologacion>
+                    */}
+                    {!preregistro && <UnidadesAcademicas unidadesAcademicas={props.unidadesAcademicas} tramiteId={parseInt(props.id)!} />}
+
+                    {preregistro && <PasosPreregistro paises={props.paises} />}
+                  </>
             }
             
           </div>

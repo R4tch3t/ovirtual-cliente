@@ -13,6 +13,10 @@ import { ModalSuccess } from "../../../../ModalSucces";
 import { obtenerFormulario } from "../obtenerFormulario";
 import { coloresInputs1 } from './helper/coloresInputs';
 import { ModalError } from "../../../../ModalError";
+import { validarFormulario2 } from "../paso2/helper";
+import { validarFormulario3 } from "../paso3/helper";
+import { validarFormulario4 } from "../paso4/helper";
+import { validarFormulario5 } from "../paso5/helper";
 
 type Props = {
     paises: TypePais[]
@@ -28,7 +32,7 @@ const advertencias = {
 
 const Paso1:FC<Props> = ({paises}) => {
     const {tramitesState, dispatch} = useTramitesContext()
-    const {aspiranteId,paso1} = tramitesState.procedimientos.preregistro!
+    const {aspiranteId,paso1,paso2,paso3,paso4,paso5} = tramitesState.procedimientos.preregistro!
     const [inputs, setInputs]:any = useState(coloresInputs1(paso1!));
     const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
@@ -41,6 +45,16 @@ const Paso1:FC<Props> = ({paises}) => {
         const valido = inputs.curp.color === 'primary' && inputs.nombre.color === 'primary' &&
             inputs.ape1.color === 'primary' && inputs.celular.color === 'primary' && inputs.email.color === 'primary' &&
             inputs.confirmEmail.color === 'primary' && validarFormulario1(paso1!)
+            
+            return valido
+    }
+
+    const formularioParaGuardarValido = () => {
+            const valido = inputs.curp.color === 'primary' && inputs.nombre.color === 'primary' &&
+            inputs.ape1.color === 'primary' && inputs.celular.color === 'primary' && inputs.email.color === 'primary' &&
+            inputs.confirmEmail.color === 'primary' && validarFormulario1(paso1!) && validarFormulario2(paso2!) 
+            && validarFormulario3(paso3!) && validarFormulario4(paso4!) && validarFormulario5(paso5!)
+
             return valido
     }
 
@@ -394,8 +408,8 @@ const Paso1:FC<Props> = ({paises}) => {
                            
                         }}
                         style={{width: 120}}
-                        className={`ml-5 bg-${!formularioValido()?'gray-400':'sky-700'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${!formularioValido()?'gray-400':'sky-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
-                        disabled={!formularioValido()}
+                        className={`ml-5 bg-${!formularioParaGuardarValido()?'gray-400':'sky-700'} border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-${!formularioParaGuardarValido()?'gray-400':'sky-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500`}
+                        disabled={!formularioParaGuardarValido()}
                     >
 
                         <ClipboardCopyIcon  width={20} height={20} /> GUARDAR

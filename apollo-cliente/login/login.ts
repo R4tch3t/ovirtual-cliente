@@ -15,8 +15,7 @@ export type TipoUsuario = {
     matricula: string | null;
     avatar?: string | null;
     nombre: string | null;
-    email: string;
-    password: string;
+    email: string;    
     online: number | null;
     activated: number | null;
     matactiva: number | null;
@@ -83,8 +82,7 @@ export const loginGraphQL = async (email:string,password:string) => {
                     uuid
                     matricula
                     nombre
-                    email
-                    password
+                    email                    
                     online
                     activated
                     matactiva
