@@ -1,8 +1,10 @@
 import { CatDocumentos } from '../../helpers/expedientes';
 import { TramiteAlumno } from '../../hooks/useQuery/tramites/todosTramitesAlumno';
 import { BajaTemporal } from '../tramite/bajaTemporal';
+import { Equivalencia } from '../tramite/equivalencia';
 import { Homologacion } from '../tramite/homologacion';
 import { Inscripcion } from '../tramite/inscripcion';
+import { Revalidacion } from '../tramite/revalidacion';
 
 type Props = {
     tramiteId: number
@@ -47,13 +49,43 @@ export default function RetornarTramite({tramiteId, tramites}:Props){
         )
     }
 
+    if(tramiteId===14){
+        
+        return (
+            <>
+                <Equivalencia tramiteId={tramiteId} mapDocInit={mapDocInit} 
+                    titulo={tramSelec?.tramite?.nombre!} 
+                    descripcion={tramSelec?.tramite?.descripcion!}
+                 />
+            </>
+        )
+        
+    }
+
     if(tramiteId===15){
         
         return (
             <>
-                <Homologacion tramiteId={tramiteId} mapDocInit={mapDocInit} />
+                <Homologacion tramiteId={tramiteId} mapDocInit={mapDocInit} 
+                    titulo={tramSelec?.tramite?.nombre!} 
+                    descripcion={tramSelec?.tramite?.descripcion!}
+                 />
             </>
         )
+
+    }
+
+    if(tramiteId===16){
+        
+        return (
+            <>
+                <Revalidacion tramiteId={tramiteId} mapDocInit={mapDocInit} 
+                    titulo={tramSelec?.tramite?.nombre!} 
+                    descripcion={tramSelec?.tramite?.descripcion!}
+                 />
+            </>
+        )
+        
     }
 
       return <></>
