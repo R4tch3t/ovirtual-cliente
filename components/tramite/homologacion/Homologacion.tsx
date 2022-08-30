@@ -39,7 +39,7 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
-  let btnDis:any = homologacion?.validoParaTramitar!
+  let btnDis:any = true //homologacion?.validoParaTramitar!
   const excludDocs = [1,47]
   let mapDocInitExclud = [...mapDocInit]
 
@@ -59,7 +59,7 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   mapDocInit = [...mapDocInitExclud]
 
 
-  mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
+  /*mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
     return excludDocs.find((exc)=>{
       return exc === doc.id
     })
@@ -73,7 +73,7 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
       })
       btnDis = findDoc?.validado!<3 && btnDis
     });
-  }
+  }*/
 
   useEffect(()=>{
     if(btnDis){

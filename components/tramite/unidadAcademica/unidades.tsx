@@ -1,10 +1,12 @@
 import Image from 'next/image'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
 import { TypeUnidadesAcademicas } from '../../../interfaces'
 
 import IconUni from '../../../public/iconUni.png'
 import { types } from '../../../types/tramites'
+import { SearchIcon } from '@heroicons/react/solid'
+import Info from '../../Info'
 
 type Props = {
   unidadesAcademicas: TypeUnidadesAcademicas[],
@@ -58,8 +60,18 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas, tramiteId}) => {
       }
     });
   }
+  const [query, setQuery] = useState('')
+  const nacionalidadFiltrado =
+    query === ''
+      ? unidadesAcademicas
+      : unidadesAcademicas?.filter((unidad) => {
+          const queryToLow = query.toLowerCase()
+          return unidad.nombrePlanEstudios.toLowerCase().includes(queryToLow) || 
+            unidad.nombreUnidadAcademica.toLowerCase().includes(queryToLow)
+      });
     return (
       <div>
+        
           <h1  style={{textAlign: 'center'}} className="text-lg font-medium">
             {/*<p className="mt-2 text-xl text-gray-500">
               Proceso de Admisión de: <b> Especialidades, Maestrías y Doctorados. </b>
@@ -75,8 +87,31 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas, tramiteId}) => {
             </p>
             
           </h1>
-        <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-3 sm:gap-px">
-          {unidadesAcademicas.map((unidad, unidadIdx) => {
+
+          <div className="relative mt-5 mb-5">
+            <SearchIcon
+                className="pointer-events-none absolute top-2.5 left-4 h-5 w-5 text-gray-900 text-opacity-40"
+                aria-hidden="true"
+            />
+            <input                
+                className="w-full py-2 pl-10 pr-3 border rounded-md leading-5 focus:text-gray-900 focus:bg-opacity-100 focus:placeholder-gray-500 focus:ring-0 sm:text-sm"
+                placeholder="Buscar..."
+                autoComplete='off'
+                
+                onChange={(event) => { 
+                    setQuery(event.target.value)
+                    
+                }}
+            />
+          </div>
+
+        <div className={`rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid 
+                          sm:grid-cols-${nacionalidadFiltrado.length>2?3:(!nacionalidadFiltrado.length?1:nacionalidadFiltrado.length)} 
+                            sm:gap-px`}>
+          {!nacionalidadFiltrado.length &&           
+            <Info msg={'No se encontró ningún dato...'}  />
+          }
+          {nacionalidadFiltrado.map((unidad, unidadIdx) => {
             c = colores.length-1 === c ? 0 : c+1
             return(
             <div

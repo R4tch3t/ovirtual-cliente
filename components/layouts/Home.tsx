@@ -2,6 +2,7 @@
 import {
     AcademicCapIcon,
     ChatAlt2Icon,
+    ClipboardListIcon
   } from '@heroicons/react/outline'
 import Link from 'next/link';
 import { useState } from 'react';
@@ -46,21 +47,42 @@ const Home = () => {
     const actions = [
         
         {
-          icon: AcademicCapIcon,
-          name: 'Trámites',
-          href: '/tramites',
-          descripcion: 'Aquí podrá seleccionar los diferentes trámites disponibles.',
+          icon: ClipboardListIcon,
+          name: 'Equivalencia',
+          href: '/tramite/14',
+          descripcion: 'Aquí podrá realizar el proceso de Equivalencia.',
           iconForeground: 'text-indigo-700',
           iconBackground: 'bg-indigo-50',
         },
         {
-          icon: ChatAlt2Icon,
-          name: 'Chat en línea',
-          href: '/chat',
-          descripcion: 'Intercambio de mensajes en linea entre alumnos, docentes y trabajadores de la universidad.',
-          iconForeground: 'text-sky-700',
-          iconBackground: 'bg-sky-50',
+          icon: ClipboardListIcon,
+          name: 'Homologación',
+          href: '/tramite/15',
+          descripcion: 'Aquí podrá realizar el proceso de Homologación.',
+          iconForeground: 'text-indigo-700',
+          iconBackground: 'bg-indigo-50',
         },
+        {
+          icon: ClipboardListIcon,
+          name: 'Revalidación',
+          href: '/tramite/16',
+          descripcion: 'Aquí podrá realizar el proceso de Revalidación.',
+          iconForeground: 'text-indigo-700',
+          iconBackground: 'bg-indigo-50',
+        },
+        
+      ]
+
+      const actionAllTramites = [
+        
+        {
+          icon: AcademicCapIcon,
+          name: 'Todos los trámites',
+          href: '/tramites',
+          descripcion: 'Aquí podrá seleccionar los diferentes trámites disponibles.',
+          iconForeground: 'text-indigo-700',
+          iconBackground: 'bg-indigo-50',
+        },        
         
       ]
       
@@ -165,7 +187,8 @@ const Home = () => {
                       {auth?.usuario?.vwAspirante?.length! > 0 &&
                         <HomeActions card='tramiteAspInscripcion' nCol={1} actions={actionsOne} />
                       }
-                      <HomeActions nCol={2} actions={actions} />
+                      <HomeActions nCol={3} actions={actions} /> 
+                      <HomeActions nCol={1} actions={actionAllTramites} />
                    
                     </section>
                   </div>

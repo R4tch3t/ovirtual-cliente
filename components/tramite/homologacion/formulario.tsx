@@ -66,7 +66,7 @@ export const FormularioHomologacion:FC<Props> = (props) => {
 
     return (
         <>
-            <div className="sm:col-span-2">
+            {/*<div className="sm:col-span-2">
                 <dt className="text-sm font-medium text-gray-500">Escuela UAGRO a la que desea entrar:
                     <span className="mt-2 text-xs text-red-500">
                         {' *'}
@@ -97,7 +97,7 @@ export const FormularioHomologacion:FC<Props> = (props) => {
                     />
                     
                 </dd>
-            </div>
+            </div>*/}
 
             <TableFile mapDocInit={mapDocInit} /> 
 
