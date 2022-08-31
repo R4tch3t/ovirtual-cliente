@@ -14,8 +14,10 @@ import { validarFormulario4 } from "../paso4/helper";
 import { validarFormulario5 } from "./helper";
 import { obtenerFormulario } from "../obtenerFormulario";
 import { ModalError } from "../../../../ModalError";
+import { useAppContext } from "../../../../../auth/authContext";
 
 const Paso5 = () => {
+    const {auth,verificaToken} = useAppContext();
     const {tramitesState, dispatch} = useTramitesContext()
     const {aspiranteId,paso1,paso2,paso3,paso4,paso5} = tramitesState.procedimientos.preregistro!
     
@@ -145,6 +147,9 @@ const Paso5 = () => {
                                 if(data?.nuevoAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
+                                    if(auth?.logged){
+                                        await verificaToken!()
+                                    }
                                 }else{
                                     setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista ó que ya seá alumno UAGro., si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
                                     setModalE(true);

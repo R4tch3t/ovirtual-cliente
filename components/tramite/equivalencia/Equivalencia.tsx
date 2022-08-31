@@ -5,7 +5,7 @@ import { useTramitesContext } from '../../../context/tramites/TramitesContext'
 import { ObtenerTramiteAlumnoInput, useObtenerTramitesAlumno } from '../../../hooks/useQuery/tramites'
 import { ModalError } from '../../ModalError'
 import { ModalSuccess } from '../../ModalSucces';
-import EstadoTramite from '../estadoTramite'
+import EstadoTramite from '../estadoTramitePreregistros'
 import { HeadTramite } from '.'
 import { FormularioEquivalencia } from './formulario'
 import Fade from '@mui/material/Fade';
@@ -13,6 +13,9 @@ import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
 import RenderPDF from '../../../helpers/renderPDF/formatoTramite'
+import { types } from '../../../types/tramites'
+import HeadSeleccionarPlanEquivalencia from './headSelecionarPlan';
+import { SeleccionarPlan } from '../seleccionarPlan';
 
 let timeRef:any = null
 type Props = {
@@ -24,7 +27,7 @@ type Props = {
 
 export const Equivalencia: FC<Props> = ({titulo, descripcion, tramiteId, mapDocInit}) => {
   const {auth} = useAppContext();
-  const {tramitesState} = useTramitesContext();
+  const {tramitesState, dispatch} = useTramitesContext();
   const {equivalencia} = tramitesState?.procedimientos!
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
     userAlumnoId: auth?.id!,
@@ -42,7 +45,7 @@ export const Equivalencia: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   let btnDis:any = true//equivalencia?.validoParaTramitar!
   const excludDocs = [1,47]
   let mapDocInitExclud = [...mapDocInit]
-
+  const vwAspirante = auth?.usuario?.vwAspirante![0]
 
   mapDocInitExclud.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{
@@ -138,6 +141,45 @@ export const Equivalencia: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
     }
     loop()
   },[data?.obtenerTramitesAlumno])
+
+  useEffect(()=>{
+    
+    if(vwAspirante&&!equivalencia){
+      
+      const {ID_PLAN, PLANESTUDIOS, UA} = vwAspirante!
+      const nombreTramite = 'equivalencia'
+      dispatch({
+        type: types.seleccionarPlanProcedure,
+        payload: {
+          usuarioId: auth?.id!, 
+          plesXur: ID_PLAN, 
+          planElegido:PLANESTUDIOS, 
+          unidadAcademica: UA, 
+          procedure:nombreTramite
+        }
+      });        
+      
+      const nombreValor = 'validoParaTramitar'
+      const valor = true
+
+      dispatch({
+          type: types.cambiarEstado,
+          payload: {nombreTramite,nombreValor,valor}
+      });
+    }
+    
+  },[])
+
+  if(!equivalencia){
+    return (
+      <HeadSeleccionarPlanEquivalencia
+                  titulo={titulo!} 
+                  descripcion={descripcion!}
+                >
+        <SeleccionarPlan nombreContextState='equivalencia' />
+      </HeadSeleccionarPlanEquivalencia>
+    )
+  }
 
   return (
     <Fade in={true}>

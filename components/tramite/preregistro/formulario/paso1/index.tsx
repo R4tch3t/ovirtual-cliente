@@ -17,6 +17,7 @@ import { validarFormulario2 } from "../paso2/helper";
 import { validarFormulario3 } from "../paso3/helper";
 import { validarFormulario4 } from "../paso4/helper";
 import { validarFormulario5 } from "../paso5/helper";
+import { useAppContext } from "../../../../../auth/authContext";
 
 type Props = {
     paises: TypePais[]
@@ -31,6 +32,7 @@ const advertencias = {
 }
 
 const Paso1:FC<Props> = ({paises}) => {
+    const {auth,verificaToken} = useAppContext();
     const {tramitesState, dispatch} = useTramitesContext()
     const {aspiranteId,paso1,paso2,paso3,paso4,paso5} = tramitesState.procedimientos.preregistro!
     const [inputs, setInputs]:any = useState(coloresInputs1(paso1!));
@@ -383,6 +385,9 @@ const Paso1:FC<Props> = ({paises}) => {
                                 if(data?.nuevoAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
+                                    if(auth?.logged){
+                                        await verificaToken!()
+                                    }
                                 }else{
                                     setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista, si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
                                     setModalE(true);

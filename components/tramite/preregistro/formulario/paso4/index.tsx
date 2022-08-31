@@ -17,11 +17,13 @@ import { ModalSuccess } from "../../../../ModalSucces";
 import { useGuardarAsp, useNuevoAsp } from "../../../../../hooks/useMutation";
 import { ModalError } from "../../../../ModalError";
 import { validarFormulario5 } from "../paso5/helper";
+import { useAppContext } from "../../../../../auth/authContext";
 
 
 type ChangeType = (e: ChangeEvent<FormElement>) => void
 
 const Paso4 = () => {
+    const {auth,verificaToken} = useAppContext();
     const {tramitesState, dispatch} = useTramitesContext()
     const {aspiranteId,paso1,paso2,paso3,paso4,paso5} = tramitesState.procedimientos.preregistro!
     const [inputs, setInputs]:any = useState(coloresInputs4(paso4!));
@@ -236,6 +238,9 @@ const Paso4 = () => {
                                 if(data?.nuevoAsp){
                                     setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
                                     setModalS(true);
+                                    if(auth?.logged){
+                                        await verificaToken!()
+                                    }
                                 }else{
                                     setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista, si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
                                     setModalE(true);

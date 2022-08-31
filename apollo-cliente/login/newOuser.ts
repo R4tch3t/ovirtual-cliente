@@ -64,6 +64,7 @@ export const newOuserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                         UA
                         PLANESTUDIOS
                         NIVEL_INGRESAR
+                        TRAMITE_ID
                     }
                 }
                 token

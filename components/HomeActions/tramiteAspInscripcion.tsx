@@ -10,8 +10,24 @@ import { useAppContext } from '../../auth/authContext';
 export const TramiteAspInscripcion:FC<PropsCard> = ({action}) => {
     const {auth} = useAppContext()
     const [cargando, setCargando] = useState(false)    
+    const TRAMITE_ID = auth?.usuario?.vwAspirante![0]?.TRAMITE_ID!
+    let nombreTramite = 'INSCRIPCIÓN'
 
-    const irAlTramite = () => {
+    if(TRAMITE_ID!>13&&
+        TRAMITE_ID!<17){
+          nombreTramite = 'EQUIVALENCIA'
+          if(TRAMITE_ID===15){
+            nombreTramite = 'HOMOLOGACIÓN'
+          }
+          if(TRAMITE_ID===16){
+            nombreTramite = 'REVALIDACIÓN'
+          }
+          action.name = `PROCESO DE ${nombreTramite}`;
+          action.descripcion = `Continúa con tu proceso de ${nombreTramite}`;
+    }
+    //}
+
+    const irAlTramite = async() => {
         
         setCargando(true)
         const {NIVEL_INGRESAR} = auth?.usuario?.vwAspirante![0]!
@@ -24,8 +40,13 @@ export const TramiteAspInscripcion:FC<PropsCard> = ({action}) => {
                         (NIVEL_INGRESAR===7?47:48)
                     )
                 )
+        if(action.name.startsWith('PROCESO DE INSCRIPCIÓN')){
+            await Router.push(`/tramite/${tramiteId}/iniciarTramite`)
+        }
 
-        Router.push(`/tramite/${tramiteId}/iniciarTramite`)
+        
+        await Router.push(`/tramite/${TRAMITE_ID}/iniciarTramite`)
+        
 
     }
 
@@ -44,7 +65,7 @@ export const TramiteAspInscripcion:FC<PropsCard> = ({action}) => {
                     {action.descripcion}
                 </p>
                 <Spacer y={2} />
-                <Info msg={<>Para realizar ó ver el estado de su tramite de inscripcion <a onMouseDown={irAlTramite} rel="noreferrer" className="underline" href={undefined} >ir al trámite</a>...</>} />
+                <Info msg={<>Para realizar ó ver el estado de su trámite de {nombreTramite} <a onMouseDown={irAlTramite} rel="noreferrer" className="underline" href={undefined} >ir al trámite</a>...</>} />
                 
                 <Slide  direction="up" in={true} mountOnEnter unmountOnExit>
                     <div className="w-full" >                                           

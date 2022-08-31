@@ -42,7 +42,7 @@ const Home = () => {
         iconForeground: 'text-indigo-700',
         iconBackground: 'bg-indigo-50',
       }
-    ]
+    ]    
 
     const actions = [
         

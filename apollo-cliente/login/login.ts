@@ -66,6 +66,7 @@ export type TipoVwAspirante = {
     UA: string,
     PLANESTUDIOS: string,
     NIVEL_INGRESAR: number,
+    TRAMITE_ID: number
    // PERINIPLN: string
 }
 
@@ -119,6 +120,7 @@ export const loginGraphQL = async (email:string,password:string) => {
                         UA
                         PLANESTUDIOS
                         NIVEL_INGRESAR
+                        TRAMITE_ID
                     }
                 }
                 token

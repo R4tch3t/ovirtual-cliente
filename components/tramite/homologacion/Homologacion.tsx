@@ -1,11 +1,12 @@
 import { FC, useState, useEffect } from 'react'
 import { estadoRevisionGQL, guardarTramiteGQL, TramiteAlumnoInput } from '../../../apollo-cliente/tramites'
 import { useAppContext } from '../../../auth/authContext'
+import HeadSeleccionarPlanHomologacion from './headSelecionarPlan';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext'
 import { ObtenerTramiteAlumnoInput, useObtenerTramitesAlumno } from '../../../hooks/useQuery/tramites'
 import { ModalError } from '../../ModalError'
 import { ModalSuccess } from '../../ModalSucces';
-import EstadoTramite from '../estadoTramite'
+import EstadoTramite from '../estadoTramitePreregistros'
 import { HeadTramite } from './'
 import { FormularioHomologacion } from './formulario'
 import Fade from '@mui/material/Fade';
@@ -13,19 +14,26 @@ import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
 import RenderPDF from '../../../helpers/renderPDF/formatoTramite'
+import { types } from '../../../types/tramites'
+import { SeleccionarPlan } from '../seleccionarPlan';
+import { UnidadesAcademicas } from '../unidadAcademica';
+import { PasosPreregistro } from '../preregistro';
+import { TypePais, TypeUnidadesAcademicas } from '../../../interfaces';
 
 let timeRef:any = null
 type Props = {
   titulo: string, 
   descripcion: string,
   tramiteId: number,
-  mapDocInit: CatDocumentos[]
+  mapDocInit: CatDocumentos[],
+  unidadesAcademicas?: TypeUnidadesAcademicas[],
+  paises?: TypePais[],
 }
 
-export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocInit}) => {
+export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocInit, unidadesAcademicas, paises}) => {
   const {auth} = useAppContext();
-  const {tramitesState} = useTramitesContext();
-  const {homologacion} = tramitesState?.procedimientos!
+  const {tramitesState, dispatch} = useTramitesContext();
+  const {homologacion, preregistro} = tramitesState?.procedimientos!
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
     userAlumnoId: auth?.id!,
     tramiteId,
@@ -39,6 +47,7 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
+  const vwAspirante = auth?.usuario?.vwAspirante![0]
   let btnDis:any = true //homologacion?.validoParaTramitar!
   const excludDocs = [1,47]
   let mapDocInitExclud = [...mapDocInit]
@@ -125,6 +134,55 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
     }
     loop()
   },[data?.obtenerTramitesAlumno])
+
+  useEffect(()=>{
+    
+    if(vwAspirante&&!homologacion){
+      
+      const {ID_PLAN, PLANESTUDIOS, UA} = vwAspirante!
+      const nombreTramite = 'homologacion'
+      dispatch({
+        type: types.seleccionarPlanProcedure,
+        payload: {
+          usuarioId: auth?.id!, 
+          plesXur: ID_PLAN, 
+          planElegido:PLANESTUDIOS, 
+          unidadAcademica: UA, 
+          procedure:nombreTramite
+        }
+      });        
+      
+      const nombreValor = 'validoParaTramitar'
+      const valor = true
+
+      dispatch({
+          type: types.cambiarEstado,
+          payload: {nombreTramite,nombreValor,valor}
+      });
+    }
+    
+  },[])
+
+  if(!vwAspirante&&unidadesAcademicas&&paises){
+    return (
+      <>
+        {!preregistro && <UnidadesAcademicas unidadesAcademicas={unidadesAcademicas} tramiteId={tramiteId!} />}
+
+        {preregistro && <PasosPreregistro paises={paises} />}
+      </>
+    )
+  }
+
+  if(!homologacion){
+    return (
+      <HeadSeleccionarPlanHomologacion
+        titulo={titulo!} 
+        descripcion={descripcion!}
+      >
+          <SeleccionarPlan nombreContextState='homologacion' />
+        </HeadSeleccionarPlanHomologacion>      
+    )
+  }
 
   return (
     <Fade in={true}>

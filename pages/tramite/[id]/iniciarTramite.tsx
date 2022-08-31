@@ -17,9 +17,7 @@ import { CatDocumentos } from '../../../helpers/expedientes';
 
 import HeadSeleccionarInscripcion from '../../../components/tramite/inscripcion/headSelecionarPlan';
 import HeadSeleccionarPlanBajaTemporal from '../../../components/tramite/bajaTemporal/headSelecionarPlan';
-import HeadSeleccionarPlanEquivalencia from '../../../components/tramite/equivalencia/headSelecionarPlan';
-import HeadSeleccionarPlanHomologacion from '../../../components/tramite/homologacion/headSelecionarPlan';
-import HeadSeleccionarPlanRevalidacion from '../../../components/tramite/revalidacion/headSelecionarPlan';
+
 
 import { Equivalencia } from '../../../components/tramite/equivalencia'
 import { Homologacion } from '../../../components/tramite/homologacion';
@@ -112,52 +110,37 @@ const TramiteHome:NextPage<Props> = (props) =>{
 
             {
               props.id==="14" && auth.logged && <>
-                {!equivalencia && <HeadSeleccionarPlanEquivalencia
-                  titulo={props.tramite.nombre!} 
-                  descripcion={props.tramite.descripcion!}
-                >
-                    <SeleccionarPlan nombreContextState='equivalencia' />
-                  </HeadSeleccionarPlanEquivalencia>
-                }
-                {equivalencia && <Equivalencia 
+                
+                 <Equivalencia 
                   titulo={props.tramite.nombre!} 
                   descripcion={props.tramite.descripcion!}
                   tramiteId={parseInt(props.id)!} 
-                  mapDocInit={mapDocInit} />}
+                  mapDocInit={mapDocInit} />
               </>
             }
 
             {
               props.id==="15" && auth.logged && <>
-                {!homologacion && <HeadSeleccionarPlanHomologacion
-                  titulo={props.tramite.nombre!} 
-                  descripcion={props.tramite.descripcion!}
-                >
-                    <SeleccionarPlan nombreContextState='homologacion' />
-                  </HeadSeleccionarPlanHomologacion>
-                }
-                {homologacion && <Homologacion 
+                
+                <Homologacion 
                   titulo={props.tramite.nombre!} 
                   descripcion={props.tramite.descripcion!}
                   tramiteId={parseInt(props.id)!} 
-                  mapDocInit={mapDocInit} />}
+                  unidadesAcademicas={props.unidadesAcademicas}
+                  paises={props.paises}
+                  mapDocInit={mapDocInit} />
               </>
+
             }
 
             {
               props.id==="16" && auth.logged && <>
-                {!revalidacion && <HeadSeleccionarPlanRevalidacion
-                  titulo={props.tramite.nombre!} 
-                  descripcion={props.tramite.descripcion!}
-                >
-                    <SeleccionarPlan nombreContextState='revalidacion' />
-                  </HeadSeleccionarPlanRevalidacion>
-                }
-                {revalidacion && <Revalidacion 
+                
+                <Revalidacion 
                   titulo={props.tramite.nombre!} 
                   descripcion={props.tramite.descripcion!}
                   tramiteId={parseInt(props.id)!} 
-                  mapDocInit={mapDocInit} />}
+                  mapDocInit={mapDocInit} />
               </>
             }
 
