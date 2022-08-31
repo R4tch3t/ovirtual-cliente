@@ -18,6 +18,7 @@ import { validarFormulario3 } from "../paso3/helper";
 import { validarFormulario4 } from "../paso4/helper";
 import { validarFormulario5 } from "../paso5/helper";
 import { useAppContext } from "../../../../../auth/authContext";
+import Router from "next/router";
 
 type Props = {
     paises: TypePais[]
@@ -38,7 +39,7 @@ const Paso1:FC<Props> = ({paises}) => {
     const [inputs, setInputs]:any = useState(coloresInputs1(paso1!));
     const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
-    const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
+    const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:'', btnOk: () => {}})
 
     const [nuevoAsp] = useNuevoAsp()
     const [guardarAsp] = useGuardarAsp()
@@ -196,8 +197,8 @@ const Paso1:FC<Props> = ({paises}) => {
     
     return (
         <>
-        <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-            txt={dataModal.txt} btnTxt={dataModal.btnTxt} />
+        <ModalSuccess open={modalS} setOpen={dataModal.btnOk} title={dataModal.title} 
+                txt={dataModal.txt} btnTxt={dataModal.btnTxt} />
         <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
             txt={dataModal.txt} btn1={{txt: dataModal.btnTxt, onClose: setModalE}} />
           <Nacionalidad />
@@ -383,15 +384,27 @@ const Paso1:FC<Props> = ({paises}) => {
                                     }})
                                     
                                 if(data?.nuevoAsp){
-                                    setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", 
+                                        btnTxt: "Aceptar", btnOk: async() => {
+                                            setModalS(false);
+                                            if(auth?.logged){
+                                                Router.reload()
+                                            }else{
+                                                await Router.push('/')
+                                            }
+                                            
+                                        } })
                                     setModalS(true);
-                                    if(auth?.logged){
-                                        await verificaToken!()
-                                    }
+                                    
                                 }else{
-                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista, si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista ó que ya seá alumno UAGro., si deseá modificar algún dato contacte a los directivos o administradores.",
+                                     btnTxt: "Regresar al formulario",
+                                     btnOk: () =>{
+                                        setModalS(false);
+                                     }
+                                     })
                                     setModalE(true);
-                                }
+                                } 
 
                             }else{
                                 
@@ -406,7 +419,12 @@ const Paso1:FC<Props> = ({paises}) => {
                                     }
                                 })
                                 if(data?.guardarAsp){
-                                    setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", 
+                                        btnTxt: "Regresar al formulario",
+                                        btnOk: () =>{
+                                            setModalS(false);
+                                        } 
+                                    })
                                     setModalS(true);
                                 }
                             }

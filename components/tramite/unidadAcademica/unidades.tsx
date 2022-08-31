@@ -83,7 +83,7 @@ const UnidadesAcademicas:FC<Props> = ({unidadesAcademicas, tramiteId}) => {
             </span>
 
             <p className="mt-2 text-gray-500">
-              Elija la Unidad Académica de su preferencia:
+              Elija la Unidad Académica y Plan de Estudios al que deseás ingresar:
             </p>
             
           </h1>

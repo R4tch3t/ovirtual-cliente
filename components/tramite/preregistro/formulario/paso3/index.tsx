@@ -15,6 +15,7 @@ import { ModalError } from "../../../../ModalError";
 import { validarFormulario4 } from "../paso4/helper";
 import { validarFormulario5 } from "../paso5/helper";
 import { useAppContext } from "../../../../../auth/authContext";
+import Router from "next/router";
 
 
 const Paso3 = () => {
@@ -28,7 +29,7 @@ const Paso3 = () => {
     const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
     
-    const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
+    const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:'', btnOk: () => {}})
 
     const formularioValido = () => {
         const valido =  validarFormulario1(paso1!) && validarFormulario2(paso2!) && validarFormulario3(paso3!);
@@ -84,7 +85,7 @@ const Paso3 = () => {
 
     return (
         <>  
-            <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+            <ModalSuccess open={modalS} setOpen={dataModal.btnOk} title={dataModal.title} 
                 txt={dataModal.txt} btnTxt={dataModal.btnTxt} />
             <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
             txt={dataModal.txt} btn1={{txt: dataModal.btnTxt, onClose: setModalE}} />
@@ -170,15 +171,27 @@ const Paso3 = () => {
                                         aspSocioEco: form?.aspSocioEco!
                                     }})
                                 if(data?.nuevoAsp){
-                                    setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", 
+                                        btnTxt: "Aceptar", btnOk: async() => {
+                                            setModalS(false);
+                                            if(auth?.logged){
+                                                Router.reload()
+                                            }else{
+                                                await Router.push('/')
+                                            }
+                                            
+                                        } })
                                     setModalS(true);
-                                    if(auth?.logged){
-                                        await verificaToken!()
-                                    }
+                                    
                                 }else{
-                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista, si deseá modificar algún dato contacte a los directivos o administradores.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Error', txt: "Es posible que el preregistro ya exista ó que ya seá alumno UAGro., si deseá modificar algún dato contacte a los directivos o administradores.",
+                                     btnTxt: "Regresar al formulario",
+                                     btnOk: () =>{
+                                        setModalS(false);
+                                     }
+                                     })
                                     setModalE(true);
-                                }
+                                } 
                             }else{
                                 
                                 
@@ -193,7 +206,12 @@ const Paso3 = () => {
                                     }
                                 })
                                 if(data?.guardarAsp){
-                                    setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", btnTxt: "Regresar al formulario" })
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ha guardado.", 
+                                        btnTxt: "Regresar al formulario",
+                                        btnOk: () =>{
+                                            setModalS(false);
+                                        } 
+                                    })
                                     setModalS(true);
                                 }
                             }
