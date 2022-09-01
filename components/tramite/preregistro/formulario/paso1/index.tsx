@@ -384,7 +384,7 @@ const Paso1:FC<Props> = ({paises}) => {
                                     }})
                                     
                                 if(data?.nuevoAsp){
-                                    setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado.", 
+                                    setDataModal({title: 'Éxito', txt: "El formulario se ha almacenado, revisa tu correo y sigue los pasos para continuar.", 
                                         btnTxt: "Aceptar", btnOk: async() => {
                                             setModalS(false);
                                             if(auth?.logged){
