@@ -224,7 +224,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
               >
                 <a
                   target={'_blank'}
-                  href={``}
+                  href={`sasepc.uagro.mx/encuesta/index.php?id=${auth.usuario?.matricula!}`}
                   className='cursor-pointer text-center'
                   style={{width: 200}}
                   rel='noreferrer'
