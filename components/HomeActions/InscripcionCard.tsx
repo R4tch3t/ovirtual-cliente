@@ -1,6 +1,7 @@
 import { Slide } from "@mui/material";
 import { FormElement, Input, Loading, Spacer } from "@nextui-org/react";
 import Link from "next/link";
+import Router from "next/router";
 import { FC, KeyboardEventHandler, useState } from "react";
 import { PropsCard } from ".";
 import client from "../../apollo-cliente";
@@ -99,8 +100,22 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
             await actualizarAspirante()
         }}
     };
+    const dataModalWEstado3 = {
+        title: '¡Advertencia!', 
+        txt:'El folio ya ha sido aceptado por favor, ingresa con tu correo o matrícula y contraseña.', 
+        btn1:{
+            onClose: async()=>{
+            await Router.push('/login')
+        }},
+        btn2: {
+            txt:'Ir al Login', 
+            onClick: async ()=>{            
+                await Router.push('/login')
+        }}
+    };
     const [open, setOpen] = useState(false)
     const [openW, setOpenW] = useState(false)
+    const [openWEstado3, setOpenWEstado3] = useState(false)
     const [aspPDF, setAspPDF] = useState({
         aspiranteId: -1,
         nombre: '',
@@ -173,6 +188,9 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                     const consultaResultadoCeneval = await consultaResultadoCenevalGQL({folio: parseInt(value!),autorizado: 1})
                     const {respResultadoCeneval} = consultaResultadoCeneval
                     if(respResultadoCeneval){
+                        if(consultaResultadoCeneval.estado===3){
+                            return setOpenWEstado3(true)
+                        }
                         //setResultadoCeneval(consultaResultadoCeneval.resultadoCeneval!)
                         const campoCurp:any = document.getElementById('curpInscripcion')
                         
@@ -190,6 +208,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                         curp:{
                             color: 'success', 
                         }})
+                        
                         
 
                     }else{
@@ -297,6 +316,12 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         <>
         
             <div>
+            <ModalWarning open={openWEstado3} setOpen={()=>{setOpenWEstado3(false)}} 
+                title={dataModalWEstado3.title} 
+                txt={dataModalWEstado3.txt} 
+                btn1={dataModalWEstado3.btn1} 
+                btn2={dataModalWEstado3.btn2} 
+            />
             <ModalSuccess open={modalSR} setOpen={()=>{
                 setModalSR(false);
                 setCargando(false);

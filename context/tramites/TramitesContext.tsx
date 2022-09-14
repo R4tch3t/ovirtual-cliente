@@ -26,6 +26,7 @@ const initialState:TypeTramitesState = {
         equivalencia: null,
         homologacion: null,
         revalidacion: null,
+        cambioDeGrupo: null
 
     },
     tramiteAlumnoSeleccionado: null,

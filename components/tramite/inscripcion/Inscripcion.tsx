@@ -47,7 +47,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
   const vwAspirante = auth?.usuario?.vwAspirante![0]
   const vwAlumno = auth?.usuario?.vwAlumnoConPlanes![0]
   const [btnDis, setBtnDis]:any = useState(false)//inscripcion?.validoParaTramitar!
-  
+  const currentMatricula = retornarPrimerMat(auth?.usuario?.matricula!)
   useEffect(()=>{
     let bandEffect = true // | inscripcion?.validoParaTramitar!
       
@@ -80,7 +80,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
       plesxurRef: inscripcion?.plesXur!,
       userAlumnoId: auth?.id!,
       email: auth?.email!,
-      matricula: retornarPrimerMat(auth?.usuario?.matricula!),
+      matricula: currentMatricula,
       datosTramite
     }
     const resp = await guardarTramiteGQL(tramite)
@@ -224,7 +224,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
               >
                 <a
                   target={'_blank'}
-                  href={`sasepc.uagro.mx/encuesta/index.php?id=${auth.usuario?.matricula!}`}
+                  href={`https://sasepc.uagro.mx/encuesta/index.php?id=${currentMatricula}`}
                   className='cursor-pointer text-center'
                   style={{width: 200}}
                   rel='noreferrer'

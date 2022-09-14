@@ -40,8 +40,9 @@ export const TramiteAspInscripcion:FC<PropsCard> = ({action}) => {
                         (NIVEL_INGRESAR===7?47:48)
                     )
                 )
+        
         if(action.name.startsWith('PROCESO DE INSCRIPCIÓN')){
-            await Router.push(`/tramite/${tramiteId}/iniciarTramite`)
+           return await Router.push(`/tramite/${tramiteId}/iniciarTramite`)
         }
 
         

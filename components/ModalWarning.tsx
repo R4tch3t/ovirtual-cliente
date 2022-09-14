@@ -54,7 +54,7 @@ export const ModalWarning=({open, setOpen, title, txt, txt2, btn1, btn2, childre
                   </div>
                 </div>
               </div>
-              <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+              {btn1.txt && <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
@@ -62,7 +62,7 @@ export const ModalWarning=({open, setOpen, title, txt, txt2, btn1, btn2, childre
                 >
                   {btn1.txt}
                 </button>                                
-              </div>
+              </div>}
               
               {btn2&&<div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                 
