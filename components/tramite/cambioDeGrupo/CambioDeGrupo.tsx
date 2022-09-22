@@ -32,7 +32,7 @@ export const CambioDeGrupo: FC<Props> = ({tramiteId,titulo,descripcion, mapDocIn
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
     userAlumnoId: auth?.id!,
     tramiteId,
-    plesxurRef: tramitesState?.procedimientos?.bajaTemporal?.plesXur!
+    plesxurRef: tramitesState?.procedimientos?.cambioDeGrupo?.plesXur!
   }
   const {data, refetch} = useObtenerTramitesAlumno(tramiteAlumno)
   const datosTramite = data?.obtenerTramitesAlumno?.datosTramite
@@ -42,7 +42,7 @@ export const CambioDeGrupo: FC<Props> = ({tramiteId,titulo,descripcion, mapDocIn
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
-  let btnDis:any = tramitesState?.procedimientos?.bajaTemporal?.validoParaTramitar!
+  let btnDis:any = tramitesState?.procedimientos?.cambioDeGrupo?.validoParaTramitar!
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
     btnDis = findDoc?.validado!<3 && btnDis
@@ -60,12 +60,12 @@ export const CambioDeGrupo: FC<Props> = ({tramiteId,titulo,descripcion, mapDocIn
 
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({
-      periodoLectivo: tramitesState?.procedimientos?.bajaTemporal?.periodoLectivo!,
-      causaBaja: tramitesState?.procedimientos?.bajaTemporal?.causaBaja!
+      grupoTurnoActual: tramitesState?.procedimientos?.cambioDeGrupo?.grupoTurnoActual!,
+      grupoTurnoAsigando: tramitesState?.procedimientos?.cambioDeGrupo?.grupoTurnoAsigando!
     });
     const tramite: TramiteAlumnoInput = {
       tramiteId,
-      plesxurRef: tramitesState.procedimientos.bajaTemporal?.plesXur!,
+      plesxurRef: tramitesState.procedimientos.cambioDeGrupo?.plesXur!,
       userAlumnoId: auth?.id!,
       email: auth?.email!,
       matricula: retornarPrimerMat(auth?.usuario?.matricula!),

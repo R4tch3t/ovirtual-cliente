@@ -31,11 +31,11 @@ export const HeadTramite = () => {
             </div>
             <div className="sm:col-span-1">
                 <dt className="text-sm font-medium text-gray-500">Unidad Académica</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tramitesState.procedimientos.bajaTemporal?.unidadAcademica}</dd>
+                <dd className="mt-1 text-sm text-gray-900">{tramitesState.procedimientos.cambioDeGrupo?.unidadAcademica}</dd>
             </div>
             <div className="sm:col-span-1">
                 <dt className="text-sm font-medium text-gray-500">Plan de estudios</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tramitesState.procedimientos.bajaTemporal?.planElegido}</dd>
+                <dd className="mt-1 text-sm text-gray-900">{tramitesState.procedimientos.cambioDeGrupo?.planElegido}</dd>
             </div>
             
         </>

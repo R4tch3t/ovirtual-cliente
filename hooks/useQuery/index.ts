@@ -1,3 +1,4 @@
+export * from './gruposActuales'
 export * from './entidadesFederativas'
 export * from './municipios'
 export * from './localidades'

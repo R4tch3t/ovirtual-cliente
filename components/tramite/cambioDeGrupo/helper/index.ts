@@ -1,2 +1,1 @@
-export * from './validarPeriodo'
-export * from './validarCausaBaja'
+export * from './grupoActual'
