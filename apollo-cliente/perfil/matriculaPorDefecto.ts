@@ -56,6 +56,7 @@ export const matriculaPorDefectoGQL = async (user:UsuarioMatPorDef) => {
                         PLANESTUDIOS
                         NIVEL
                         PERINIPLN
+                        TIPOESCUELA
                     }
                 }
                 token

@@ -104,6 +104,11 @@ export interface TypeCambioDeGrupo extends HeadTramite {
     grupoTurnoAsigando: string | null,
     validoParaTramitar: boolean,
 }
+export interface TypeCambioUnidadAcademica extends HeadTramite {
+    unidadDestino: number | null,
+    validoParaTramitar: boolean,
+}
+
 
 export type TypeDocumento = {
     id: number|null;
@@ -122,6 +127,7 @@ export type TypeProcedimiento = {
     homologacion: TypeHomologacion | null,
     revalidacion: TypeRevalidacion | null,
     cambioDeGrupo: TypeCambioDeGrupo | null,
+    cambioUnidadAcademica: TypeCambioUnidadAcademica | null,
 }
 
 type ProcesoConfirmacion = {

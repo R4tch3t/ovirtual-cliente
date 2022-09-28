@@ -7,15 +7,14 @@ import { ModalError } from '../../ModalError'
 import { ModalSuccess } from '../../ModalSucces';
 import EstadoTramite from '../estadoTramite'
 import { HeadTramite } from '.'
-import { FormularioCambioDeGrupo } from './formulario'
+import { FormularioCambioUnidadAcademica } from './formulario'
 import Fade from '@mui/material/Fade';
 import { ConfirmarTramite } from '../../../helpers/ConfirmarTramite'
 import { retornarPrimerMat } from '../../../helpers/retornarPrimerMat'
 import { CatDocumentos } from '../../../helpers/expedientes'
 import { PDFLogo } from '../../Logo'
 import RenderPDF from '../../../helpers/renderPDF/formatoTramite'
-import Link from 'next/link'
-import Router from 'next/router'
+import { TypeUnidadesAcademicas } from '../../../interfaces'
 
 
 let timeRef:any = null
@@ -23,26 +22,27 @@ type Props = {
   tramiteId: number,
   titulo: string,
   descripcion: string,
-  mapDocInit: CatDocumentos[]
+  mapDocInit: CatDocumentos[],
+  unidadesAcademicas: TypeUnidadesAcademicas[]
 }
 
-export const CambioDeGrupo: FC<Props> = ({tramiteId,titulo,descripcion, mapDocInit}) => {
+export const CambioUnidadAcademica: FC<Props> = ({tramiteId,titulo,descripcion, mapDocInit,unidadesAcademicas}) => {
   const {auth} = useAppContext();
   const {tramitesState} = useTramitesContext();
   const tramiteAlumno: ObtenerTramiteAlumnoInput = {
     userAlumnoId: auth?.id!,
     tramiteId,
-    plesxurRef: tramitesState?.procedimientos?.cambioDeGrupo?.plesXur!
+    plesxurRef: tramitesState?.procedimientos?.cambioUnidadAcademica?.plesXur!
   }
   const {data, refetch} = useObtenerTramitesAlumno(tramiteAlumno)
   const datosTramite = data?.obtenerTramitesAlumno?.datosTramite
-  const {grupoTurnoActual,grupoTurnoAsigando} = JSON.parse(datosTramite?datosTramite:'{}')
+  const {unidadDestino} = JSON.parse(datosTramite?datosTramite:'{}')
   const [modalE, setModalE] = useState(false)
   const [modalS, setModalS] = useState(false)
   const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
-  let btnDis:any = tramitesState?.procedimientos?.cambioDeGrupo?.validoParaTramitar!
+  let btnDis:any = tramitesState?.procedimientos?.cambioUnidadAcademica?.validoParaTramitar!
   mapDocInit.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{return e.id===doc?.expedienteId!})
     btnDis = findDoc?.validado!<3 && btnDis
@@ -60,12 +60,11 @@ export const CambioDeGrupo: FC<Props> = ({tramiteId,titulo,descripcion, mapDocIn
 
   const onSubmit = async () => {
     const datosTramite = JSON.stringify({
-      grupoTurnoActual: tramitesState?.procedimientos?.cambioDeGrupo?.grupoTurnoActual!,
-      grupoTurnoAsigando: tramitesState?.procedimientos?.cambioDeGrupo?.grupoTurnoAsigando!
+      unidadDestino: tramitesState?.procedimientos?.cambioUnidadAcademica?.unidadDestino!,
     });
     const tramite: TramiteAlumnoInput = {
       tramiteId,
-      plesxurRef: tramitesState.procedimientos.cambioDeGrupo?.plesXur!,
+      plesxurRef: tramitesState.procedimientos.cambioUnidadAcademica?.plesXur!,
       userAlumnoId: auth?.id!,
       email: auth?.email!,
       matricula: retornarPrimerMat(auth?.usuario?.matricula!),
@@ -129,7 +128,9 @@ export const CambioDeGrupo: FC<Props> = ({tramiteId,titulo,descripcion, mapDocIn
           <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             
             <HeadTramite />
-            <FormularioCambioDeGrupo mapDocInit={mapDocInit} grupoTurnoActual={grupoTurnoActual} grupoTurnoAsigando={grupoTurnoAsigando} />
+            <FormularioCambioUnidadAcademica 
+              unidadesAcademicas={unidadesAcademicas}
+              mapDocInit={mapDocInit} unidadDestino={unidadDestino} />
 
           </dl>
         </div>
@@ -160,7 +161,7 @@ export const CambioDeGrupo: FC<Props> = ({tramiteId,titulo,descripcion, mapDocIn
         {verPDF && 
           <RenderPDF 
               tramiteId={tramiteId}
-              titulo='Cambio de Grupo y Turno' 
+              titulo='Cambio de Unidad Académica' 
               matricula={retornarPrimerMat(auth?.usuario?.matricula!)} 
               nombre={auth?.usuario?.alumno.nomentalu}
               apellidos={auth?.usuario?.alumno?.apeentalu!}

@@ -56,6 +56,7 @@ export const renovarTokenGraphQL = async (tokenAnterior:string) => {
                         PLANESTUDIOS
                         NIVEL
                         PERINIPLN
+                        TIPOESCUELA
                     }
                     vwAspirante {
                         ID_PLAN

@@ -58,6 +58,7 @@ export const vincularMatriculaGQL = async (user:TipoVincularMatricula) => {
                         PLANESTUDIOS
                         NIVEL
                         PERINIPLN
+                        TIPOESCUELA
                     }
                 }
                 token

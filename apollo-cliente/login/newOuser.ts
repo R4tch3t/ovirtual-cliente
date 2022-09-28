@@ -55,6 +55,7 @@ export const newOuserGraphQL = async (nuevoUsuario:TipoNuevoUsuario) => {
                         PLANESTUDIOS
                         NIVEL
                         PERINIPLN
+                        TIPOESCUELA
                     }
                     vwAspirante {
                         ID_PLAN

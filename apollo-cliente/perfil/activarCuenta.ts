@@ -57,6 +57,7 @@ export const activarMatriculaGQL = async (user:ActivarMatriculaInput) => {
                         PLANESTUDIOS
                         NIVEL
                         PERINIPLN
+                        TIPOESCUELA
                     }
                     vwAspirante {
                         ID_PLAN

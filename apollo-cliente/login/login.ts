@@ -55,7 +55,8 @@ export type TipoVwAlumnoConPlanes = {
     ESCUELA: string,
     PLANESTUDIOS: string,
     NIVEL: number,
-    PERINIPLN: string
+    PERINIPLN: string,
+    TIPOESCUELA: number
 }
 
 export type TipoVwAspirante = {
@@ -111,6 +112,7 @@ export const loginGraphQL = async (email:string,password:string) => {
                         PLANESTUDIOS
                         NIVEL
                         PERINIPLN
+                        TIPOESCUELA
                     }
                     vwAspirante {
                         ID_PLAN

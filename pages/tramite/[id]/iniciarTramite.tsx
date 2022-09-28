@@ -9,21 +9,23 @@ import { PasosPreregistro } from '../../../components/tramite/preregistro';
 import { UnidadesAcademicas } from '../../../components/tramite/unidadAcademica';
 import { useTramitesContext } from '../../../context/tramites/TramitesContext';
 import { obtenerTramites, planesOfertados, tramitePorId, Paises, TipoNivelEstudio, obtenerNivelEstudios } from '../../../apollo-cliente';
-import { cargarPreregistroDB } from '../../../components/tramite/preregistro/formulario/cargarFormularioDB';
-import { usePreregistroPorCurp } from '../../../hooks/useQuery';
+//import { cargarPreregistroDB } from '../../../components/tramite/preregistro/formulario/cargarFormularioDB';
+//import { usePreregistroPorCurp } from '../../../hooks/useQuery';
 import { BajaTemporal } from '../../../components/tramite/bajaTemporal';
 import { obtenerRequisitosGQL, TipoRequisitos } from '../../../apollo-cliente/tramites/obtenerRequisitos';
 import { CatDocumentos } from '../../../helpers/expedientes';
 
-import HeadSeleccionarInscripcion from '../../../components/tramite/inscripcion/headSelecionarPlan';
+//import HeadSeleccionarInscripcion from '../../../components/tramite/inscripcion/headSelecionarPlan';
 import HeadSeleccionarPlanBajaTemporal from '../../../components/tramite/bajaTemporal/headSelecionarPlan';
 import HeadSeleccionarPlanCambioDeGrupo from '../../../components/tramite/cambioDeGrupo/headSelecionarPlan';
+import HeadSeleccionarPlanCambioUnidadAcademica from '../../../components/tramite/cambioUnidadAcademica/headSelecionarPlan';
 
 
 import { Equivalencia } from '../../../components/tramite/equivalencia'
 import { Homologacion } from '../../../components/tramite/homologacion';
 import { Revalidacion } from '../../../components/tramite/revalidacion'
 import { Inscripcion } from '../../../components/tramite/inscripcion';import { CambioDeGrupo } from '../../../components/tramite/cambioDeGrupo';
+import { CambioUnidadAcademica } from '../../../components/tramite/cambioUnidadAcademica';
 ;
 interface Props {
   id: string,
@@ -37,7 +39,7 @@ interface Props {
 const TramiteHome:NextPage<Props> = (props) =>{
   const auth = RedirecApp();
   const {tramitesState,dispatch} = useTramitesContext()
-  const {preregistro, bajaTemporal, cambioDeGrupo} = tramitesState.procedimientos
+  const {preregistro, bajaTemporal, cambioDeGrupo, cambioUnidadAcademica} = tramitesState.procedimientos
   
   /*const {data} = usePreregistroPorCurp(auth?.usuario?.alumno?.crpentalu!);
   useEffect(()=>{
@@ -178,6 +180,26 @@ const TramiteHome:NextPage<Props> = (props) =>{
 
               </>
             }
+
+          {
+              props.id==="23" && 
+              <>
+                {!cambioUnidadAcademica && <HeadSeleccionarPlanCambioUnidadAcademica
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                >
+                    <SeleccionarPlan nombreContextState='cambioUnidadAcademica' />
+                  </HeadSeleccionarPlanCambioUnidadAcademica>
+                }
+                {cambioUnidadAcademica && <CambioUnidadAcademica 
+                  titulo={props.tramite.nombre!} 
+                  descripcion={props.tramite.descripcion!}
+                  tramiteId={parseInt(props.id)!} 
+                  mapDocInit={mapDocInit}
+                  unidadesAcademicas={props.unidadesAcademicas} />}
+
+              </>
+          }
             
           </div>
       </div>
