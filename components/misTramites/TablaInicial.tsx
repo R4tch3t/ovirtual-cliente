@@ -163,7 +163,7 @@ const TablaInicial = () => {
                         PERINIPLN: '',
                         PLESXUR:plexurAsp?.ID_PLAN!,
                         PLANESTUDIOS: plexurAsp?.PLANESTUDIOS!,
-                        ESCUELA: plexurAsp?.UA!
+                        ESCUELA: plexurAsp?.UA!,                        
                      }
                     }
                   return(

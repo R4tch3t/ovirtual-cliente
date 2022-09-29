@@ -56,7 +56,7 @@ export type TipoVwAlumnoConPlanes = {
     PLANESTUDIOS: string,
     NIVEL: number,
     PERINIPLN: string,
-    TIPOESCUELA: number
+    TIPOESCUELA?: number
 }
 
 export type TipoVwAspirante = {
