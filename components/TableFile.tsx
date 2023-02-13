@@ -91,7 +91,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
             <dt className="text-sm font-medium text-gray-500">Documentos</dt>
             <dd className="mt-1 text-sm text-gray-900">
                 <ul role="list" className="border border-gray-200 rounded-md divide-y divide-gray-200">
-                {mapDoc.map(m=>{
+                {mapDoc.filter((m)=>{return m.activo}).map(m=>{
 
                     const exp = auth?.usuario?.expediente?.find((d)=>{return d?.documentoId===m.id})
                     m.expedienteId = !exp?.id! ? null:exp?.id! as any

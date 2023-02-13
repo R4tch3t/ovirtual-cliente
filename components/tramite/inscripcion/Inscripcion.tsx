@@ -36,6 +36,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
     tramiteId,
     plesxurRef: inscripcion?.plesXur!
   }
+  
   const {data, refetch} = useObtenerTramitesAlumno(tramiteAlumno)
   const datosTramite = data?.obtenerTramitesAlumno?.datosTramite
   const {periodoLectivo,causaBaja} = JSON.parse(datosTramite?datosTramite:'{}')

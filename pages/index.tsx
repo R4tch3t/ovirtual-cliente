@@ -4,7 +4,7 @@ import React from 'react'
 import Head from 'next/head'
 
 const Home: NextPage = () => {
-  
+ 
   return(
     <>
     <Head>
