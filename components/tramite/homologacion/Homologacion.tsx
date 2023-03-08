@@ -53,12 +53,13 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   let mapDocInitExclud = [...mapDocInit]
 
   mapDocInitExclud=mapDocInitExclud.filter(d=>{
+    console.log('d? ',d)
     if(data?.obtenerTramitesAlumno){
-      return ( d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId! )  
+      return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || d.validado===3 )  
     }
     return ( d.estadoId === 1 )
   })
-  
+
   mapDocInitExclud.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{
       return e.id===doc?.expedienteId!

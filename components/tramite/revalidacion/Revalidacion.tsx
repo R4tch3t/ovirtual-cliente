@@ -49,7 +49,7 @@ export const Revalidacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
 
   mapDocInitExclud=mapDocInitExclud.filter(d=>{
     if(data?.obtenerTramitesAlumno){
-      return ( d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId! )  
+      return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || d.validado===3 )  
     }
     return ( d.estadoId === 1 )
   })
