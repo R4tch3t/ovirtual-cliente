@@ -37,7 +37,7 @@ const TramiteHome:NextPage<Props> = (props) =>{
 
   //props.requisitos=props.requisitos.sort((a,b)=>{return a.id-b.id})
 
-  props.requisitos.map((r)=>{
+  props.requisitos.filter(d=>{return d.documento.estadoId}).map((r)=>{
     table?.body?.push({
       'Documento': r.documento.nombre,
       'Descripción': r.descripcion,

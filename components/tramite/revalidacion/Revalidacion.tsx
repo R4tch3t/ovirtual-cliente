@@ -47,6 +47,13 @@ export const Revalidacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   let mapDocInitExclud = [...mapDocInit]
   const vwAspirante = auth?.usuario?.vwAspirante![0]
 
+  mapDocInitExclud=mapDocInitExclud.filter(d=>{
+    if(data?.obtenerTramitesAlumno){
+      return ( d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId! )  
+    }
+    return ( d.estadoId === 1 )
+  })
+
   mapDocInitExclud.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{
       return e.id===doc?.expedienteId!

@@ -41,6 +41,7 @@ const obtenerRequisitosGQL = async (tramiteId: number) => {
                 clave
                 activo
                 base64
+                estadoId
               }
             }
 }

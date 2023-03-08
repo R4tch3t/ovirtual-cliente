@@ -10,7 +10,8 @@ import Warning from "./Warning";
 
 
 type Props = {
-    mapDocInit: CatDocumentos[]
+    mapDocInit: CatDocumentos[],
+    noShowSettings?: boolean
 }
 
 let fileName = ''
@@ -18,7 +19,7 @@ let expedienteId:any=null
 let documentoId:any=null
 let tipoDocumentoId = 0
 
-export const TableFile:FC<Props> = ({mapDocInit}) => {
+export const TableFile:FC<Props> = ({mapDocInit,noShowSettings}) => {
     const {auth, verificaToken, eliminarExpedienteAuth} = useAppContext();
     //const {tramitesState, dispatch} = useTramitesContext()
     
@@ -91,7 +92,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
             <dt className="text-sm font-medium text-gray-500">Documentos</dt>
             <dd className="mt-1 text-sm text-gray-900">
                 <ul role="list" className="border border-gray-200 rounded-md divide-y divide-gray-200">
-                {mapDoc.filter((m)=>{return m.activo}).map(m=>{
+                {mapDoc/*.filter((m)=>{return m.activo})*/.map(m=>{
 
                     const exp = auth?.usuario?.expediente?.find((d)=>{return d?.documentoId===m.id})
                     m.expedienteId = !exp?.id! ? null:exp?.id! as any
@@ -179,7 +180,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                         
                         </div>
 
-                        {(m.expedienteId !== null && exp?.validado === 3)  && 
+                        {(m.expedienteId !== null && exp?.validado === 3)  && !noShowSettings &&
                         <div className="ml-4 flex-shrink-0 flex space-x-4">
                             <button
                             type="button"
@@ -244,6 +245,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                             </button>
 
                             {(!m.enTramite || (exp?.validado===1 && m.enTramite !==2 && m.enTramite !==3)) &&
+                                !noShowSettings &&
                             <>
                                 <span className="text-gray-300" aria-hidden="true">
                                     |
@@ -268,7 +270,7 @@ export const TableFile:FC<Props> = ({mapDocInit}) => {
                         </div>
                     }
 
-                    {m.expedienteId===null && !m.cargado &&
+                    {m.expedienteId===null && !m.cargado && !noShowSettings &&
                         <div className="ml-4 flex-shrink-0 flex space-x-4">
                             <button
                             type="button"

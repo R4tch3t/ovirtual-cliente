@@ -46,6 +46,13 @@ export const Equivalencia: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   const excludDocs = [1,47]
   let mapDocInitExclud = [...mapDocInit]
   const vwAspirante = auth?.usuario?.vwAspirante![0]
+  
+  mapDocInitExclud=mapDocInitExclud.filter(d=>{
+    if(data?.obtenerTramitesAlumno){
+      return ( d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId! )  
+    }
+    return ( d.estadoId === 1 )
+  })
 
   mapDocInitExclud.map(doc=>{
     const findDoc = auth?.usuario?.expediente?.find((e)=>{

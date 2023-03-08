@@ -117,6 +117,7 @@ export type TypeDocumento = {
     descripcion: string | null;
     clave: string | null;
     activo: number | null;
+    estadoId: number | null
 }
 
 export type TypeProcedimiento = {
