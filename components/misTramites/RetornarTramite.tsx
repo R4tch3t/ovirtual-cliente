@@ -21,7 +21,8 @@ export default function RetornarTramite({tramiteId, tramites}:Props){
             descripcion: r.documento.descripcion,
             tipoDocumentoId: r.documento.tipoDocumentoId,
             clave: r.documento.clave,
-            activo: r.documento.activo
+            activo: r.documento.activo,
+            estadoId: r.documento.estadoId
         })
     });
 
