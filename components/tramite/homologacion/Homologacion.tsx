@@ -50,29 +50,67 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   const vwAspirante = auth?.usuario?.vwAspirante![0]
   let btnDis:any = true //homologacion?.validoParaTramitar!
   const excludDocs = [1,47]
-  let mapDocInitExclud = [...mapDocInit]
-
-  mapDocInitExclud=mapDocInitExclud.filter(d=>{
-    
+  //let mapDocInitExclud = [...mapDocInit]
+  //let [mapDocInitExclud,setMapDocInitExclud] = useState([...mapDocInit])
+  let [mapDocInitExclud,setMapDocInitExclud]:any = useState(null)
+  let [mapDocSegExclud,setMapDocSegExclud]:any = useState(null)
+  
+    /*mapDocInitExclud=mapDocInitExclud.filter(d=>{
+      console.log('d? ',d)
+      if(data?.obtenerTramitesAlumno){
+        return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || (d.validado===3) )  
+      }
+      return ( d.estadoId === 1 )
+    })*/
+  
+  useEffect(()=>{
+    let newMap = mapDocInit
     if(data?.obtenerTramitesAlumno){
-      return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || d.validado===3 )  
+      newMap=newMap.filter(d=>{        
+          return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || (d.validado===3&&data?.obtenerTramitesAlumno?.estadoId===4) )          
+      })
+    
+      newMap=newMap.sort((a,b)=>{
+        return a?.id!-b?.id! && 
+        (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
+      })
+      setMapDocSegExclud(newMap)
+    }else{
+      newMap=newMap.filter(d=>{
+        
+        return ( d.estadoId === 1 )
+      })
+      newMap=newMap.sort((a,b)=>{
+        return a?.id!-b?.id! && 
+        (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
+      })
+      setMapDocInitExclud(newMap)
     }
-    return ( d.estadoId === 1 )
-  })
+  },[data?.obtenerTramitesAlumno])
 
-  mapDocInitExclud.map(doc=>{
-    const findDoc = auth?.usuario?.expediente?.find((e)=>{
-      return e.id===doc?.expedienteId!
-    })
-    btnDis = findDoc?.validado!<3 && btnDis
-  });  
+  if(mapDocInitExclud!==null){
+    mapDocInitExclud?.map((doc:any)=>{
+      const findDoc = auth?.usuario?.expediente?.find((e)=>{
+        return e.id===doc?.expedienteId!
+      })
+      btnDis = findDoc?.validado!<3 && btnDis
+    });  
+  }else if (mapDocSegExclud){
+    mapDocSegExclud?.map((doc:any)=>{
+      const findDoc = auth?.usuario?.expediente?.find((e)=>{
+        return e.id===doc?.expedienteId!
+      })
+      btnDis = findDoc?.validado!<3 && btnDis
+    });   
+  }
 
-  mapDocInitExclud=mapDocInitExclud.sort((a,b)=>{
+
+  /*mapDocInitExclud=mapDocInitExclud.sort((a,b)=>{
     return a?.id!-b?.id! && 
     (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
-  })
+  })*/
   
-  mapDocInit = [...mapDocInitExclud]
+  //mapDocInit = [...mapDocInitExclud]
 
 
   /*mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
@@ -219,11 +257,11 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
           <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             
             <HeadTramite />
-            {data?.obtenerTramitesAlumno && 
-              <FormularioHomologacion mapDocInit={mapDocInit} telefono={telefono} planIngresarId={planIngresarId} />
-            }
-            {!data?.obtenerTramitesAlumno && 
+            { mapDocInitExclud && !data?.obtenerTramitesAlumno &&
               <FormularioHomologacion mapDocInit={mapDocInitExclud} telefono={telefono} planIngresarId={planIngresarId} />
+            }
+            { mapDocSegExclud && data?.obtenerTramitesAlumno &&
+              <FormularioHomologacion mapDocInit={mapDocSegExclud} telefono={telefono} planIngresarId={planIngresarId} />
             }
 
           </dl>
