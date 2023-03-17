@@ -67,7 +67,7 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
     let newMap = mapDocInit
     if(data?.obtenerTramitesAlumno){
       newMap=newMap.filter(d=>{        
-          return ( (/*d.estadoId &&*/ d.estadoId! <= data?.obtenerTramitesAlumno?.estadoId!) 
+          return ( (d.estadoId && d.estadoId! <= data?.obtenerTramitesAlumno?.estadoId!) 
             || (d.validado===3&&data?.obtenerTramitesAlumno?.estadoId===4) )          
       })
     
