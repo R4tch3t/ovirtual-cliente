@@ -43,47 +43,57 @@ export const Revalidacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   const [clickEnviar, setClickEnviar] = useState(false)
   const [verPDF, setVerPDF] = useState(false)
   let btnDis:any = true//revalidacion?.validoParaTramitar!
-  const excludDocs = [1,47]
-  let mapDocInitExclud = [...mapDocInit]
   const vwAspirante = auth?.usuario?.vwAspirante![0]
-
-  mapDocInitExclud=mapDocInitExclud.filter(d=>{
+  
+  let [mapDocInitExclud,setMapDocInitExclud]:any = useState(null)
+  let [mapDocSegExclud,setMapDocSegExclud]:any = useState(null)    
+  
+  useEffect(()=>{
+    let newMap = mapDocInit
     if(data?.obtenerTramitesAlumno){
-      return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || d.validado===3 )  
+      newMap=newMap.filter(d=>{        
+          return ( (d.estadoId && d.estadoId! <= data?.obtenerTramitesAlumno?.estadoId!) 
+            || (d.validado===3&&data?.obtenerTramitesAlumno?.estadoId===4) )          
+      })
+    
+      newMap=newMap.sort((a,b)=>{
+        return a?.id!-b?.id! && 
+        (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
+      })
+      setMapDocInitExclud(null)
+      setMapDocSegExclud(newMap)
+
+    }else{
+      newMap=newMap.filter(d=>{
+        
+        return ( d.estadoId === 1 )
+      })
+      newMap=newMap.sort((a,b)=>{
+        return a?.id!-b?.id! && 
+        (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
+      })
+      setMapDocInitExclud(newMap)
     }
-    return ( d.estadoId === 1 )
-  })
+  },[data?.obtenerTramitesAlumno])
 
-  mapDocInitExclud.map(doc=>{
-    const findDoc = auth?.usuario?.expediente?.find((e)=>{
-      return e.id===doc?.expedienteId!
-    })
-    btnDis = findDoc?.validado!<3 && btnDis
-  });
-
-  mapDocInitExclud=mapDocInitExclud.sort((a,b)=>{
-    return a?.id!-b?.id! && 
-    (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
-  })
-  
-  mapDocInit = [...mapDocInitExclud]
-
-
-  /*mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
-    return excludDocs.find((exc)=>{
-      return exc === doc.id
-    })
-  });
-  
-  if(!data?.obtenerTramitesAlumno){
-    btnDis = revalidacion?.validoParaTramitar!
-    mapDocInitExclud.map(doc=>{
+  if(mapDocInitExclud!==null){
+    mapDocInitExclud?.map((doc:any)=>{
       const findDoc = auth?.usuario?.expediente?.find((e)=>{
         return e.id===doc?.expedienteId!
       })
       btnDis = findDoc?.validado!<3 && btnDis
-    });
-  }*/
+    });  
+  }
+
+  if (mapDocSegExclud){
+    mapDocSegExclud?.map((doc:any)=>{
+      const findDoc = auth?.usuario?.expediente?.find((e)=>{
+        return e.id===doc?.expedienteId!
+      })
+      btnDis = findDoc?.validado!<3 && btnDis
+    });   
+  }
+
 
   useEffect(()=>{
     if(btnDis){
@@ -116,19 +126,6 @@ export const Revalidacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
       
     }
   }
-
-  /*useEffect(()=>{
-    let bandEffect = true // | inscripcion?.validoParaTramitar!
-      
-      mapDocInit.map(doc=>{
-
-        const findDoc = auth?.usuario?.expediente?.find((e)=>{return (e.id===doc?.expedienteId!||e.documentoId===doc.id)})
-        bandEffect = findDoc?.validado!<3 && bandEffect 
-        setBtnDis(bandEffect)
-        
-      });
-    
-  },[auth?.usuario?.expediente, inscripcion])*/
 
   const loop = () =>{
     
@@ -216,12 +213,15 @@ export const Revalidacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
           <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             
             <HeadTramite />
-            {data?.obtenerTramitesAlumno && 
-              <FormularioRevalidacion mapDocInit={mapDocInit} telefono={telefono} planIngresarId={planIngresarId} />
-            }
-            {!data?.obtenerTramitesAlumno && 
+
+            { mapDocInitExclud && !data?.obtenerTramitesAlumno &&
               <FormularioRevalidacion mapDocInit={mapDocInitExclud} telefono={telefono} planIngresarId={planIngresarId} />
             }
+            
+            { mapDocSegExclud && data?.obtenerTramitesAlumno &&
+              <FormularioRevalidacion mapDocInit={mapDocSegExclud} telefono={telefono} planIngresarId={planIngresarId} />
+            }
+            
 
           </dl>
         </div>

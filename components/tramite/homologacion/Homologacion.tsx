@@ -49,19 +49,9 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
   const [verPDF, setVerPDF] = useState(false)
   const vwAspirante = auth?.usuario?.vwAspirante![0]
   let btnDis:any = true //homologacion?.validoParaTramitar!
-  const excludDocs = [1,47]
-  //let mapDocInitExclud = [...mapDocInit]
-  //let [mapDocInitExclud,setMapDocInitExclud] = useState([...mapDocInit])
-  let [mapDocInitExclud,setMapDocInitExclud]:any = useState(null)
-  let [mapDocSegExclud,setMapDocSegExclud]:any = useState(null)
   
-    /*mapDocInitExclud=mapDocInitExclud.filter(d=>{
-      console.log('d? ',d)
-      if(data?.obtenerTramitesAlumno){
-        return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || (d.validado===3) )  
-      }
-      return ( d.estadoId === 1 )
-    })*/
+  let [mapDocInitExclud,setMapDocInitExclud]:any = useState(null)
+  let [mapDocSegExclud,setMapDocSegExclud]:any = useState(null)    
   
   useEffect(()=>{
     let newMap = mapDocInit
@@ -109,30 +99,6 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
     });   
   }
 
-
-  /*mapDocInitExclud=mapDocInitExclud.sort((a,b)=>{
-    return a?.id!-b?.id! && 
-    (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
-  })*/
-  
-  //mapDocInit = [...mapDocInitExclud]
-
-
-  /*mapDocInitExclud=mapDocInitExclud.filter((doc)=>{
-    return excludDocs.find((exc)=>{
-      return exc === doc.id
-    })
-  });
-  
-  if(!data?.obtenerTramitesAlumno){
-    btnDis = homologacion?.validoParaTramitar!
-    mapDocInitExclud.map(doc=>{
-      const findDoc = auth?.usuario?.expediente?.find((e)=>{
-        return e.id===doc?.expedienteId!
-      })
-      btnDis = findDoc?.validado!<3 && btnDis
-    });
-  }*/
 
   useEffect(()=>{
     if(btnDis){
