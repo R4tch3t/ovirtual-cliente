@@ -67,14 +67,17 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
     let newMap = mapDocInit
     if(data?.obtenerTramitesAlumno){
       newMap=newMap.filter(d=>{        
-          return ( (d.estadoId  && d.estadoId<=data?.obtenerTramitesAlumno?.estadoId!) || (d.validado===3&&data?.obtenerTramitesAlumno?.estadoId===4) )          
+          return ( (/*d.estadoId &&*/ d.estadoId! <= data?.obtenerTramitesAlumno?.estadoId!) 
+            || (d.validado===3&&data?.obtenerTramitesAlumno?.estadoId===4) )          
       })
     
       newMap=newMap.sort((a,b)=>{
         return a?.id!-b?.id! && 
         (a.expedienteId!?a.expedienteId!:0)-(b.expedienteId!?b.expedienteId!:0)
       })
+      setMapDocInitExclud(null)
       setMapDocSegExclud(newMap)
+
     }else{
       newMap=newMap.filter(d=>{
         
@@ -95,7 +98,9 @@ export const Homologacion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocI
       })
       btnDis = findDoc?.validado!<3 && btnDis
     });  
-  }else if (mapDocSegExclud){
+  }
+
+  if (mapDocSegExclud){
     mapDocSegExclud?.map((doc:any)=>{
       const findDoc = auth?.usuario?.expediente?.find((e)=>{
         return e.id===doc?.expedienteId!
