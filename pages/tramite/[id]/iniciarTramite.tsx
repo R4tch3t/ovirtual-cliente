@@ -26,7 +26,7 @@ import { Homologacion } from '../../../components/tramite/homologacion';
 import { Revalidacion } from '../../../components/tramite/revalidacion'
 import { Inscripcion } from '../../../components/tramite/inscripcion';import { CambioDeGrupo } from '../../../components/tramite/cambioDeGrupo';
 import { CambioUnidadAcademica } from '../../../components/tramite/cambioUnidadAcademica';
-;
+
 interface Props {
   id: string,
   tramite: TypeTramite,

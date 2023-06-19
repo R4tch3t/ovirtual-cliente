@@ -6,6 +6,7 @@ interface Query {
         respResultadoCeneval: boolean,
         resultadoCeneval: TipoResultadoCeneval[] | null,
         estado: number|null,
+        extranjero: boolean|null,
         msg: string|null,        
     }
 }
@@ -93,6 +94,7 @@ export const consultaResultadoCenevalGQL = async (registroCeneval:InputRegistroC
                     nomasp
                 }
                 estado
+                extranjero
                 msg
             }
 }

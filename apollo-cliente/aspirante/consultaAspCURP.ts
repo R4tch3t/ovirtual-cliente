@@ -5,7 +5,7 @@ interface Query {
     consultaAspCURP: {
         respAspCurp: boolean,
         resultadoAspRegistro: TipoResultadoAspRegistro | null,
-        CURP: string|null,
+        CURP?: string|null,
         msg: string|null,        
     }
 }

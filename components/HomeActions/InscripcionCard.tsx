@@ -57,6 +57,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
     const [cargando, setCargando] = useState(false)
     const [folioValido, setFolioValido] = useState(false)
     const [curpValido, setCurpValido] = useState(false)
+    const [showCURP, setShowCurp] = useState(false)
     
     const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
@@ -197,8 +198,14 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                         if(campoCurp!==null){
                             campoCurp.value=''
                         }
-                        
-                        setCurpValido(false)
+
+                        if(consultaResultadoCeneval?.extranjero!){
+                            setCurpValido(true);
+                            setShowCurp(false)    
+                        }else{
+                            setCurpValido(false);
+                            setShowCurp(true)
+                        }
 
                         setInputs({...inputs,[name]:{
                             color: 'success', 
@@ -265,7 +272,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
         await client.cache.reset()
         const campoFolio:any = document.getElementById('folioInscripcion')
         const campoCurp:any = document.getElementById('curpInscripcion')
-        const consultaAspRegistro = await consultaAspCURPGQL({ folio: parseInt(campoFolio.value!),curp: campoCurp.value })
+        const consultaAspRegistro = await consultaAspCURPGQL({ folio: parseInt(campoFolio.value!),curp: campoCurp?.value! })
         const {respAspCurp, CURP} = consultaAspRegistro
         
 
@@ -420,7 +427,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                 <Slide  direction="up" in={folioValido} mountOnEnter unmountOnExit>
                     <div className="w-full" >
                     
-                        <Input id='curpInscripcion' 
+                        {showCURP && <Input id='curpInscripcion' 
                             width={"100%"} 
                             name='curp'
                            // onKeyUp={onKeyUp}
@@ -434,7 +441,7 @@ export const InscripcionCard:FC<PropsCard> = ({action}) => {
                             helperColor={inputs.curp.color}
                             helperText={inputs.curp.helper}
                             color={inputs.curp.color} />
-                    
+                        }
                         <Spacer y={2} />
                         <button
                             type="button"
