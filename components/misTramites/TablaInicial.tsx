@@ -22,7 +22,8 @@ const estadoTramite = (n:number) => {
     case 1: return 'INICIADO'
     case 2: return 'EN REVISIÓN'
     case 3: return 'VALIDACION'
-    case 4: return 'PARA CORRECIÓN'
+    case 8:
+    case 4: return 'PARA CORRECCIÓN'
     case 5: return 'APROBADO'
     case 6: return 'FINALIZADO'
     case 7: return 'CANCELADO'
@@ -66,7 +67,7 @@ const TablaInicial = () => {
     const {tramites} = tramitesState
     let c = -1
     const {data, loading} = useTodosTramitesAlumno({userAlumnoId: auth?.id!})
-
+    console.log('dataTramites ',data);
     const seleccionarTramite = (tramiteId: number, usuarioId: number, plesXur: number, planElegido: string,  unidadAcademica:string) => {
       //agregar mas nombres de tramite
       const procedure = tramiteId===1?'bajaTemporal':
@@ -154,17 +155,17 @@ const TablaInicial = () => {
                   const {tramite} = tramiteAlumno//tramites?.find((t)=>{return t.id===tramiteAlumno.tramiteId})
                   let plexur = auth?.usuario?.vwAlumnoConPlanes?.find((alup)=>{return alup.PLESXUR===tramiteAlumno.plesxurRef})
                     if(!plexur){
-                     const plexurAsp = auth?.usuario?.vwAspirante?.find((alup)=>{return alup.ID_PLAN===tramiteAlumno.plesxurRef})
-                     plexur={
-                        CVEENTESC:plexurAsp?.CLAVE_UNIDAD_ACADEMICA!,
-                        CVEPLNEST:plexurAsp?.CLAVE_PLAN_ESTUDIOS!,
-                        VRSPLNEST: plexurAsp?.VERSION_PLAN_ESTUDIOS!,
-                        NIVEL: 0,
-                        PERINIPLN: '',
-                        PLESXUR:plexurAsp?.ID_PLAN!,
-                        PLANESTUDIOS: plexurAsp?.PLANESTUDIOS!,
-                        ESCUELA: plexurAsp?.UA!,                        
-                     }
+                      const plexurAsp = auth?.usuario?.vwAspirante?.find((alup)=>{return alup.ID_PLAN===tramiteAlumno.plesxurRef})
+                      plexur={
+                          CVEENTESC:plexurAsp?.CLAVE_UNIDAD_ACADEMICA!,
+                          CVEPLNEST:plexurAsp?.CLAVE_PLAN_ESTUDIOS!,
+                          VRSPLNEST: plexurAsp?.VERSION_PLAN_ESTUDIOS!,
+                          NIVEL: 0,
+                          PERINIPLN: '',
+                          PLESXUR:plexurAsp?.ID_PLAN!,
+                          PLANESTUDIOS: plexurAsp?.PLANESTUDIOS!,
+                          ESCUELA: plexurAsp?.UA!,                        
+                      }
                     }
                   return(
                       <div
@@ -216,7 +217,7 @@ const TablaInicial = () => {
                           <p className={`mt-2 text-sm 
                             ${
                               (tramiteAlumno.estadoId===5||tramiteAlumno.estadoId===6)?'text-green-500':
-                              (tramiteAlumno.estadoId===4?'text-yellow-500':
+                              ((tramiteAlumno.estadoId===4||tramiteAlumno.estadoId===8)?'text-yellow-500':
                               (tramiteAlumno.estadoId===7?'text-red-600':'text-gray-500'))
                             } 
                           `}>

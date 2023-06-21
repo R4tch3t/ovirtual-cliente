@@ -82,6 +82,7 @@ const QUERY = gql`
                     tipoDocumentoId
                     nombre
                     descripcion
+                    estadoId
                     clave
                     activo
                 }

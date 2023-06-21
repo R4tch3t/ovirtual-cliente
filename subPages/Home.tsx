@@ -52,7 +52,7 @@ export const Home: NextPage<Props> = ({children, link}) => {
 
     let userNavigation = [
         { name: 'Ver perfil', href: '/perfil' },
-        { name: 'Configuración', href: '' },
+        { name: 'Mis Trámites', href: '/misTramites' },
         { name: 'Cerrar sesión', href: '', onMouseUp: logout },
     ];
     let navigation = [

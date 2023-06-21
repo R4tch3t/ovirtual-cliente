@@ -203,7 +203,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
         {data?.obtenerTramitesAlumno?.estadoId! === 6 && 
           <div 
             className='chatDivCargando' >
-              <a
+              {/*<a
                 target={'_blank'}
                 href={`https://die.uagro.mx/frontend/servicios/inscripcion/${data?.obtenerTramitesAlumno?.id!}/pdf`}
                 className='cursor-pointer text-center'
@@ -216,7 +216,7 @@ export const Inscripcion: FC<Props> = ({titulo, descripcion, tramiteId, mapDocIn
                   <PDFLogo width={50} height={50} />
                   <p className="mt-1 text-sm text-gray-500">Descarga tu comprobante de inscripción</p>
                 
-              </a>
+              </a>*/}
               
               <button
                 type="button"

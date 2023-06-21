@@ -14,7 +14,7 @@ type Props = {
 export default function RetornarTramite({tramiteId, tramites}:Props){
     const mapDocInit: CatDocumentos[] = []
     let tramSelec = tramites.find((t)=>{return t.tramiteId===tramiteId}) 
-    tramSelec?.requisitos?.map((r)=>{
+    tramSelec?.requisitos?.map((r)=>{        
         mapDocInit.push({
             id: r.documento.id,
             nombre: r.documento.nombre,
